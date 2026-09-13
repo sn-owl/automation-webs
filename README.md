@@ -1,9 +1,6 @@
 # 업무 자동화 Core — 승인 없이는 실행하지 않는 사무 자동화 파이프라인
 
-<!--
-  GitHub 저장소를 만든 뒤 아래 한 줄을 이 주석 위에 붙여 넣으면 CI 배지가 표시된다.
-  ![CI](https://github.com/<계정>/<저장소>/actions/workflows/ci.yml/badge.svg)
--->
+[![CI](https://github.com/sn-owl/automation-webs/actions/workflows/ci.yml/badge.svg)](https://github.com/sn-owl/automation-webs/actions/workflows/ci.yml)
 
 서로 다른 출처에 흩어져 있는 반복 업무를 **한 곳으로 수집하고, 같은 계약으로 분류하고,
 사람이 승인한 것만 준비 수행**하는 파이프라인이다. 외부 모델은 제안만 하고, 실행 권한은
@@ -77,8 +74,8 @@ GENERIC Core
 의존성 설치가 필요 없다. Python 3.12 이상이면 된다.
 
 ```bash
-git clone <이 저장소 URL>
-cd <저장소 폴더>
+git clone https://github.com/sn-owl/automation-webs.git
+cd automation-webs
 
 # 전체 테스트 (표준 라이브러리만 사용)
 python3 -m unittest discover -s tests
