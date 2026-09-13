@@ -43,9 +43,9 @@ from automation.work_package import render_work_package
 
 
 _FIXTURE_SOURCES = {
-    "yeonje-ready.html": ("gnuboard", {"board_id": "yeonje", "url": "https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452"}),
-    "bsbukgu-manual.html": ("gnuboard", {"board_id": "bsbukgu", "url": "https://fixture.local/bbs/board.php?bo_table=bsbukgu&wr_id=2048"}),
-    "dongnae-developable.html": ("dongnae", {"url": "https://fixture.local/dongnae/board/view.sko?nttId=9001"}),
+    "alpha-ready.html": ("gnuboard", {"board_id": "alpha", "url": "https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452"}),
+    "beta-manual.html": ("gnuboard", {"board_id": "beta", "url": "https://fixture.local/bbs/board.php?bo_table=beta&wr_id=2048"}),
+    "egov-developable.html": ("egov", {"url": "https://fixture.local/egov/board/view.sko?nttId=9001"}),
 }
 
 
@@ -240,8 +240,8 @@ def _source_for_html(
             **connection,
         }
     if 'id="view"' in html or "id='view'" in html:
-        return "dongnae", {
-            "url": "https://fixture.local/dongnae/board/view.sko?nttId=1",
+        return "egov", {
+            "url": "https://fixture.local/egov/board/view.sko?nttId=1",
             **connection,
         }
     raise ValueError("unsupported HTML fixture")

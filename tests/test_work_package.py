@@ -10,10 +10,10 @@ from automation.models import WorkItem
 
 def work_item(**overrides):
     base = {
-        "task_id": "yeonje-13452",
+        "task_id": "alpha-13452",
         "source": {
             "type": "board",
-            "id": "yeonje",
+            "id": "alpha",
             "external_id": "13452",
             "url": "https://fixture.local/bbs/board.php?wr_id=13452",
         },
@@ -22,7 +22,7 @@ def work_item(**overrides):
         "body": "최신 파일로 현행화해 주세요.",
         "author": "요청부서",
         "attachments": [],
-        "mask_table_ref": "local://masks/yeonje-13452.json",
+        "mask_table_ref": "local://masks/alpha-13452.json",
     }
     base.update(overrides)
     return WorkItem.from_dict(base)
@@ -67,7 +67,7 @@ class WorkPackageRendererTest(unittest.TestCase):
                 final_status="succeeded",
             )
 
-            self.assertEqual(package, root / "packages" / "yeonje-13452")
+            self.assertEqual(package, root / "packages" / "alpha-13452")
             self.assertEqual(
                 {
                     "ACTION.md",

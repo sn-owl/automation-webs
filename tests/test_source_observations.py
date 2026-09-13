@@ -29,7 +29,7 @@ class SourceObservationBoundaryTest(unittest.TestCase):
             "observation_id": "obs-1",
             "kind": kind,
             "observed_at": "2026-09-12T12:00:00.000Z",
-            "source": {"type": "board", "id": "yeonje", "adapter": "gnuboard"},
+            "source": {"type": "board", "id": "alpha", "adapter": "gnuboard"},
         }
         if kind == "source_completion_observed":
             payload["external_id"] = "42"
@@ -121,8 +121,8 @@ class SourceObservationBoundaryTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
             payload = self.payload("source_completion_observed")
-            identifier = task_id("yeonje", "42", scope="alice", connector_id="board")
-            task = WorkItem.from_dict({"task_id": identifier, "source": {"type": "board", "id": "yeonje", "external_id": "42", "url": "https://fixture.invalid/task"}, "received_at": "2026-09-12T00:00:00Z", "title": "업무", "body": "본문", "author": "작성자", "attachments": [], "mask_table_ref": "local://masks/x.json", "contract_version": 2, "scope": "alice", "connector_id": "board", "capture_id": "capture", "revision": 1, "completeness": "complete", "provenance": {}, "source_completion_observed": False})
+            identifier = task_id("alpha", "42", scope="alice", connector_id="board")
+            task = WorkItem.from_dict({"task_id": identifier, "source": {"type": "board", "id": "alpha", "external_id": "42", "url": "https://fixture.invalid/task"}, "received_at": "2026-09-12T00:00:00Z", "title": "업무", "body": "본문", "author": "작성자", "attachments": [], "mask_table_ref": "local://masks/x.json", "contract_version": 2, "scope": "alice", "connector_id": "board", "capture_id": "capture", "revision": 1, "completeness": "complete", "provenance": {}, "source_completion_observed": False})
             put_task(task, root=root)
             task_path = root / "state" / "tasks" / f"{identifier}.json"
             before = task_path.read_bytes()
@@ -140,8 +140,8 @@ class SourceObservationBoundaryTest(unittest.TestCase):
             cross_payload = self.payload("source_completion_observed")
             cross_payload["observation_id"] = "obs-cross"
             cross_payload["external_id"] = "99"
-            cross_id = task_id("yeonje", "99", scope="bob", connector_id="board")
-            cross_task = WorkItem.from_dict({"task_id": cross_id, "source": {"type": "board", "id": "yeonje", "external_id": "99", "url": "https://fixture.invalid/task"}, "received_at": "2026-09-12T00:00:00Z", "title": "업무", "body": "본문", "author": "작성자", "attachments": [], "mask_table_ref": "local://masks/x.json", "contract_version": 2, "scope": "bob", "connector_id": "board", "capture_id": "cross", "revision": 1, "completeness": "complete", "provenance": {}, "source_completion_observed": False})
+            cross_id = task_id("alpha", "99", scope="bob", connector_id="board")
+            cross_task = WorkItem.from_dict({"task_id": cross_id, "source": {"type": "board", "id": "alpha", "external_id": "99", "url": "https://fixture.invalid/task"}, "received_at": "2026-09-12T00:00:00Z", "title": "업무", "body": "본문", "author": "작성자", "attachments": [], "mask_table_ref": "local://masks/x.json", "contract_version": 2, "scope": "bob", "connector_id": "board", "capture_id": "cross", "revision": 1, "completeness": "complete", "provenance": {}, "source_completion_observed": False})
             put_task(cross_task, root=root)
             cross = accept_source_observation(self.bundle(root, cross_payload), root / "inbox")
             self.assertIsNone(ingest_source_observation(cross, root=root, scope="alice", connector_id="board"))

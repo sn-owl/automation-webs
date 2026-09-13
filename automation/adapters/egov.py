@@ -15,11 +15,11 @@ from automation.adapters.gnuboard import (
 from automation.models import AttachmentRef, SourceRef, WorkItem
 
 
-class DongnaeParseError(ValueError):
+class EgovParseError(ValueError):
     pass
 
 
-def parse_dongnae_html(
+def parse_egov_html(
     html: str,
     *,
     source_url: str,
@@ -27,10 +27,10 @@ def parse_dongnae_html(
     connector_id: str | None = None,
 ) -> WorkItem:
     if (scope is None) != (connector_id is None):
-        raise DongnaeParseError("scope and connector_id must be provided together")
+        raise EgovParseError("scope and connector_id must be provided together")
     tree = _parse(html)
     if _find_by_id(tree, "loginForm") is not None or _find_by_id(tree, "view") is None:
-        raise DongnaeParseError("login page")
+        raise EgovParseError("login page")
 
     fields = _table_fields(tree)
     progress = _required_field(fields, "진행구분")
@@ -40,7 +40,7 @@ def parse_dongnae_html(
     from automation.identity import task_id as make_task_id
 
     task_id = make_task_id(
-        "dongnae",
+        "egov",
         external_id,
         scope=scope,
         connector_id=connector_id,
@@ -49,7 +49,7 @@ def parse_dongnae_html(
 
     return WorkItem(
         task_id=task_id,
-        source=SourceRef(type="board", id="dongnae", external_id=external_id, url=source_url),
+        source=SourceRef(type="board", id="egov", external_id=external_id, url=source_url),
         received_at=_posted_at(_required_field(fields, "등록일")),
         title=_title(tree),
         body=f"작업구분: {work_type}\n진행구분: {progress}\n\n{body}",
@@ -60,10 +60,10 @@ def parse_dongnae_html(
         scope=scope or "legacy",
         connector_id=connector_id or "legacy",
         capture_id=task_id,
-        provenance={"adapter": "dongnae", "source_url": source_url} if extended else None,
+        provenance={"adapter": "egov", "source_url": source_url} if extended else None,
         # C1: scope/connector presence is a capture channel, not a source
         # completion signal. Do not claim observation without a parsed marker.
-        # ponytail: dongnae's 진행구분 could feed a real marker once its
+        # ponytail: egov's 진행구분 could feed a real marker once its
         # completion vocabulary is confirmed (contract decision).
         source_completion_observed=False,
     )
@@ -74,7 +74,7 @@ def _title(tree: _Node) -> str:
         title = _clean_inline(cell.text_content())
         if title:
             return title
-    raise DongnaeParseError("missing title")
+    raise EgovParseError("missing title")
 
 
 def _table_fields(tree: _Node) -> dict[str, str]:
@@ -98,7 +98,7 @@ def _label(text: str) -> str:
 def _required_field(fields: dict[str, str], name: str) -> str:
     value = fields.get(name, "")
     if not value.strip():
-        raise DongnaeParseError(f"missing {name}")
+        raise EgovParseError(f"missing {name}")
     return value
 
 
@@ -109,7 +109,7 @@ def _body(tree: _Node) -> str:
             body = _clean_body(cells[0].text_content())
             if body:
                 return body
-    raise DongnaeParseError("missing body")
+    raise EgovParseError("missing body")
 
 
 def _attachments(tree: _Node, external_id: str) -> list[AttachmentRef]:
@@ -130,13 +130,13 @@ def _attachments(tree: _Node, external_id: str) -> list[AttachmentRef]:
         seen.add(key)
         extension = name.rsplit(".", 1)[-1].lower()
         if extension not in _ALLOWED_ATTACHMENT_TYPES:
-            raise DongnaeParseError("unsupported attachment extension")
+            raise EgovParseError("unsupported attachment extension")
         attachments.append(
             AttachmentRef(
                 name=name,
                 type=extension,
                 raw_ref=href,
-                extracted_ref=f"normalized/dongnae/{external_id}/attachments/{name}.json",
+                extracted_ref=f"normalized/egov/{external_id}/attachments/{name}.json",
             )
         )
     return attachments
@@ -145,7 +145,7 @@ def _attachments(tree: _Node, external_id: str) -> list[AttachmentRef]:
 def _posted_at(value: str) -> str:
     match = re.fullmatch(r"(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2})", value.strip())
     if not match:
-        raise DongnaeParseError("missing 등록일")
+        raise EgovParseError("missing 등록일")
     year, month, day, hour, minute = match.groups()
     return f"{year}-{month}-{day}T{hour}:{minute}:00+09:00"
 
@@ -156,4 +156,4 @@ def _external_id(source_url: str) -> str:
         values = query.get(key, [])
         if values and values[0].strip():
             return values[0]
-    raise DongnaeParseError("missing external id")
+    raise EgovParseError("missing external id")

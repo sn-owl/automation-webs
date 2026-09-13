@@ -1,90 +1,144 @@
 {
-  "assessment": {
-    "automation_level": "developable",
-    "confidence": 0.6,
-    "evidence": [
-      "반복 가능한 절차이나 현재 Recipe가 없음",
-      "구현 범위를 사람 검토 후 확정해야 함"
-    ],
-    "risk": "code_diff"
-  },
+  "assessment": null,
   "classification": {
+    "collaboration": [],
     "confidence": 0.68,
     "evidence": [
       "신규 기능 추가 요청으로 읽히는 본문"
     ],
+    "next_action": "담당 소유권과 구현 범위를 확인하세요.",
+    "ownership": "정보 부족",
+    "pattern_match": {},
+    "primary_role": "development",
     "responsibility": "development",
+    "responsibility_scope": "신규 기능 요청 분석",
+    "risk_flags": [
+      "구현 범위 미확정"
+    ],
     "size": "small_dev",
-    "task_type": "feature_dev"
+    "task_type": "feature_dev",
+    "unmatched_aspects": [
+      "담당 소유권",
+      "구현 범위"
+    ]
   },
   "events": [
     {
-      "event_id": "input:a956d72c3606e7c0:discovered",
+      "event_id": "input:2a317989e84aae42:discovered",
       "stage": "input",
       "state": "discovered"
     },
     {
-      "event_id": "dongnae-9001:stored",
+      "event_id": "egov-9001:stored",
       "raw": {
-        "path": "raw/dongnae-9001/page.html",
+        "path": "raw/egov-9001/page.html",
         "sha256": "ab5e5a6de5d4d32c28cbe155a9eaafe050db1cf05385e19f9243ee3fddd0e209",
         "size": 4715
       },
       "stage": "storage",
       "state": "stored",
-      "task_id": "dongnae-9001"
+      "task_id": "egov-9001",
+      "task_version": 1
     },
     {
-      "event_id": "dongnae-9001:files_processed",
+      "event_id": "egov-9001:files_processed",
       "stage": "normalize",
       "state": "files_processed",
-      "task_id": "dongnae-9001"
+      "task_id": "egov-9001",
+      "task_version": 1
     },
     {
-      "event_id": "dongnae-9001:classified",
-      "stage": "classification",
-      "state": "classified",
-      "task_id": "dongnae-9001"
-    },
-    {
-      "assessment": {
-        "automation_level": "developable",
-        "confidence": 0.6,
-        "evidence": [
-          "반복 가능한 절차이나 현재 Recipe가 없음",
-          "구현 범위를 사람 검토 후 확정해야 함"
+      "event_id": "egov-9001:recognized",
+      "recognition": {
+        "artifact_version": "recognition-v1",
+        "attachments": [
+          {
+            "extraction_status": "missing",
+            "name": "ATTACHMENT_001.zip",
+            "raw_sha256": null,
+            "type": "zip"
+          },
+          {
+            "extraction_status": "missing",
+            "name": "ATTACHMENT_002.zip",
+            "raw_sha256": null,
+            "type": "zip"
+          },
+          {
+            "extraction_status": "missing",
+            "name": "ATTACHMENT_003.jpg",
+            "raw_sha256": null,
+            "type": "jpg"
+          },
+          {
+            "extraction_status": "missing",
+            "name": "ATTACHMENT_004.hwpx",
+            "raw_sha256": null,
+            "type": "hwpx"
+          }
         ],
-        "risk": "code_diff"
+        "body_summary": "작업구분: 수정\n진행구분: 접수\n\n버튼 3개로 변경 후 첨부파일을 등록해 주세요.\n\n시설 사진과 면적 정보를 변경해 주세요.",
+        "content_digest": "54411b77cfed2ee89374315a1efd27843024973fade05d1bed1530a423b08721",
+        "source": {
+          "id": "egov",
+          "type": "board"
+        },
+        "task_id": "egov-9001",
+        "title_summary": "문화시설 페이지 구조 변경 요청"
       },
+      "stage": "recognition",
+      "state": "recognized",
+      "task_id": "egov-9001",
+      "task_version": 1
+    },
+    {
       "classification": {
+        "collaboration": [],
         "confidence": 0.68,
         "evidence": [
           "신규 기능 추가 요청으로 읽히는 본문"
         ],
+        "next_action": "담당 소유권과 구현 범위를 확인하세요.",
+        "ownership": "정보 부족",
+        "pattern_match": {},
+        "primary_role": "development",
         "responsibility": "development",
+        "responsibility_scope": "신규 기능 요청 분석",
+        "risk_flags": [
+          "구현 범위 미확정"
+        ],
         "size": "small_dev",
-        "task_type": "feature_dev"
+        "task_type": "feature_dev",
+        "unmatched_aspects": [
+          "담당 소유권",
+          "구현 범위"
+        ]
       },
-      "event_id": "dongnae-9001:hermes_validated",
+      "content_digest": "54411b77cfed2ee89374315a1efd27843024973fade05d1bed1530a423b08721",
+      "event_id": "egov-9001:hermes_classified:54411b77cfed",
+      "operation": "classification",
       "stage": "hermes",
-      "state": "assessed",
-      "task_id": "dongnae-9001"
+      "state": "classified",
+      "task_id": "egov-9001",
+      "task_version": 1
     },
     {
-      "event_id": "dongnae-9001:review_required",
+      "event_id": "egov-9001:review_required",
       "stage": "render",
       "state": "review_required",
-      "task_id": "dongnae-9001"
+      "task_id": "egov-9001",
+      "task_version": 1
     }
   ],
+  "input_check": null,
   "raw": {
-    "path": "raw/dongnae-9001/page.html",
+    "path": "raw/egov-9001/page.html",
     "sha256": "ab5e5a6de5d4d32c28cbe155a9eaafe050db1cf05385e19f9243ee3fddd0e209",
     "size": 4715
   },
-  "route": "needs_hermes",
+  "route": "classification_only",
   "state": "review_required",
   "status": "review_required",
-  "task_id": "dongnae-9001",
-  "work_package": "dongnae-9001"
+  "task_id": "egov-9001",
+  "work_package": "egov-9001"
 }

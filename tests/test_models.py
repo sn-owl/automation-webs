@@ -5,10 +5,10 @@ import unittest
 
 
 SAMPLE_WORK_ITEM = {
-    "task_id": "yeonje-13452",
+    "task_id": "alpha-13452",
     "source": {
         "type": "board",
-        "id": "yeonje",
+        "id": "alpha",
         "external_id": "13452",
         "url": "https://fixture.local/bbs/board.php?wr_id=13452",
     },
@@ -20,11 +20,11 @@ SAMPLE_WORK_ITEM = {
         {
             "name": "무더위쉼터 현황.hwpx",
             "type": "hwpx",
-            "raw_ref": "raw/yeonje/13452/attachments/restarea.hwpx",
-            "extracted_ref": "normalized/yeonje/13452/restarea.json",
+            "raw_ref": "raw/alpha/13452/attachments/restarea.hwpx",
+            "extracted_ref": "normalized/alpha/13452/restarea.json",
         }
     ],
-    "mask_table_ref": "local://masks/yeonje-13452.json",
+    "mask_table_ref": "local://masks/alpha-13452.json",
 }
 
 

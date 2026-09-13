@@ -109,17 +109,17 @@ ROOT=./demo-out/ready
 
 # 수집된 업무와 분류 근거 확인
 python3 taskctl.py list --root $ROOT
-python3 taskctl.py show yeonje-13452 --root $ROOT
+python3 taskctl.py show alpha-13452 --root $ROOT
 
 # ① 승인 없이 실행 시도 → 차단된다
-python3 taskctl.py execute yeonje-13452 --recipe restarea-hwpx-to-xls --root $ROOT
+python3 taskctl.py execute alpha-13452 --recipe restarea-hwpx-to-xls --root $ROOT
 # taskctl failed: execute blocked: task has no recorded approval
 
 # ② 사람이 승인한다 (누가, 왜 승인했는지가 함께 기록된다)
-python3 taskctl.py approve yeonje-13452 --actor "담당자" --reason "요청 확인함" --root $ROOT
+python3 taskctl.py approve alpha-13452 --actor "담당자" --reason "요청 확인함" --root $ROOT
 
 # ③ 승인해도 등록되지 않은 Recipe는 실행되지 않는다
-python3 taskctl.py execute yeonje-13452 --recipe restarea-hwpx-to-xls --root $ROOT
+python3 taskctl.py execute alpha-13452 --recipe restarea-hwpx-to-xls --root $ROOT
 # taskctl failed: unknown recipe id: restarea-hwpx-to-xls
 ```
 

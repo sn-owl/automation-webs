@@ -10,7 +10,7 @@ SCHEMA_PATH = Path(__file__).parents[1] / "schemas" / "decision.schema.json"
 
 BASE = {
     "actor": "alice",
-    "task_id": "yeonje-13452",
+    "task_id": "alpha-13452",
     "task_version": 3,
     "action": "approve",
     "reason": "Matches the reviewed request",

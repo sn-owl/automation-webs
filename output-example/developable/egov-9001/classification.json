@@ -1,0 +1,22 @@
+{
+  "collaboration": [],
+  "confidence": 0.68,
+  "evidence": [
+    "신규 기능 추가 요청으로 읽히는 본문"
+  ],
+  "next_action": "담당 소유권과 구현 범위를 확인하세요.",
+  "ownership": "정보 부족",
+  "pattern_match": {},
+  "primary_role": "development",
+  "responsibility": "development",
+  "responsibility_scope": "신규 기능 요청 분석",
+  "risk_flags": [
+    "구현 범위 미확정"
+  ],
+  "size": "small_dev",
+  "task_type": "feature_dev",
+  "unmatched_aspects": [
+    "담당 소유권",
+    "구현 범위"
+  ]
+}

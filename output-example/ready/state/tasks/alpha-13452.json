@@ -1,7 +1,7 @@
 {
   "attachments": [
     {
-      "extracted_ref": "normalized/yeonje/13452/attachments/SANITIZED_RESTAREA_REQUEST.hwpx.json",
+      "extracted_ref": "normalized/alpha/13452/attachments/SANITIZED_RESTAREA_REQUEST.hwpx.json",
       "name": "SANITIZED_RESTAREA_REQUEST.hwpx",
       "raw_ref": "https://example.invalid/url-004",
       "type": "hwpx"
@@ -9,14 +9,14 @@
   ],
   "author": "DEPARTMENT_001",
   "body": "위치: SANITIZED_TARGET\n\n\n기간: 2026-09-01 ~ 2026-09-30\n\n\n링크: https://example.invalid/url-014\n\n\n\n\n\n※ 첨부물 확인 바랍니다",
-  "mask_table_ref": "local://masks/yeonje-13452.json",
+  "mask_table_ref": "local://masks/alpha-13452.json",
   "received_at": "2026-08-27T10:20:00+09:00",
   "source": {
     "external_id": "13452",
-    "id": "yeonje",
+    "id": "alpha",
     "type": "board",
-    "url": "https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452"
+    "url": "https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452"
   },
-  "task_id": "yeonje-13452",
+  "task_id": "alpha-13452",
   "title": "무더위쉼터 현황 현행화"
 }

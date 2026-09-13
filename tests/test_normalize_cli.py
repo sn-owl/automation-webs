@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).parents[1]
-FIXTURE = ROOT / "fixtures" / "sanitized" / "yeonje-ready.html"
+FIXTURE = ROOT / "fixtures" / "sanitized" / "alpha-ready.html"
 
 
 class NormalizeCliTest(unittest.TestCase):
@@ -23,9 +23,9 @@ class NormalizeCliTest(unittest.TestCase):
                     str(FIXTURE),
                     str(output),
                     "--board-id",
-                    "yeonje",
+                    "alpha",
                     "--source-url",
-                    "https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452",
+                    "https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452",
                 ],
                 cwd=ROOT,
                 text=True,
@@ -36,7 +36,7 @@ class NormalizeCliTest(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             data = json.loads(output.read_text(encoding="utf-8"))
 
-        self.assertEqual(data["task_id"], "yeonje-13452")
+        self.assertEqual(data["task_id"], "alpha-13452")
         self.assertEqual(data["title"], "무더위쉼터 현황 현행화")
         self.assertEqual(data["attachments"][0]["raw_ref"], "https://example.invalid/url-004")
 
@@ -51,9 +51,9 @@ class NormalizeCliTest(unittest.TestCase):
                 str(FIXTURE),
                 str(first),
                 "--board-id",
-                "yeonje",
+                "alpha",
                 "--source-url",
-                "https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452",
+                "https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452",
             ]
 
             first_result = subprocess.run(command, cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

@@ -10,9 +10,9 @@
 
 ## Classification
 
-- Responsibility: content
-- Task type: content_edit
+- Responsibility: design
+- Task type: image_popup
 - Size: simple
-- Confidence: 0.72
+- Confidence: 0.85
 
 Human review is required before any external action.

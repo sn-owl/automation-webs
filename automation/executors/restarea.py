@@ -54,7 +54,7 @@ def _reject_remote_ref(raw_ref: str) -> None:
 
     ``raw_ref`` on a ``run_pipeline``-ingested WorkItem is the attachment href
     copied verbatim from scraped board HTML (``adapters/gnuboard.py`` and
-    ``adapters/dongnae.py`` set ``raw_ref=href`` with no scheme/host check). A
+    ``adapters/egov.py`` set ``raw_ref=href`` with no scheme/host check). A
     UNC path (``\\\\host\\share``) or a URL scheme (``file://``, ``smb://``)
     would make the executor open a network location -- an outbound SMB/HTTP
     fetch and, on Windows, an NTLM credential leak -- so those forms are

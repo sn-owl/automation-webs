@@ -17,13 +17,13 @@ from inbox_runner import process_inbox
 class SourceObservationFlowTest(unittest.TestCase):
     def test_javascript_observations_run_through_real_inbox_and_preserve_task_authority(self) -> None:
         repository_root = Path(__file__).resolve().parents[1]
-        source_url = "https://example.invalid/board.php?bo_table=yeonje&wr_id=42"
+        source_url = "https://example.invalid/board.php?bo_table=alpha&wr_id=42"
         observations = [
             {
                 "observationId": "obs-1-error-20260912t120000000z",
                 "kind": "source_error",
                 "observedAt": "2026-09-12T12:00:00.000Z",
-                "sourceId": "yeonje",
+                "sourceId": "alpha",
                 "sourceUrl": source_url,
                 "code": "http_error",
                 "stage": "fetch",
@@ -35,7 +35,7 @@ class SourceObservationFlowTest(unittest.TestCase):
                 "observationId": "obs-2-recovery-20260912t120100000z",
                 "kind": "source_recovered",
                 "observedAt": "2026-09-12T12:01:00.000Z",
-                "sourceId": "yeonje",
+                "sourceId": "alpha",
                 "sourceUrl": source_url,
                 "priorErrorCode": "http_error",
             },
@@ -43,7 +43,7 @@ class SourceObservationFlowTest(unittest.TestCase):
                 "observationId": "obs-3-completion-20260912t120200000z",
                 "kind": "source_completion_observed",
                 "observedAt": "2026-09-12T12:02:00.000Z",
-                "sourceId": "yeonje",
+                "sourceId": "alpha",
                 "sourceUrl": source_url,
                 "externalId": "42",
             },
@@ -98,11 +98,11 @@ process.stdout.write(JSON.stringify(encoded));
             downloads.mkdir()
             scope = "owner-a"
             connector_id = "chrome-extension"
-            identifier = task_id("yeonje", "42", scope=scope, connector_id=connector_id)
+            identifier = task_id("alpha", "42", scope=scope, connector_id=connector_id)
             task = WorkItem.from_dict(
                 {
                     "task_id": identifier,
-                    "source": {"type": "board", "id": "yeonje", "external_id": "42", "url": "local://fixture/task"},
+                    "source": {"type": "board", "id": "alpha", "external_id": "42", "url": "local://fixture/task"},
                     "received_at": "2026-09-12T00:00:00Z",
                     "title": "업무",
                     "body": "본문",

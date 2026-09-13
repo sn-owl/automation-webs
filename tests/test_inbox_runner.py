@@ -32,7 +32,7 @@ class InboxRunnerTest(unittest.TestCase):
                 seen["scope"] = scope
                 seen["connector_id"] = connector_id
                 self.assertTrue(Path(input_path).parent.joinpath("attachments", "request.hwpx").is_file())
-                return {"status": "review_required", "task_id": "yeonje-13452"}
+                return {"status": "review_required", "task_id": "alpha-13452"}
 
             results = process_inbox(
                 root / "downloads",
@@ -42,14 +42,14 @@ class InboxRunnerTest(unittest.TestCase):
                 pipeline=fake_pipeline,
             )
 
-            self.assertEqual(results, [{"status": "review_required", "task_id": "yeonje-13452"}])
+            self.assertEqual(results, [{"status": "review_required", "task_id": "alpha-13452"}])
             self.assertEqual(seen["input_path"].name, "work_item.json")
             self.assertEqual(seen["output_root"], root / "state")
             self.assertIs(seen["hermes_client"], client)
             self.assertIsNone(seen["scope"])
             self.assertIsNone(seen["connector_id"])
             self.assertFalse(download.exists())
-            self.assertTrue((root / "inbox" / "yeonje-13452-ee983842" / "work_item.json").is_file())
+            self.assertTrue((root / "inbox" / "alpha-13452-ee983842" / "work_item.json").is_file())
 
     def test_a_configured_connection_reaches_every_collected_bundle(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -223,8 +223,8 @@ class InboxRunnerTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp).resolve()
             (root / "downloads").mkdir()
-            identifier = task_id("yeonje", "42", scope="alice", connector_id="board")
-            task = WorkItem.from_dict({"task_id": identifier, "source": {"type": "board", "id": "yeonje", "external_id": "42", "url": "https://fixture.invalid/task"}, "received_at": "2026-09-12T00:00:00Z", "title": "업무", "body": "본문", "author": "작성자", "attachments": [], "mask_table_ref": "local://masks/x.json", "contract_version": 2, "scope": "alice", "connector_id": "board", "capture_id": "capture", "revision": 1, "completeness": "complete", "provenance": {}, "source_completion_observed": False})
+            identifier = task_id("alpha", "42", scope="alice", connector_id="board")
+            task = WorkItem.from_dict({"task_id": identifier, "source": {"type": "board", "id": "alpha", "external_id": "42", "url": "https://fixture.invalid/task"}, "received_at": "2026-09-12T00:00:00Z", "title": "업무", "body": "본문", "author": "작성자", "attachments": [], "mask_table_ref": "local://masks/x.json", "contract_version": 2, "scope": "alice", "connector_id": "board", "capture_id": "capture", "revision": 1, "completeness": "complete", "provenance": {}, "source_completion_observed": False})
             output_root = root / "state"
             put_task(task, root=output_root)
             task_path = output_root / "state" / "tasks" / f"{identifier}.json"
@@ -245,6 +245,7 @@ class InboxRunnerTest(unittest.TestCase):
             downloads.mkdir()
             invalid = SourceObservationBoundaryTest().payload("source_error")
             invalid["code"] = "not safe"
+            invalid["observation_id"] = "aaa-observation"
             SourceObservationBoundaryTest().bundle(downloads, invalid)
             InboxContractTest("test_accepts_complete_bundle_atomically_as_work_item_input")._bundle(downloads)
             results = process_inbox(downloads, root / "inbox", root / "state", scope="alice", connector_id="board", pipeline=lambda *args, **kwargs: {"status": "normal"})
@@ -286,7 +287,9 @@ class InboxRunnerTest(unittest.TestCase):
             root = Path(temp).resolve()
             downloads = root / "downloads"
             downloads.mkdir()
-            SourceObservationBoundaryTest().bundle(downloads, SourceObservationBoundaryTest().payload("source_error"))
+            observation = SourceObservationBoundaryTest().payload("source_error")
+            observation["observation_id"] = "aaa-observation"
+            SourceObservationBoundaryTest().bundle(downloads, observation)
             InboxContractTest("test_accepts_complete_bundle_atomically_as_work_item_input")._bundle(downloads)
             calls: list[Path] = []
 

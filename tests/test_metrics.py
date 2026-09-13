@@ -24,7 +24,7 @@ def make_task(task_id: str, title: str, attachment_type: str | None = None) -> W
             "task_id": task_id,
             "source": {
                 "type": "board",
-                "id": "yeonje",
+                "id": "alpha",
                 "external_id": task_id.rsplit("-", 1)[-1],
                 "url": "https://fixture.local/task",
             },
@@ -49,8 +49,8 @@ class CollectMetricsTest(unittest.TestCase):
         # reach rule_assessed without Hermes, an uncovered one must not be
         # counted as covered just because it was collected.
         with tempfile.TemporaryDirectory() as tmp:
-            put_task(make_task("yeonje-1", "무더위쉼터 현황 현행화", "hwpx"), root=tmp)
-            put_task(make_task("yeonje-2", "이웃작가X상주작가 배너 링크 수정"), root=tmp)
+            put_task(make_task("alpha-1", "무더위쉼터 현황 현행화", "hwpx"), root=tmp)
+            put_task(make_task("alpha-2", "이웃작가X상주작가 배너 링크 수정"), root=tmp)
 
             metrics = collect(tmp)
             self.assertEqual(metrics["tasks"], 2)
@@ -60,11 +60,11 @@ class CollectMetricsTest(unittest.TestCase):
     def test_only_tasks_with_a_recorded_decision_count_as_human_decided(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            put_task(make_task("yeonje-1", "무더위쉼터 현황 현행화", "hwpx"), root=root)
-            put_task(make_task("yeonje-2", "이웃작가X상주작가 배너 링크 수정"), root=root)
+            put_task(make_task("alpha-1", "무더위쉼터 현황 현행화", "hwpx"), root=root)
+            put_task(make_task("alpha-2", "이웃작가X상주작가 배너 링크 수정"), root=root)
             log = EventLog(root / "state" / "events.jsonl")
-            log.append({"event_id": "e1", "type": "decision", "task_id": "yeonje-1"})
-            log.append({"event_id": "e2", "stage": "hermes", "task_id": "yeonje-2"})
+            log.append({"event_id": "e1", "type": "decision", "task_id": "alpha-1"})
+            log.append({"event_id": "e2", "stage": "hermes", "task_id": "alpha-2"})
 
             metrics = collect(root)
             self.assertEqual(metrics["human_decided"], 1)
@@ -91,7 +91,7 @@ class CollectMetricsTest(unittest.TestCase):
         # numbers past the tasks actually present.
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            put_task(make_task("yeonje-1", "이웃작가X상주작가 배너 링크 수정"), root=root)
+            put_task(make_task("alpha-1", "이웃작가X상주작가 배너 링크 수정"), root=root)
             log = EventLog(root / "state" / "events.jsonl")
             log.append({"event_id": "e1", "stage": "hermes", "task_id": "ghost-9"})
             log.append(

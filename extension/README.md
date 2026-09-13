@@ -30,7 +30,7 @@
 
 ```js
 {
-  id: "yeonje",
+  id: "alpha",
   name: "유지보수 게시판",
   listUrl: "https://실제URL/board/list.do?boardId=...",
 

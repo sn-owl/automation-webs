@@ -13,7 +13,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("board_type")
     parser.add_argument("html_path", type=Path)
     parser.add_argument("output_path", type=Path)
-    parser.add_argument("--board-id", help="GnuBoard board id, e.g. yeonje or bsbukgu")
+    parser.add_argument("--board-id", help="GnuBoard board id, e.g. alpha or beta")
     parser.add_argument("--source-url", required=True)
     args = parser.parse_args(argv)
 

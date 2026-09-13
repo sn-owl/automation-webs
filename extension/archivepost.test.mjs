@@ -67,12 +67,12 @@ const { archivePosts, downloadAndWait, publishSourceObservation } = await import
 
 const DETAIL = `
 <section id="bo_v_file"><ul>
-<li><a href="https://x/bbs/download.php?bo_table=yeonje&amp;wr_id=13411&amp;no=0" class="view_file_download">
+<li><a href="https://x/bbs/download.php?bo_table=alpha&amp;wr_id=13411&amp;no=0" class="view_file_download">
 <img><strong>신청서.hwpx</strong></a></li>
 </ul></section>`;
 
 const board = { id: "b1", name: "게시판 A" };
-const post = (id) => ({ link: `https://x/bbs/board.php?bo_table=yeonje&wr_id=${id}`, title: `글 ${id}` });
+const post = (id) => ({ link: `https://x/bbs/board.php?bo_table=alpha&wr_id=${id}`, title: `글 ${id}` });
 const fetchHtml = async () => DETAIL;
 
 function reset() {
@@ -112,7 +112,7 @@ reset();
 let r = await archivePosts(board, [post(1)], fetchHtml);
 assert.equal(r.saved.length, 1, JSON.stringify(r));
 const capture = r.saved[0];
-assert.match(capture, /^yeonje-1-[0-9a-f]{8}$/);
+assert.match(capture, /^alpha-1-[0-9a-f]{8}$/);
 const bundle = `upmuzadong-inbox/${capture}--글-1`;
 assert.deepEqual(filenames(), [
   `${bundle}/page.html`,
@@ -126,7 +126,7 @@ assert.ok(downloads[3].opts.url.startsWith("data:text/plain;charset=utf-8,"));
 
 const manifest = JSON.parse(decodeURIComponent(downloads[2].opts.url.split(",", 2)[1]));
 assert.equal(manifest.capture_id, capture);
-assert.equal(manifest.source.id, "yeonje");
+assert.equal(manifest.source.id, "alpha");
 assert.equal(manifest.source.external_id, "1");
 assert.equal(manifest.attachments[0].path, "attachments/신청서.hwpx");
 
@@ -158,7 +158,7 @@ assert.equal(store[ledgerKey]?.["7"], undefined);
 
 // ── 5. wr_id 없는 링크는 실패, 나머지는 계속 ──────────────
 reset();
-r = await archivePosts(board, [{ link: "https://x/bbs/board.php?bo_table=yeonje" }, post(7)], fetchHtml);
+r = await archivePosts(board, [{ link: "https://x/bbs/board.php?bo_table=alpha" }, post(7)], fetchHtml);
 assert.equal(r.failed.length, 1);
 assert.equal(r.saved.length, 1, "한 건 실패했다고 나머지를 안 받으면 안 된다");
 
@@ -197,11 +197,11 @@ const dnPage = (hit) => `<table class="tb_t2"><tbody class="tb read">
 <tr><th scope="row"><span>작 성 자</span></th><td>홍길동</td>
 <th scope="row"><span>조&nbsp;&nbsp;&nbsp;회</span></th><td>${hit}</td></tr>
 <tr><th scope="row"><span>첨부파일</span></th><td colspan="5"><ul class="attach clearfix"><li>
-<a href="/board/download.dongnae?boardId=BBS_0000275&dataSid=898320&fileSid=379374" title="신청서.hwpx 파일 다운로드">신청서.hwpx</a>
-<span class="button"><a href="/board/download.dongnae?boardId=BBS_0000275&dataSid=898320&fileSid=379374" title="신청서.hwpx 파일 다운로드">다운받기</a></span>
+<a href="/board/download.egov?boardId=BBS_0000275&dataSid=898320&fileSid=379374" title="신청서.hwpx 파일 다운로드">신청서.hwpx</a>
+<span class="button"><a href="/board/download.egov?boardId=BBS_0000275&dataSid=898320&fileSid=379374" title="신청서.hwpx 파일 다운로드">다운받기</a></span>
 </li></ul></td></tr></tbody></table>`;
 const dnBoard = { id: "dn1", name: "eGov 게시판" };
-const dnPost = { link: "https://www.dongnae.go.kr/board/view.dongnae?boardId=BBS_0000275&startPage=1&dataSid=898320" };
+const dnPost = { link: "https://www.egov.go.kr/board/view.egov?boardId=BBS_0000275&startPage=1&dataSid=898320" };
 r = await archivePosts(dnBoard, [dnPost], async () => dnPage(3));
 assert.equal(r.saved.length, 1, JSON.stringify(r));
 assert.match(r.saved[0], /^bbs_0000275-898320-[0-9a-f]{8}$/, r.saved[0]);
@@ -210,11 +210,11 @@ assert.equal(dnFiles[1], `upmuzadong-inbox/${r.saved[0]}--untitled/attachments/�
 // 첨부 URL 은 절대경로로 변환돼야 chrome.downloads 가 받는다
 assert.equal(
   downloads[1].opts.url,
-  "https://www.dongnae.go.kr/board/download.dongnae?boardId=BBS_0000275&dataSid=898320&fileSid=379374",
+  "https://www.egov.go.kr/board/download.egov?boardId=BBS_0000275&dataSid=898320&fileSid=379374",
   downloads[1].opts.url
 );
 const dnManifest = JSON.parse(decodeURIComponent(downloads[2].opts.url.split(",", 2)[1]));
-assert.equal(dnManifest.source.adapter, "dongnae");
+assert.equal(dnManifest.source.adapter, "egov");
 assert.equal(dnManifest.source.id, "bbs_0000275");
 assert.equal(dnManifest.source.external_id, "898320");
 
@@ -232,20 +232,20 @@ assert.equal(r.saved.length, 1, "첨부 교체를 감지 못했다");
 
 reset();
 await publishSourceObservation({
-  observationId: "yeonje-source_recovered-20260912t120000000z",
+  observationId: "alpha-source_recovered-20260912t120000000z",
   kind: "source_recovered",
   observedAt: "2026-09-12T12:00:00.000Z",
-  sourceId: "yeonje",
+  sourceId: "alpha",
   sourceUrl: board.listUrl ?? post(1).link,
   priorErrorCode: "http_error",
 });
 assert.deepEqual(filenames(), [
-  "upmuzadong-inbox/yeonje-source_recovered-20260912t120000000z--source-observation/source_observation.json",
-  "upmuzadong-inbox/yeonje-source_recovered-20260912t120000000z--source-observation/_READY",
+  "upmuzadong-inbox/alpha-source_recovered-20260912t120000000z--source-observation/source_observation.json",
+  "upmuzadong-inbox/alpha-source_recovered-20260912t120000000z--source-observation/_READY",
 ]);
 const observationJson = JSON.parse(decodeURIComponent(downloads[0].opts.url.split(",", 2)[1]));
 assert.equal(observationJson.kind, "source_recovered");
-assert.equal(decodeURIComponent(downloads[1].opts.url.split(",", 2)[1]), "yeonje-source_recovered-20260912t120000000z\n");
+assert.equal(decodeURIComponent(downloads[1].opts.url.split(",", 2)[1]), "alpha-source_recovered-20260912t120000000z\n");
 assert.equal(downloads[0].opts.filename.split("/").length, 3, "observation bundle must be an inbox-root child");
 
 console.log("OK  완료대기 · Ready-last Bundle · hash 멱등 · 부분실패 격리 · eGov 어댑터 · 조회수 무시");

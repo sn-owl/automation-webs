@@ -1,0 +1,23 @@
+{
+  "collaboration": [],
+  "confidence": 0.85,
+  "evidence": [
+    "rule:popup-registration 조건과 일치"
+  ],
+  "next_action": "담당 소유권과 요청 범위를 확인하세요.",
+  "ownership": "정보 부족",
+  "pattern_match": {
+    "rule_ids": [
+      "popup-registration"
+    ]
+  },
+  "primary_role": "design",
+  "responsibility": "design",
+  "responsibility_scope": "규칙이 식별한 업무 영역",
+  "risk_flags": [],
+  "size": "simple",
+  "task_type": "image_popup",
+  "unmatched_aspects": [
+    "담당 소유권"
+  ]
+}

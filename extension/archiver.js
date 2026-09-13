@@ -21,9 +21,11 @@ const KEEP = 300; // 아카이브 기록 보관 개수
 // ── 순수 함수 (테스트 대상) ──────────────────────────────
 
 /** 상세 URL 하나로 게시판 유형을 가른다.
- *  그누보드(board.php?bo_table&wr_id) vs eGov(*.dongnae?boardId&dataSid). */
+ *  그누보드(board.php?bo_table&wr_id) vs eGov(*.egov?boardId&dataSid).
+ *  eGov 판별은 호스트 접미사로 한다. 실제 사이트에 붙일 때는 아래 패턴을 그
+ *  사이트의 도메인으로 바꾼다 — 여기 값은 특정 기관에 묶이지 않은 예시다. */
 function adapterFor(url) {
-  return /\.dongnae\b/.test(String(url)) ? "dongnae" : "gnuboard";
+  return /\.egov\b/.test(String(url)) ? "egov" : "gnuboard";
 }
 
 /** 재다운로드 판단(해시 비교)에서 휘발성 요소를 지운다. page.html 원본은 그대로 저장하고
@@ -33,7 +35,7 @@ function adapterFor(url) {
  *  그대로 해시하면 스캔마다 새 Bundle 이 만들어진다.
  *  ponytail: 조회수 셀만 정규식으로 제거. 마크업이 바뀌면 불필요한 재수집이 늘 뿐 오작동은 아님. */
 export function deliveryContent(html, url) {
-  if (adapterFor(url) !== "dongnae") return html;
+  if (adapterFor(url) !== "egov") return html;
   return String(html).replace(
     /<th[^>]*>\s*<span>\s*조(?:&nbsp;|&#160;|\s)*회\s*<\/span>\s*<\/th>\s*<td>\s*\d+\s*<\/td>/gi,
     ""
@@ -44,7 +46,7 @@ export function deliveryContent(html, url) {
  *  그누보드 wr_id / eGov dataSid. */
 export function externalId(url) {
   const u = String(url);
-  const m = adapterFor(u) === "dongnae"
+  const m = adapterFor(u) === "egov"
     ? u.match(/[?&]dataSid=(\d+)/)
     : u.match(/[?&]wr_id=(\d+)/);
   return (m || [])[1] ?? null;
@@ -54,7 +56,7 @@ export function externalId(url) {
 export function sourceId(url) {
   try {
     const params = new URL(String(url), "https://invalid.local").searchParams;
-    return params.get(adapterFor(url) === "dongnae" ? "boardId" : "bo_table");
+    return params.get(adapterFor(url) === "egov" ? "boardId" : "bo_table");
   } catch {
     return null;
   }
@@ -63,8 +65,8 @@ export function sourceId(url) {
 /** 상세 HTML 에서 첨부 [{url, name}] 를 뽑는다. baseUrl 로 어댑터를 고른다.
  *  DOMParser 를 안 쓴다 — 서비스워커에 없고, 두 마크업 다 실물로 고정 확인됐다. */
 export function extractAttachments(html, baseUrl) {
-  return adapterFor(baseUrl) === "dongnae"
-    ? dongnaeAttachments(html, baseUrl)
+  return adapterFor(baseUrl) === "egov"
+    ? egovAttachments(html, baseUrl)
     : gnuboardAttachments(html);
 }
 
@@ -88,14 +90,14 @@ function gnuboardAttachments(html) {
   return out;
 }
 
-/** eGov: <ul class="attach"> 안 download.dongnae 링크. 같은 fileSid 가
+/** eGov: <ul class="attach"> 안 download.egov 링크. 같은 fileSid 가
  *  파일명 앵커와 "다운받기" 앵커로 두 번 나와서 fileSid 로 중복 제거한다.
  *  href 가 상대경로라 baseUrl 로 절대화한다. 파일명은 title 속성에서 뽑는다:
  *  title="원본파일명.hwpx 파일 다운로드" */
-function dongnaeAttachments(html, baseUrl) {
+function egovAttachments(html, baseUrl) {
   const out = [];
   const seen = new Set();
-  const re = /<a\s[^>]*href="([^"]*download\.dongnae[^"]*)"[^>]*>/gi;
+  const re = /<a\s[^>]*href="([^"]*download\.egov[^"]*)"[^>]*>/gi;
   let m;
   while ((m = re.exec(html)) !== null) {
     let url = unescapeHtml(m[1]);

@@ -79,10 +79,10 @@ def synthetic_hwpx_bytes() -> bytes:
 
 def work_item(attachment_path):
     return WorkItem(
-        task_id="yeonje-13452",
+        task_id="alpha-13452",
         source=SourceRef(
             type="gnuboard",
-            id="yeonje",
+            id="alpha",
             external_id="13452",
             url="https://example.invalid/board/13452",
         ),
@@ -95,10 +95,10 @@ def work_item(attachment_path):
                 name="restarea.hwpx",
                 type="hwpx",
                 raw_ref=str(attachment_path),
-                extracted_ref="normalized/yeonje-13452/restarea.json",
+                extracted_ref="normalized/alpha-13452/restarea.json",
             ),
         ),
-        mask_table_ref="local://masks/yeonje-13452.json",
+        mask_table_ref="local://masks/alpha-13452.json",
     )
 
 
@@ -176,7 +176,7 @@ class ExecuteCommandTest(unittest.TestCase):
             put_task(work_item(source), root=root)
             install_active_recipe(root)
             if approve:
-                run(["approve", "yeonje-13452", "--actor", "r", "--reason", "ok", "--recipe", RECIPE, "--root", str(root)])
+                run(["approve", "alpha-13452", "--actor", "r", "--reason", "ok", "--recipe", RECIPE, "--root", str(root)])
             self.calls = []
             with mock.patch.dict(
                 dispatch.EXECUTOR_DISPATCH,
@@ -197,11 +197,11 @@ class ExecuteCommandTest(unittest.TestCase):
     def test_approved_execution_runs_the_recipe_and_writes_artifacts(self):
         with self.prepared() as root:
             code, out, err = run(
-                ["execute", "yeonje-13452", "--recipe", RECIPE,                  "--root", str(root)]
+                ["execute", "alpha-13452", "--recipe", RECIPE,                  "--root", str(root)]
             )
             self.assertEqual(code, 0, err)
             payload = json.loads(out)
-            self.assertEqual(payload["task_id"], "yeonje-13452")
+            self.assertEqual(payload["task_id"], "alpha-13452")
             self.assertEqual(payload["recipe_id"], RECIPE)
             self.assertEqual(payload["state"], "succeeded")
             self.assertEqual(payload["result_version"], 1)
@@ -216,7 +216,7 @@ class ExecuteCommandTest(unittest.TestCase):
                 NotificationProfile(profile_id="execution", channels=("local",))
             )
             code, _, err = run(
-                ["execute", "yeonje-13452", "--recipe", RECIPE, "--root", str(root)]
+                ["execute", "alpha-13452", "--recipe", RECIPE, "--root", str(root)]
             )
             self.assertEqual(code, 0, err)
 
@@ -230,7 +230,7 @@ class ExecuteCommandTest(unittest.TestCase):
         from automation import execution_store
 
         with self.prepared() as root:
-            run(["execute", "yeonje-13452", "--recipe", RECIPE,                  "--root", str(root)])
+            run(["execute", "alpha-13452", "--recipe", RECIPE,                  "--root", str(root)])
             keys = execution_store.list_execution_keys(root=root)
             self.assertEqual(len(keys), 1)
             stored = execution_store.get_execution(keys[0], root=root)
@@ -239,7 +239,7 @@ class ExecuteCommandTest(unittest.TestCase):
 
     def test_rerunning_the_same_execution_key_does_not_execute_twice(self):
         with self.prepared() as root:
-            argv = ["execute", "yeonje-13452", "--recipe", RECIPE,                     "--root", str(root)]
+            argv = ["execute", "alpha-13452", "--recipe", RECIPE,                     "--root", str(root)]
             first, _, _ = run(argv)
             second, out, err = run(argv)
         self.assertEqual(first, 0)
@@ -251,10 +251,10 @@ class ExecuteCommandTest(unittest.TestCase):
         from automation import execution_store
 
         with self.prepared() as root:
-            first, out, err = run(["execute", "yeonje-13452", "--recipe", RECIPE, "--root", str(root)])
+            first, out, err = run(["execute", "alpha-13452", "--recipe", RECIPE, "--root", str(root)])
             self.assertEqual(first, 0, err)
             initial = json.loads(out)
-            rebuild = ["rebuild", "yeonje-13452", "--recipe", RECIPE,
+            rebuild = ["rebuild", "alpha-13452", "--recipe", RECIPE,
                        "--request-id", "r1", "--actor", "tester", "--reason", "new", "--root", str(root)]
             second, out, err = run(rebuild)
             self.assertEqual(second, 0, err)
@@ -270,7 +270,7 @@ class ExecuteCommandTest(unittest.TestCase):
     def test_rebuild_requires_a_succeeded_initial_result(self):
         with self.prepared() as root:
             code, _, err = run(
-                ["rebuild", "yeonje-13452", "--recipe", RECIPE,
+                ["rebuild", "alpha-13452", "--recipe", RECIPE,
                  "--request-id", "r1", "--actor", "tester", "--reason", "new",
                  "--root", str(root)]
             )
@@ -282,13 +282,13 @@ class ExecuteCommandTest(unittest.TestCase):
         from automation import execution_store
 
         with self.prepared() as root:
-            run(["execute", "yeonje-13452", "--recipe", RECIPE, "--root", str(root)])
-            rebuild = ["rebuild", "yeonje-13452", "--recipe", RECIPE,
+            run(["execute", "alpha-13452", "--recipe", RECIPE, "--root", str(root)])
+            rebuild = ["rebuild", "alpha-13452", "--recipe", RECIPE,
                        "--request-id", "r1", "--actor", "tester", "--reason", "new", "--root", str(root)]
             with mock.patch("automation.execution_service.verify_recipe_output", return_value={"status": "failed", "checks": []}):
                 failed, _, _ = run(rebuild)
             self.assertNotEqual(failed, 0)
-            quarantine = root / "artifacts" / "quarantine" / "yeonje-13452" / "result-2" / "attempt-1"
+            quarantine = root / "artifacts" / "quarantine" / "alpha-13452" / "result-2" / "attempt-1"
             self.assertTrue(quarantine.is_dir())
             succeeded, out, err = run(rebuild)
             self.assertEqual(succeeded, 0, err)
@@ -296,7 +296,7 @@ class ExecuteCommandTest(unittest.TestCase):
             self.assertEqual(payload["result_version"], 2)
             self.assertEqual(payload["attempt"], 2)
             next_code, next_out, next_err = run(
-                ["rebuild", "yeonje-13452", "--recipe", RECIPE, "--request-id", "r2",
+                ["rebuild", "alpha-13452", "--recipe", RECIPE, "--request-id", "r2",
                  "--actor", "tester", "--reason", "next", "--root", str(root)]
             )
             self.assertEqual(next_code, 0, next_err)
@@ -308,7 +308,7 @@ class ExecuteCommandTest(unittest.TestCase):
         # so it cannot be used to forge a fresh execution key and replay.
         with self.prepared() as root:
             code, _, err = run(
-                ["execute", "yeonje-13452", "--recipe", RECIPE,
+                ["execute", "alpha-13452", "--recipe", RECIPE,
                  "--input-hash", "b" * 64, "--root", str(root)]
             )
         self.assertNotEqual(code, 0)
@@ -320,7 +320,7 @@ class ExecuteCommandTest(unittest.TestCase):
             source = root / "restarea.hwpx"
             source.write_bytes(source.read_bytes() + b"changed-after-approval")
             code, _, err = run(
-                ["execute", "yeonje-13452", "--recipe", RECIPE, "--root", str(root)]
+                ["execute", "alpha-13452", "--recipe", RECIPE, "--root", str(root)]
             )
         self.assertNotEqual(code, 0)
         self.assertIn("approval does not match", err)
@@ -335,14 +335,14 @@ class ExecuteCommandTest(unittest.TestCase):
 
         def v2(src, *, title, body, revision):
             return WorkItem.from_dict({
-                "task_id": "yeonje-13452",
-                "source": {"type": "gnuboard", "id": "yeonje", "external_id": "13452",
+                "task_id": "alpha-13452",
+                "source": {"type": "gnuboard", "id": "alpha", "external_id": "13452",
                            "url": "https://example.invalid/board/13452"},
                 "received_at": "2026-08-31T00:00:00+00:00", "title": title, "body": body,
                 "author": "PERSON_001",
                 "attachments": [{"name": "restarea.hwpx", "type": "hwpx", "raw_ref": str(src),
-                                 "extracted_ref": "normalized/yeonje-13452/restarea.json"}],
-                "mask_table_ref": "local://masks/yeonje-13452.json", "contract_version": 2,
+                                 "extracted_ref": "normalized/alpha-13452/restarea.json"}],
+                "mask_table_ref": "local://masks/alpha-13452.json", "contract_version": 2,
                 "scope": "public", "connector_id": "c1", "capture_id": "gnuboard-13452-abc",
                 "revision": revision, "completeness": "complete",
                 "provenance": {"policy_version": "1"}, "source_completion_observed": False,
@@ -354,7 +354,7 @@ class ExecuteCommandTest(unittest.TestCase):
             source.write_bytes(synthetic_hwpx_bytes())
             put_task(v2(source, title="원본 제목", body="첨부파일을 변환합니다.", revision=1), root=root)
             install_active_recipe(root)
-            run(["approve", "yeonje-13452", "--actor", "r", "--reason", "ok", "--recipe", RECIPE, "--root", str(root)])
+            run(["approve", "alpha-13452", "--actor", "r", "--reason", "ok", "--recipe", RECIPE, "--root", str(root)])
             put_task(v2(source, title="바뀐 제목", body="완전히 다른 본문", revision=2), root=root)
             calls = []
             with mock.patch.dict(
@@ -362,7 +362,7 @@ class ExecuteCommandTest(unittest.TestCase):
             ), mock.patch.object(execution_service, "verify_recipe_output", return_value={
                 "verification_version": "x", "status": "passed", "checks": [],
                 "handoff": {"required": True, "status": "pending"}}):
-                code, _, err = run(["execute", "yeonje-13452", "--recipe", RECIPE, "--root", str(root)])
+                code, _, err = run(["execute", "alpha-13452", "--recipe", RECIPE, "--root", str(root)])
         self.assertNotEqual(code, 0)
         self.assertIn("no recorded approval", err)
         self.assertEqual(calls, [])
@@ -370,7 +370,7 @@ class ExecuteCommandTest(unittest.TestCase):
     def test_execution_without_approval_never_reaches_the_executor(self):
         with self.prepared(approve=False) as root:
             code, _, err = run(
-                ["execute", "yeonje-13452", "--recipe", RECIPE,                  "--root", str(root)]
+                ["execute", "alpha-13452", "--recipe", RECIPE,                  "--root", str(root)]
             )
         self.assertNotEqual(code, 0)
         self.assertIn("no recorded approval", err)
@@ -378,9 +378,9 @@ class ExecuteCommandTest(unittest.TestCase):
 
     def test_revoked_approval_never_reaches_the_executor(self):
         with self.prepared() as root:
-            run(["defer", "yeonje-13452", "--actor", "r", "--reason", "미룸", "--root", str(root)])
+            run(["defer", "alpha-13452", "--actor", "r", "--reason", "미룸", "--root", str(root)])
             code, _, err = run(
-                ["execute", "yeonje-13452", "--recipe", RECIPE,                  "--root", str(root)]
+                ["execute", "alpha-13452", "--recipe", RECIPE,                  "--root", str(root)]
             )
         self.assertNotEqual(code, 0)
         self.assertEqual(self.calls, [])
@@ -388,7 +388,7 @@ class ExecuteCommandTest(unittest.TestCase):
     def test_unregistered_recipe_never_reaches_the_executor(self):
         with self.prepared() as root:
             code, _, err = run(
-                ["execute", "yeonje-13452", "--recipe", "not-registered",
+                ["execute", "alpha-13452", "--recipe", "not-registered",
                  "--input-hash", "a" * 64, "--root", str(root)]
             )
         self.assertNotEqual(code, 0)
@@ -399,7 +399,7 @@ class ExecuteCommandTest(unittest.TestCase):
     def test_revoke_between_final_validation_and_dispatch_blocks_executor(self):
         with self.prepared() as root:
             def revoke_during_claim_validation(recipe):
-                run(["defer", "yeonje-13452", "--actor", "r", "--reason", "revoked", "--root", str(root)])
+                run(["defer", "alpha-13452", "--actor", "r", "--reason", "revoked", "--root", str(root)])
 
             with mock.patch.object(
                 execution_service.dispatch_core,
@@ -407,7 +407,7 @@ class ExecuteCommandTest(unittest.TestCase):
                 side_effect=revoke_during_claim_validation,
             ):
                 code, _, error = run(
-                    ["execute", "yeonje-13452", "--recipe", RECIPE, "--root", str(root)]
+                    ["execute", "alpha-13452", "--recipe", RECIPE, "--root", str(root)]
                 )
             recorded = events(root)
             self.assertTrue(
@@ -422,12 +422,12 @@ class ExecuteCommandTest(unittest.TestCase):
 
         with self.prepared() as root:
             def revoke_then_fail(*args, **kwargs):
-                run(["defer", "yeonje-13452", "--actor", "r", "--reason", "after claim", "--root", str(root)])
+                run(["defer", "alpha-13452", "--actor", "r", "--reason", "after claim", "--root", str(root)])
                 raise DispatchError("claimed executor failure")
 
             with mock.patch.object(execution_service, "dispatch_recipe", side_effect=revoke_then_fail):
                 code, _, error = run(
-                    ["execute", "yeonje-13452", "--recipe", RECIPE, "--root", str(root)]
+                    ["execute", "alpha-13452", "--recipe", RECIPE, "--root", str(root)]
                 )
             recorded = [event for event in events(root) if event.get("type") == "execution"]
             claim_events = [event for event in events(root) if event.get("type") == "execution_claim"]
@@ -438,11 +438,11 @@ class ExecuteCommandTest(unittest.TestCase):
         self.assertEqual(self.calls, [])
     def test_events_record_the_execution_lifecycle(self):
         with self.prepared() as root:
-            run(["execute", "yeonje-13452", "--recipe", RECIPE,                  "--root", str(root)])
+            run(["execute", "alpha-13452", "--recipe", RECIPE,                  "--root", str(root)])
             recorded = [event for event in events(root) if event.get("type") == "execution"]
         self.assertTrue(recorded)
         self.assertEqual(recorded[-1]["state"], "succeeded")
-        self.assertEqual(recorded[-1]["task_id"], "yeonje-13452")
+        self.assertEqual(recorded[-1]["task_id"], "alpha-13452")
 
     def test_executor_failure_is_recorded_as_failed_without_detail(self):
         from automation import dispatch
@@ -456,12 +456,12 @@ class ExecuteCommandTest(unittest.TestCase):
             source.write_bytes(synthetic_hwpx_bytes())
             put_task(work_item(source), root=root)
             install_active_recipe(root)
-            run(["approve", "yeonje-13452", "--actor", "r", "--reason", "ok", "--recipe", RECIPE, "--root", str(root)])
+            run(["approve", "alpha-13452", "--actor", "r", "--reason", "ok", "--recipe", RECIPE, "--root", str(root)])
             with mock.patch.dict(
                 dispatch.EXECUTOR_DISPATCH, {"restarea-converter": explode}, clear=False
             ):
                 code, _, err = run(
-                    ["execute", "yeonje-13452", "--recipe", RECIPE,                      "--root", str(root)]
+                    ["execute", "alpha-13452", "--recipe", RECIPE,                      "--root", str(root)]
                 )
             from automation import execution_store
 
@@ -485,7 +485,7 @@ class ExecuteCommandTest(unittest.TestCase):
             raise RuntimeError("transient")
 
         with self.prepared() as root:
-            argv = ["execute", "yeonje-13452", "--recipe", RECIPE, "--root", str(root)]
+            argv = ["execute", "alpha-13452", "--recipe", RECIPE, "--root", str(root)]
             with mock.patch.dict(
                 dispatch.EXECUTOR_DISPATCH, {"restarea-converter": explode}, clear=False
             ):
@@ -505,7 +505,7 @@ class ExecuteCommandTest(unittest.TestCase):
         from automation import execution_store
 
         with self.prepared() as root:
-            argv = ["execute", "yeonje-13452", "--recipe", RECIPE, "--root", str(root)]
+            argv = ["execute", "alpha-13452", "--recipe", RECIPE, "--root", str(root)]
             run(argv)
             second, _, err = run(argv)
             stored = execution_store.get_execution(
@@ -528,17 +528,17 @@ class ExecuteCommandTest(unittest.TestCase):
             raise RuntimeError("died after writing")
 
         with self.prepared() as root:
-            argv = ["execute", "yeonje-13452", "--recipe", RECIPE, "--root", str(root)]
+            argv = ["execute", "alpha-13452", "--recipe", RECIPE, "--root", str(root)]
             with mock.patch.dict(
                 dispatch.EXECUTOR_DISPATCH, {"restarea-converter": half_written}, clear=False
             ):
                 run(argv)
             code, out, err = run(argv)
 
-            normal_root = root / "artifacts" / "yeonje-13452" / "result-1"
+            normal_root = root / "artifacts" / "alpha-13452" / "result-1"
             attempts = sorted(path.name for path in normal_root.iterdir())
             partial_kept = (
-                root / "artifacts" / "quarantine" / "yeonje-13452" / "result-1" / "attempt-1" / "partial.xls"
+                root / "artifacts" / "quarantine" / "alpha-13452" / "result-1" / "attempt-1" / "partial.xls"
             ).is_file()
             good = Path(json.loads(out)["artifacts"][0]["path"])
 
@@ -554,7 +554,7 @@ class ExecuteCommandTest(unittest.TestCase):
             raise RuntimeError("transient")
 
         with self.prepared() as root:
-            argv = ["execute", "yeonje-13452", "--recipe", RECIPE, "--root", str(root)]
+            argv = ["execute", "alpha-13452", "--recipe", RECIPE, "--root", str(root)]
             with mock.patch.dict(
                 dispatch.EXECUTOR_DISPATCH, {"restarea-converter": explode}, clear=False
             ):
@@ -574,13 +574,13 @@ class ExecuteCommandTest(unittest.TestCase):
                 side_effect=RuntimeError("private verifier detail"),
             ):
                 code, _, error = run(
-                    ["execute", "yeonje-13452", "--recipe", RECIPE, "--root", str(root)]
+                    ["execute", "alpha-13452", "--recipe", RECIPE, "--root", str(root)]
                 )
             quarantine = (
                 root
                 / "artifacts"
                 / "quarantine"
-                / "yeonje-13452"
+                / "alpha-13452"
                 / "result-1"
                 / "attempt-1"
             )
@@ -597,7 +597,7 @@ class ExecuteCommandTest(unittest.TestCase):
 
     def test_verification_failure_retry_can_be_confirmed(self):
         with self.prepared() as root:
-            argv = ["execute", "yeonje-13452", "--recipe", RECIPE, "--root", str(root)]
+            argv = ["execute", "alpha-13452", "--recipe", RECIPE, "--root", str(root)]
             with mock.patch.object(execution_service, "verify_recipe_output", return_value={
                 "status": "failed", "checks": [],
                 "handoff": {"required": True, "status": "pending"},
@@ -608,7 +608,7 @@ class ExecuteCommandTest(unittest.TestCase):
             self.assertEqual(retry, 0, err)
             key = json.loads(out)["execution_key"]
             confirmed, _, err = run([
-                "confirm", "yeonje-13452", "--execution-key", key, "--task-version", "1",
+                "confirm", "alpha-13452", "--execution-key", key, "--task-version", "1",
                 "--actor", "reviewer", "--reason", "checked", "--root", str(root),
             ])
             self.assertEqual(confirmed, 0, err)
@@ -621,7 +621,7 @@ class ExecuteCommandTest(unittest.TestCase):
     def test_artifacts_land_under_the_state_root(self):
         with self.prepared() as root:
             code, out, _ = run(
-                ["execute", "yeonje-13452", "--recipe", RECIPE,                  "--root", str(root)]
+                ["execute", "alpha-13452", "--recipe", RECIPE,                  "--root", str(root)]
             )
             self.assertEqual(code, 0)
             payload = json.loads(out)

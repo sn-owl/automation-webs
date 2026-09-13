@@ -22,7 +22,7 @@ class InboxContractTest(unittest.TestCase):
             '</a></section></article>'
         ).encode()
         page_hash = hashlib.sha256(page).hexdigest()
-        capture_id = capture_id or f"yeonje-13452-{page_hash[:8]}"
+        capture_id = capture_id or f"alpha-13452-{page_hash[:8]}"
         bundle = root / capture_id
         (bundle / "attachments").mkdir(parents=True)
         (bundle / "page.html").write_bytes(page)
@@ -32,10 +32,10 @@ class InboxContractTest(unittest.TestCase):
             "capture_id": capture_id,
             "source": {
                 "type": "board",
-                "id": "yeonje",
+                "id": "alpha",
                 "adapter": "gnuboard",
                 "external_id": "13452",
-                "url": "https://example.test/board.php?bo_table=yeonje&wr_id=13452",
+                "url": "https://example.test/board.php?bo_table=alpha&wr_id=13452",
             },
             "captured_at": "2026-09-01T10:30:00+09:00",
             "page": {"path": "page.html", "sha256": page_hash},
@@ -64,7 +64,7 @@ class InboxContractTest(unittest.TestCase):
             bundle = accepted.parent
             self.assertTrue(accepted.is_file())
             item = WorkItem.from_dict(json.loads(accepted.read_text(encoding="utf-8")))
-            self.assertEqual(item.task_id, "yeonje-13452")
+            self.assertEqual(item.task_id, "alpha-13452")
             self.assertEqual(item.attachments[0].raw_ref, "attachments/request.hwpx")
             self.assertEqual(item.attachments[0].extracted_ref, "attachments/request.hwpx")
             self.assertTrue((bundle / "_READY").is_file())
@@ -223,7 +223,7 @@ class InboxContractTest(unittest.TestCase):
                     manifest["schema_version"] = True
                 else:
                     manifest["source"]["external_id"] = "999"
-                    new_id = f"yeonje-999-{manifest['page']['sha256'][:8]}"
+                    new_id = f"alpha-999-{manifest['page']['sha256'][:8]}"
                     manifest["capture_id"] = new_id
                     download = download.rename(download.parent / new_id)
                     (download / "_READY").write_text(new_id + "\n", encoding="utf-8")
@@ -244,10 +244,10 @@ class InboxContractTest(unittest.TestCase):
                 raise
             self.assertIsNone(accept_completed_download(self._bundle(root / "downloads"), symlink_root / "inbox"))
 
-    def test_normalizes_dongnae_data_sid_into_work_item(self):
+    def test_normalizes_egov_data_sid_into_work_item(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp).resolve()
-            page = (Path(__file__).parents[1] / "fixtures" / "sanitized" / "dongnae-developable.html").read_bytes()
+            page = (Path(__file__).parents[1] / "fixtures" / "sanitized" / "egov-developable.html").read_bytes()
             page_hash = hashlib.sha256(page).hexdigest()
             capture_id = f"bbs_0000275-9001-{page_hash[:8]}"
             bundle = root / "downloads" / capture_id
@@ -266,9 +266,9 @@ class InboxContractTest(unittest.TestCase):
                 "source": {
                     "type": "board",
                     "id": "bbs_0000275",
-                    "adapter": "dongnae",
+                    "adapter": "egov",
                     "external_id": "9001",
-                    "url": "https://www.dongnae.go.kr/board/view.dongnae?boardId=BBS_0000275&dataSid=9001",
+                    "url": "https://www.egov.go.kr/board/view.egov?boardId=BBS_0000275&dataSid=9001",
                 },
                 "captured_at": "2026-09-01T10:30:00+09:00",
                 "page": {"path": "page.html", "sha256": page_hash},
@@ -278,7 +278,7 @@ class InboxContractTest(unittest.TestCase):
             (bundle / "_READY").write_text(capture_id + "\n", encoding="utf-8")
             accepted = accept_completed_download(bundle, root / "inbox")
             item = WorkItem.from_dict(json.loads(accepted.read_text(encoding="utf-8")))
-            self.assertEqual(item.task_id, "dongnae-9001")
+            self.assertEqual(item.task_id, "egov-9001")
             self.assertEqual(item.source.external_id, "9001")
             self.assertEqual(item.source.url, manifest["source"]["url"])
     def test_maps_archiver_sanitized_attachment_name_to_local_file(self):
@@ -290,7 +290,7 @@ class InboxContractTest(unittest.TestCase):
             manifest_path = download / "manifest.json"
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
             page_hash = hashlib.sha256(page.encode()).hexdigest()
-            new_id = f"yeonje-13452-{page_hash[:8]}"
+            new_id = f"alpha-13452-{page_hash[:8]}"
             download = download.rename(download.parent / new_id)
             attachment = download / "attachments" / "request.hwpx"
             attachment.rename(download / "attachments" / "request_v2.hwpx")

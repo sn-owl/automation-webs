@@ -34,20 +34,20 @@ from automation.rules import classify_with_rules, load_rules
 FIXTURE_DIR = Path(__file__).parents[1] / "fixtures" / "sanitized"
 
 # fixtures/sanitized/manifest.json carries file, source_type and scenario,
-# but not the board_id / source URL the gnuboard and dongnae adapters
+# but not the board_id / source URL the gnuboard and egov adapters
 # require -- same fixture set and values tests/test_adapter_registry.py
 # already uses for these three sanitized files.
 _FIXTURE_SOURCES: dict[str, dict[str, str]] = {
-    "yeonje-ready.html": {
-        "board_id": "yeonje",
-        "url": "https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452",
+    "alpha-ready.html": {
+        "board_id": "alpha",
+        "url": "https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452",
     },
-    "bsbukgu-manual.html": {
-        "board_id": "bsbukgu",
-        "url": "https://fixture.local/bbs/board.php?bo_table=bsbukgu&wr_id=2048",
+    "beta-manual.html": {
+        "board_id": "beta",
+        "url": "https://fixture.local/bbs/board.php?bo_table=beta&wr_id=2048",
     },
-    "dongnae-developable.html": {
-        "url": "https://fixture.local/dongnae/board/view.sko?nttId=9001",
+    "egov-developable.html": {
+        "url": "https://fixture.local/egov/board/view.sko?nttId=9001",
     },
 }
 

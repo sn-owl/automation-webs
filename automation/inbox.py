@@ -23,7 +23,7 @@ _MANIFEST = "manifest.json"
 _WORK_ITEM = "work_item.json"
 _CAPTURE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
-_ADAPTERS = frozenset(("gnuboard", "dongnae"))
+_ADAPTERS = frozenset(("gnuboard", "egov"))
 
 
 _OBSERVATION = "source_observation.json"
@@ -168,7 +168,7 @@ def ingest_source_observation(accepted_path: Path, *, root: Path, scope: str, co
         source = payload["source"]
         task = None
         if payload["kind"] == "source_completion_observed":
-            source_key = source["id"] if source["adapter"] == "gnuboard" else "dongnae"
+            source_key = source["id"] if source["adapter"] == "gnuboard" else "egov"
             task = get_task(task_id(source_key, payload["external_id"], scope=scope, connector_id=connector_id), root=root)
             if (task.scope, task.connector_id, task.source.type, task.source.id, task.source.external_id) != (scope, connector_id, source["type"], source_key, payload["external_id"]):
                 return None
@@ -445,13 +445,13 @@ def _validate_bundle(bundle: Path, *, capture_id: str | None = None) -> tuple[st
             expected_task_id = (
                 f"{source['id']}-{source['external_id']}"
                 if source["adapter"] == "gnuboard"
-                else f"dongnae-{source['external_id']}"
+                else f"egov-{source['external_id']}"
             )
         else:
             from automation.identity import task_id as make_task_id
 
             expected_task_id = make_task_id(
-                source["id"] if source["adapter"] == "gnuboard" else "dongnae",
+                source["id"] if source["adapter"] == "gnuboard" else "egov",
                 source["external_id"],
                 scope=scope,
                 connector_id=connector_id,
@@ -516,7 +516,7 @@ def _url_board_id(url: str, adapter: str) -> str | None:
 
 
 def _normalizer_url(url: str, adapter: str, external_id: str) -> str:
-    if adapter != "dongnae":
+    if adapter != "egov":
         return url
     query = _url_query(url)
     if any(query.get(key) for key in ("nttId", "wr_id", "id")):

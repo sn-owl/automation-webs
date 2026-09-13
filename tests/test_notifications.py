@@ -9,7 +9,7 @@ from automation.notification_store import NotificationProfile, NotificationStore
 
 def card(**overrides):
     values = {
-        "task_id": "yeonje-13452",
+        "task_id": "alpha-13452",
         "task_version": 1,
         "proposal": "무더위쉼터 현황 현행화",
         "assessment": "ready",
@@ -30,10 +30,10 @@ class RenderNotificationTest(unittest.TestCase):
     def test_renders_only_c7_fields_and_actions(self):
         notifications = self.module()
         text = notifications.render_notification(
-            card(), event="classification_review", local_reference="state/tasks/yeonje-13452.json"
+            card(), event="classification_review", local_reference="state/tasks/alpha-13452.json"
         )
         self.assertIn("event: classification\\_review", text)
-        self.assertIn("local\\_reference: state/tasks/yeonje\\-13452\\.json", text)
+        self.assertIn("local\\_reference: state/tasks/alpha\\-13452\\.json", text)
         self.assertIn("task\\_name: 무더위쉼터 현황 현행화", text)
         self.assertIn("reason: ready", text)
         self.assertIn("next\\_action: 산출물 1건 생성", text)
@@ -56,7 +56,7 @@ class RenderNotificationTest(unittest.TestCase):
     def test_actions_use_the_task_contract_not_hermes_approve(self):
         notifications = self.module()
         text = notifications.render_notification(
-            card(), event="classification_review", local_reference="state/tasks/yeonje-13452.json"
+            card(), event="classification_review", local_reference="state/tasks/alpha-13452.json"
         )
         self.assertIn("/task approve", text)
         self.assertNotIn("\n/approve", text)

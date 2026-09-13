@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { analyze } from "./analyzer.js";
 
 const patterns = ["완료"];
-const original = (id, title) => ({ link: `https://example.invalid/bbs/board.php?bo_table=yeonje&wr_id=${id}`, title });
+const original = (id, title) => ({ link: `https://example.invalid/bbs/board.php?bo_table=alpha&wr_id=${id}`, title });
 
 let result = analyze([original(1, "처리 요청")], patterns, {});
 assert.equal(result.completedPosts.length, 0, "a disappeared reply must not imply completion");

@@ -8,7 +8,7 @@ from automation.message_cards import TaskMessageCard, render_task_message
 
 
 BASE = {
-    "task_id": "yeonje-13452",
+    "task_id": "alpha-13452",
     "task_version": 3,
     "proposal": "Prepare the reviewed artifact",
     "assessment": "Ready for a human decision",
@@ -25,7 +25,7 @@ class TaskMessageCardTest(unittest.TestCase):
         self.assertTrue(dataclasses.is_dataclass(card))
         with self.assertRaises(dataclasses.FrozenInstanceError):
             card.task_id = "other-task"
-        self.assertEqual(card.task_id, "yeonje-13452")
+        self.assertEqual(card.task_id, "alpha-13452")
         self.assertEqual(card.task_version, 3)
         self.assertEqual(card.evidence, BASE["evidence"])
         self.assertEqual(card.available_actions, ("approve", "reject", "modify", "defer"))
@@ -68,10 +68,10 @@ class TaskMessageCardTest(unittest.TestCase):
         self.assertEqual(
             [line for line in rendered.splitlines() if line.startswith("/task ")],
             [
-                "/task approve yeonje-13452",
-                "/task reject yeonje-13452",
-                "/task modify yeonje-13452",
-                "/task defer yeonje-13452",
+                "/task approve alpha-13452",
+                "/task reject alpha-13452",
+                "/task modify alpha-13452",
+                "/task defer alpha-13452",
             ],
         )
         self.assertNotIn("/approve", rendered)
@@ -85,7 +85,7 @@ class TaskMessageCardTest(unittest.TestCase):
         self.assertIn("task_name: Prepare the reviewed artifact", first)
         self.assertIn("reason: Ready for a human decision", first)
         self.assertIn("next_action: Creates a local artifact only", first)
-        self.assertIn("/task approve yeonje-13452", first)
+        self.assertIn("/task approve alpha-13452", first)
         self.assertNotIn("version:", first)
         self.assertNotIn("evidence:", first)
         self.assertNotIn("risk:", first)

@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).parents[1]
 SCRIPT = ROOT / "hermes" / "scripts" / "run-pipeline.py"
-FIXTURE = ROOT / "fixtures" / "sanitized" / "yeonje-ready.html"
+FIXTURE = ROOT / "fixtures" / "sanitized" / "alpha-ready.html"
 
 
 def run(args, **kwargs):
@@ -53,7 +53,7 @@ class HermesCronScriptTest(unittest.TestCase):
         # A task that stops at a safety boundary is an operational signal.
         with tempfile.TemporaryDirectory() as directory:
             result = run(
-                [str(ROOT / "fixtures" / "sanitized" / "dongnae-developable.html"),
+                [str(ROOT / "fixtures" / "sanitized" / "egov-developable.html"),
                  "--output-root", directory]
             )
         self.assertNotEqual(result.returncode, 0)

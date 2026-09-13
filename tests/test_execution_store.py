@@ -14,7 +14,7 @@ class ExecutionStoreTest(unittest.TestCase):
         return execution_store
 
     def request(self, input_hash="a" * 64):
-        return ExecutionRequest.create("yeonje-13452", "restarea-hwpx-to-xls", input_hash)
+        return ExecutionRequest.create("alpha-13452", "restarea-hwpx-to-xls", input_hash)
 
     # -- R04: a failed attempt is retryable, a succeeded one is not ----
 
@@ -70,7 +70,7 @@ class ExecutionStoreTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             failed = self.failed(store, directory)
             retry = ExecutionRequest.create(
-                "yeonje-13452", "restarea-hwpx-to-xls", "a" * 64, attempt=2
+                "alpha-13452", "restarea-hwpx-to-xls", "a" * 64, attempt=2
             )
 
             store.reserve_execution(retry, root=directory)
@@ -86,7 +86,7 @@ class ExecutionStoreTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             self.failed(store, directory)
             leap = ExecutionRequest.create(
-                "yeonje-13452", "restarea-hwpx-to-xls", "a" * 64, attempt=5
+                "alpha-13452", "restarea-hwpx-to-xls", "a" * 64, attempt=5
             )
 
             with self.assertRaises(store.ExecutionAlreadyReservedError):
@@ -101,7 +101,7 @@ class ExecutionStoreTest(unittest.TestCase):
                 request = request.transition(state, approval=approval)
                 store.put_execution(request, root=directory)
             retry = ExecutionRequest.create(
-                "yeonje-13452", "restarea-hwpx-to-xls", "a" * 64, attempt=2
+                "alpha-13452", "restarea-hwpx-to-xls", "a" * 64, attempt=2
             )
 
             with self.assertRaises(store.ExecutionAlreadyReservedError):
@@ -112,7 +112,7 @@ class ExecutionStoreTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             failed = self.failed(store, directory)
             retry = ExecutionRequest.create(
-                "yeonje-13452", "restarea-hwpx-to-xls", "a" * 64, attempt=2
+                "alpha-13452", "restarea-hwpx-to-xls", "a" * 64, attempt=2
             )
             with mock.patch.object(store.os, "open", side_effect=OSError("disk failure")):
                 with self.assertRaises(OSError):
@@ -192,35 +192,35 @@ class ExecutionStoreTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             initial_key = self.request().execution_key
             first, duplicate = store.reserve_result_version(
-                "yeonje-13452", execution_key=initial_key, root=directory
+                "alpha-13452", execution_key=initial_key, root=directory
             )
             self.assertEqual((first, duplicate), (1, False))
             key = ExecutionRequest.create(
-                "yeonje-13452", "restarea-hwpx-to-xls", "a" * 64,
+                "alpha-13452", "restarea-hwpx-to-xls", "a" * 64,
                 result_version=2, rebuild_request_id="r1",
             ).execution_key
             second, duplicate = store.reserve_result_version(
-                "yeonje-13452", rebuild_request_id="r1", execution_key=key, root=directory
+                "alpha-13452", rebuild_request_id="r1", execution_key=key, root=directory
             )
             self.assertEqual((second, duplicate), (2, False))
             self.assertEqual(
                 store.reserve_result_version(
-                    "yeonje-13452", rebuild_request_id="r1", execution_key=key, root=directory
+                    "alpha-13452", rebuild_request_id="r1", execution_key=key, root=directory
                 ),
                 (2, True),
             )
             with self.assertRaises(store.ExecutionAlreadyReservedError):
                 store.reserve_result_version(
-                    "yeonje-13452", rebuild_request_id="r1", execution_key="different", root=directory
+                    "alpha-13452", rebuild_request_id="r1", execution_key="different", root=directory
                 )
             third, duplicate = store.reserve_result_version(
-                "yeonje-13452", rebuild_request_id="r2", execution_key="other", root=directory
+                "alpha-13452", rebuild_request_id="r2", execution_key="other", root=directory
             )
             self.assertEqual((third, duplicate), (3, False))
     def test_result_registry_rejects_invalid_next_and_duplicate_versions(self):
         store = self.store()
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "state" / "result_versions" / "yeonje-13452.json"
+            path = Path(directory) / "state" / "result_versions" / "alpha-13452.json"
             path.parent.mkdir(parents=True)
             key = self.request().execution_key
             path.write_text(json.dumps({
@@ -228,7 +228,7 @@ class ExecutionStoreTest(unittest.TestCase):
                 "requests": {"initial": {"version": 1, "execution_key": key}},
             }), encoding="utf-8")
             with self.assertRaises(store.CorruptExecutionError):
-                store.reserve_result_version("yeonje-13452", execution_key=key, root=directory)
+                store.reserve_result_version("alpha-13452", execution_key=key, root=directory)
 
             path.write_text(json.dumps({
                 "next_version": 3,
@@ -238,6 +238,6 @@ class ExecutionStoreTest(unittest.TestCase):
                 },
             }), encoding="utf-8")
             with self.assertRaises(store.CorruptExecutionError):
-                store.reserve_result_version("yeonje-13452", execution_key=key, root=directory)
+                store.reserve_result_version("alpha-13452", execution_key=key, root=directory)
 if __name__ == "__main__":
     unittest.main()

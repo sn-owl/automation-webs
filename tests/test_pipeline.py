@@ -182,10 +182,10 @@ class PipelineTest(unittest.TestCase):
         run_pipeline = self.pipeline()
         with tempfile.TemporaryDirectory() as directory:
             result = run_pipeline(
-                FIXTURES / "yeonje-ready.html", output_root=Path(directory)
+                FIXTURES / "alpha-ready.html", output_root=Path(directory)
             )
             self.assertEqual(result["status"], "review_required")
-            self.assertEqual(result["task_id"], "yeonje-13452")
+            self.assertEqual(result["task_id"], "alpha-13452")
             self.assertEqual(result["route"], "classification_only")
             self.assertIsNone(result["assessment"])
             self.assertIsNotNone(result["classification"])
@@ -196,7 +196,7 @@ class PipelineTest(unittest.TestCase):
     def collect(self, directory, **connection):
         run_pipeline = self.pipeline()
         result = run_pipeline(
-            FIXTURES / "yeonje-ready.html", output_root=Path(directory), **connection
+            FIXTURES / "alpha-ready.html", output_root=Path(directory), **connection
         )
         self.assertEqual(result["status"], "review_required")
         from automation.task_store import get_task
@@ -209,7 +209,7 @@ class PipelineTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             result, task = self.collect(directory)
 
-            self.assertEqual(result["task_id"], "yeonje-13452")
+            self.assertEqual(result["task_id"], "alpha-13452")
             self.assertEqual(task.contract_version, 1)
             self.assertNotIn("scope", task.to_dict())
 
@@ -301,7 +301,7 @@ class PipelineTest(unittest.TestCase):
             for connection in ({"scope": "owner-a"}, {"connector_id": "chrome-extension"}):
                 with self.subTest(connection=connection):
                     result = run_pipeline(
-                        FIXTURES / "yeonje-ready.html",
+                        FIXTURES / "alpha-ready.html",
                         output_root=Path(directory),
                         **connection,
                     )
@@ -342,13 +342,13 @@ class PipelineTest(unittest.TestCase):
 
     def test_exact_input_bytes_are_stored_immutably_with_hash_metadata(self):
         run_pipeline = self.pipeline()
-        input_bytes = (FIXTURES / "yeonje-ready.html").read_bytes()
+        input_bytes = (FIXTURES / "alpha-ready.html").read_bytes()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             result = run_pipeline(
-                FIXTURES / "yeonje-ready.html", output_root=root
+                FIXTURES / "alpha-ready.html", output_root=root
             )
-            raw_path = root / "raw/yeonje-13452/page.html"
+            raw_path = root / "raw/alpha-13452/page.html"
             self.assertEqual(raw_path.read_bytes(), input_bytes)
             self.assertEqual(
                 result["raw"]["sha256"], hashlib.sha256(input_bytes).hexdigest()
@@ -363,10 +363,10 @@ class PipelineTest(unittest.TestCase):
         run_pipeline = self.pipeline()
         item = normalize_html(
             "gnuboard",
-            (FIXTURES / "yeonje-ready.html").read_text(encoding="utf-8"),
+            (FIXTURES / "alpha-ready.html").read_text(encoding="utf-8"),
             {
-                "board_id": "yeonje",
-                "url": "https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452",
+                "board_id": "alpha",
+                "url": "https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452",
             },
         )
         payload = item.to_dict()
@@ -387,10 +387,10 @@ class PipelineTest(unittest.TestCase):
             root = Path(directory)
             item = normalize_html(
                 "gnuboard",
-                (FIXTURES / "yeonje-ready.html").read_text(encoding="utf-8"),
+                (FIXTURES / "alpha-ready.html").read_text(encoding="utf-8"),
                 {
-                    "board_id": "yeonje",
-                    "url": "https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452",
+                    "board_id": "alpha",
+                    "url": "https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452",
                 },
             )
             payload = item.to_dict()
@@ -406,7 +406,7 @@ class PipelineTest(unittest.TestCase):
             self.assertEqual(result["status"], "review_required")
             self.assertEqual(result["route"], "classification_only")
             self.assertIsNone(result["input_check"])
-            stored = get_task("yeonje-13452", root=root / "out")
+            stored = get_task("alpha-13452", root=root / "out")
             self.assertEqual(
                 stored.attachments[0].raw_ref,
                 str((input_path.parent / "attachments/request.hwpx").resolve()),
@@ -420,10 +420,10 @@ class PipelineTest(unittest.TestCase):
             root = Path(directory)
             item = normalize_html(
                 "gnuboard",
-                (FIXTURES / "yeonje-ready.html").read_text(encoding="utf-8"),
+                (FIXTURES / "alpha-ready.html").read_text(encoding="utf-8"),
                 {
-                    "board_id": "yeonje",
-                    "url": "https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452",
+                    "board_id": "alpha",
+                    "url": "https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452",
                 },
             )
             payload = item.to_dict()
@@ -447,7 +447,7 @@ class PipelineTest(unittest.TestCase):
                 futures = [
                     pool.submit(
                         run_pipeline,
-                        FIXTURES / "dongnae-developable.html",
+                        FIXTURES / "egov-developable.html",
                         output_root=root,
                     )
                     for _ in range(2)
@@ -495,12 +495,12 @@ class PipelineTest(unittest.TestCase):
             root = Path(directory)
             client = RetryClient()
             first = run_pipeline(
-                FIXTURES / "dongnae-developable.html",
+                FIXTURES / "egov-developable.html",
                 output_root=root,
                 hermes_client=client,
             )
             second = run_pipeline(
-                FIXTURES / "dongnae-developable.html",
+                FIXTURES / "egov-developable.html",
                 output_root=root,
                 hermes_client=client,
             )
@@ -516,7 +516,7 @@ class PipelineTest(unittest.TestCase):
             event_path.parent.mkdir(parents=True)
             event_path.write_text("{not-json\n", encoding="utf-8")
             result = run_pipeline(
-                FIXTURES / "dongnae-developable.html", output_root=root
+                FIXTURES / "egov-developable.html", output_root=root
             )
             self.assertEqual(result["state"], "corrupt_event_log")
             self.assertEqual(result["status"], "failed")
@@ -530,13 +530,13 @@ class PipelineTest(unittest.TestCase):
             root = Path(directory)
             rejecting = HermesDouble('{"assessment":{"command":"unsafe"}}')
             first = run_pipeline(
-                FIXTURES / "dongnae-developable.html",
+                FIXTURES / "egov-developable.html",
                 output_root=root,
                 hermes_client=rejecting,
             )
             succeeding = HermesDouble("{}")
             second = run_pipeline(
-                FIXTURES / "dongnae-developable.html",
+                FIXTURES / "egov-developable.html",
                 output_root=root,
                 hermes_client=succeeding,
             )
@@ -550,7 +550,7 @@ class PipelineTest(unittest.TestCase):
         run_pipeline = self.pipeline()
         with tempfile.TemporaryDirectory() as directory:
             result = run_pipeline(
-                FIXTURES / "yeonje-ready.html", output_root=Path(directory)
+                FIXTURES / "alpha-ready.html", output_root=Path(directory)
             )
             events = read_events(Path(directory) / "state/events.jsonl")
             classified = next(event for event in events if event["state"] == "classified")
@@ -570,7 +570,7 @@ class PipelineTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             with patch.object(pipeline_module, "_record_event", side_effect=fail_classification):
                 result = pipeline_module.run_pipeline(
-                    FIXTURES / "yeonje-ready.html", output_root=Path(directory)
+                    FIXTURES / "alpha-ready.html", output_root=Path(directory)
                 )
             self.assertEqual(result["state"], "classification_failed")
             self.assertIsNone(result["classification"])
@@ -580,10 +580,10 @@ class PipelineTest(unittest.TestCase):
         run_pipeline = self.pipeline()
         item = normalize_html(
             "gnuboard",
-            (FIXTURES / "yeonje-ready.html").read_text(encoding="utf-8"),
+            (FIXTURES / "alpha-ready.html").read_text(encoding="utf-8"),
             {
-                "board_id": "yeonje",
-                "url": "https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452",
+                "board_id": "alpha",
+                "url": "https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452",
             },
         )
         with tempfile.TemporaryDirectory() as directory:
@@ -594,7 +594,7 @@ class PipelineTest(unittest.TestCase):
             event_bytes = (root / "out/state/events.jsonl").read_bytes()
             package_bytes = {
                 p.relative_to(root / "out"): p.read_bytes()
-                for p in (root / "out/yeonje-13452").rglob("*")
+                for p in (root / "out/alpha-13452").rglob("*")
                 if p.is_file()
             }
             second = run_pipeline(input_path, output_root=root / "out")
@@ -604,7 +604,7 @@ class PipelineTest(unittest.TestCase):
                 package_bytes,
                 {
                     p.relative_to(root / "out"): p.read_bytes()
-                    for p in (root / "out/yeonje-13452").rglob("*")
+                    for p in (root / "out/alpha-13452").rglob("*")
                     if p.is_file()
                 },
             )
@@ -614,10 +614,10 @@ class PipelineTest(unittest.TestCase):
         run_pipeline = self.pipeline()
         item = normalize_html(
             "gnuboard",
-            (FIXTURES / "yeonje-ready.html").read_text(encoding="utf-8"),
+            (FIXTURES / "alpha-ready.html").read_text(encoding="utf-8"),
             {
-                "board_id": "yeonje",
-                "url": "https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452",
+                "board_id": "alpha",
+                "url": "https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452",
             },
         )
         changed = item.to_dict()
@@ -639,7 +639,7 @@ class PipelineTest(unittest.TestCase):
         run_pipeline = self.pipeline()
         with tempfile.TemporaryDirectory() as directory:
             result = run_pipeline(
-                FIXTURES / "dongnae-developable.html", output_root=Path(directory)
+                FIXTURES / "egov-developable.html", output_root=Path(directory)
             )
             self.assertEqual(result["status"], "blocked")
             self.assertEqual(result["route"], "needs_hermes")
@@ -653,10 +653,10 @@ class PipelineTest(unittest.TestCase):
         run_pipeline = self.pipeline()
         with tempfile.TemporaryDirectory() as directory:
             result = run_pipeline(
-                FIXTURES / "dongnae-developable.html", output_root=Path(directory)
+                FIXTURES / "egov-developable.html", output_root=Path(directory)
             )
             self.assertEqual(result["status"], "blocked")
-            self.assertEqual(result["task_id"], "dongnae-9001")
+            self.assertEqual(result["task_id"], "egov-9001")
             self.assertEqual(result["route"], "needs_hermes")
 
 
@@ -665,7 +665,7 @@ class PipelineTest(unittest.TestCase):
         hermes = HermesDouble('{"assessment":{"command":"rm -rf /"}}')
         with tempfile.TemporaryDirectory() as directory:
             result = run_pipeline(
-                FIXTURES / "dongnae-developable.html",
+                FIXTURES / "egov-developable.html",
                 output_root=Path(directory),
                 hermes_client=hermes,
             )
@@ -693,7 +693,7 @@ class PipelineTest(unittest.TestCase):
         hermes = HermesDouble(json.dumps(response))
         with tempfile.TemporaryDirectory() as directory:
             result = run_pipeline(
-                FIXTURES / "dongnae-developable.html",
+                FIXTURES / "egov-developable.html",
                 output_root=Path(directory),
                 hermes_client=hermes,
             )
@@ -717,7 +717,7 @@ class PipelineTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             with patch("run_pipeline.put_task", side_effect=OSError("secret")):
-                result = run_pipeline(FIXTURES / "yeonje-ready.html", output_root=root)
+                result = run_pipeline(FIXTURES / "alpha-ready.html", output_root=root)
             self.assertEqual(result["state"], "storage_failed")
             self.assertNotIn("secret", json.dumps(result))
 
@@ -730,14 +730,14 @@ class PipelineTest(unittest.TestCase):
             with redirect_stdout(stdout):
                 code = main(
                     [
-                        str(FIXTURES / "yeonje-ready.html"),
+                        str(FIXTURES / "alpha-ready.html"),
                         "--output-root",
                         directory,
                     ]
                 )
             self.assertEqual(code, 0)
             payload = json.loads(stdout.getvalue())
-            self.assertEqual(payload["task_id"], "yeonje-13452")
+            self.assertEqual(payload["task_id"], "alpha-13452")
             self.assertEqual(payload["status"], "review_required")
 
     def test_ordinary_unmatched_work_requests_classification_only(self):
@@ -909,7 +909,7 @@ class PipelineTest(unittest.TestCase):
         for reason_code, client in cases:
             with self.subTest(reason_code=reason_code), tempfile.TemporaryDirectory() as directory:
                 result = run_pipeline(
-                    FIXTURES / "dongnae-developable.html",
+                    FIXTURES / "egov-developable.html",
                     output_root=Path(directory),
                     hermes_client=client,
                 )
@@ -930,10 +930,10 @@ class PipelineTest(unittest.TestCase):
         run_pipeline = self.pipeline()
         item = normalize_html(
             "gnuboard",
-            (FIXTURES / "yeonje-ready.html").read_text(encoding="utf-8"),
+            (FIXTURES / "alpha-ready.html").read_text(encoding="utf-8"),
             {
-                "board_id": "yeonje",
-                "url": "https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452",
+                "board_id": "alpha",
+                "url": "https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452",
             },
         )
         payload = item.to_dict()

@@ -14,22 +14,22 @@ class GnuBoardParserTest(unittest.TestCase):
 
         return GnuBoardParseError, parse_gnuboard_html
 
-    def test_yeonje_fixture_normalizes_title_author_date_body_and_attachment(self):
+    def test_alpha_fixture_normalizes_title_author_date_body_and_attachment(self):
         _, parse_gnuboard_html = self.parser()
-        html = (FIXTURE_DIR / "yeonje-ready.html").read_text(encoding="utf-8")
+        html = (FIXTURE_DIR / "alpha-ready.html").read_text(encoding="utf-8")
 
         item = parse_gnuboard_html(
             html,
-            board_id="yeonje",
-            source_url="https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452",
+            board_id="alpha",
+            source_url="https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452",
         )
 
-        self.assertEqual(item.task_id, "yeonje-13452")
+        self.assertEqual(item.task_id, "alpha-13452")
         self.assertEqual(item.source.to_dict(), {
             "type": "board",
-            "id": "yeonje",
+            "id": "alpha",
             "external_id": "13452",
-            "url": "https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452",
+            "url": "https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452",
         })
         self.assertEqual(item.received_at, "2026-08-27T10:20:00+09:00")
         self.assertEqual(item.title, "무더위쉼터 현황 현행화")
@@ -43,27 +43,27 @@ class GnuBoardParserTest(unittest.TestCase):
 
     def test_attachment_extension_outside_schema_enum_is_rejected(self):
         GnuBoardParseError, parse_gnuboard_html = self.parser()
-        html = (FIXTURE_DIR / "yeonje-ready.html").read_text(encoding="utf-8")
+        html = (FIXTURE_DIR / "alpha-ready.html").read_text(encoding="utf-8")
         html = html.replace("SANITIZED_RESTAREA_REQUEST.hwpx", "SANITIZED_RESTAREA_REQUEST.exe")
 
         with self.assertRaisesRegex(GnuBoardParseError, "unsupported attachment extension"):
             parse_gnuboard_html(
                 html,
-                board_id="yeonje",
-                source_url="https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452",
+                board_id="alpha",
+                source_url="https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452",
             )
 
     def test_bukgu_fixture_normalizes_board_specific_values(self):
         _, parse_gnuboard_html = self.parser()
-        html = (FIXTURE_DIR / "bsbukgu-manual.html").read_text(encoding="utf-8")
+        html = (FIXTURE_DIR / "beta-manual.html").read_text(encoding="utf-8")
 
         item = parse_gnuboard_html(
             html,
-            board_id="bsbukgu",
-            source_url="https://fixture.local/bbs/board.php?bo_table=bsbukgu&wr_id=2048",
+            board_id="beta",
+            source_url="https://fixture.local/bbs/board.php?bo_table=beta&wr_id=2048",
         )
 
-        self.assertEqual(item.task_id, "bsbukgu-2048")
+        self.assertEqual(item.task_id, "beta-2048")
         self.assertEqual(item.received_at, "2026-08-27T13:07:00+09:00")
         self.assertEqual(item.title, "팝업 이미지 게재 요청")
         self.assertEqual(item.author, "SOURCE_002")
@@ -73,7 +73,7 @@ class GnuBoardParserTest(unittest.TestCase):
 
     def test_explicit_source_completion_marker_is_observed(self):
         _, parse_gnuboard_html = self.parser()
-        html = (FIXTURE_DIR / "yeonje-ready.html").read_text(encoding="utf-8")
+        html = (FIXTURE_DIR / "alpha-ready.html").read_text(encoding="utf-8")
         html = html.replace(
             "<head>",
             '<head><meta content="completed" name="source-status">',
@@ -82,8 +82,8 @@ class GnuBoardParserTest(unittest.TestCase):
 
         item = parse_gnuboard_html(
             html,
-            board_id="yeonje",
-            source_url="https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452",
+            board_id="alpha",
+            source_url="https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452",
             scope="team-a",
             connector_id="connector-gnu",
         )
@@ -96,8 +96,8 @@ class GnuBoardParserTest(unittest.TestCase):
         with self.assertRaisesRegex(GnuBoardParseError, "login or permission"):
             parse_gnuboard_html(
                 '<html><body><form id="flogin">로그인</form></body></html>',
-                board_id="yeonje",
-                source_url="https://fixture.local/bbs/board.php?bo_table=yeonje&wr_id=13452",
+                board_id="alpha",
+                source_url="https://fixture.local/bbs/board.php?bo_table=alpha&wr_id=13452",
             )
 
 

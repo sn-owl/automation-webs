@@ -1,0 +1,25 @@
+{
+  "collaboration": [],
+  "confidence": 0.9,
+  "evidence": [
+    "rule:heat-shelter-refresh 조건과 일치",
+    "rule:heat-shelter-input-check 조건과 일치"
+  ],
+  "next_action": "담당 소유권과 요청 범위를 확인하세요.",
+  "ownership": "정보 부족",
+  "pattern_match": {
+    "rule_ids": [
+      "heat-shelter-refresh",
+      "heat-shelter-input-check"
+    ]
+  },
+  "primary_role": "development",
+  "responsibility": "development",
+  "responsibility_scope": "규칙이 식별한 업무 영역",
+  "risk_flags": [],
+  "size": "recurring",
+  "task_type": "data_refresh",
+  "unmatched_aspects": [
+    "담당 소유권"
+  ]
+}

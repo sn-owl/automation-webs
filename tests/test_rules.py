@@ -5,10 +5,10 @@ from automation.models import WorkItem
 
 def work_item(**overrides):
     base = {
-        "task_id": "yeonje-1",
+        "task_id": "alpha-1",
         "source": {
             "type": "board",
-            "id": "yeonje",
+            "id": "alpha",
             "external_id": "1",
             "url": "https://fixture.local/bbs/board.php?wr_id=1",
         },
@@ -17,7 +17,7 @@ def work_item(**overrides):
         "body": "본문",
         "author": "요청부서",
         "attachments": [],
-        "mask_table_ref": "local://masks/yeonje-1.json",
+        "mask_table_ref": "local://masks/alpha-1.json",
     }
     attachments = overrides.pop("attachments", None)
     base.update(overrides)

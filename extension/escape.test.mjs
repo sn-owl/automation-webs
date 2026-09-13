@@ -9,7 +9,7 @@
 import assert from "node:assert/strict";
 import { escMd, escUrl } from "./escape.js";
 
-const URL_ = "https://cug.thewebs.kr/bbs/board.php?bo_table=yeonje&wr_id=13423";
+const URL_ = "https://cug.thewebs.kr/bbs/board.php?bo_table=alpha&wr_id=13423";
 
 // ── escUrl: URL 을 망가뜨리지 않는다 ─────────────────────
 assert.equal(escUrl(URL_), URL_, "URL 이 변형됐다 — 텔레그램이 거절한다");

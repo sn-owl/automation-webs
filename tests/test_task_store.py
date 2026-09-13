@@ -21,7 +21,7 @@ def make_task(task_id: str, title: str = "업무") -> WorkItem:
             "task_id": task_id,
             "source": {
                 "type": "board",
-                "id": "yeonje",
+                "id": "alpha",
                 "external_id": task_id.rsplit("-", 1)[-1],
                 "url": "https://fixture.local/task",
             },
@@ -108,26 +108,26 @@ class TaskStoreTest(unittest.TestCase):
             self.assertEqual(stored.completeness, "complete")
 
     def test_put_task_persists_and_get_task_reads_work_item(self):
-        task = make_task("yeonje-13452")
+        task = make_task("alpha-13452")
 
         with tempfile.TemporaryDirectory() as directory:
             put_task(task, root=directory)
 
-            path = Path(directory) / "state" / "tasks" / "yeonje-13452.json"
+            path = Path(directory) / "state" / "tasks" / "alpha-13452.json"
             self.assertTrue(path.is_file())
-            self.assertEqual(get_task("yeonje-13452", root=directory), task)
+            self.assertEqual(get_task("alpha-13452", root=directory), task)
 
     def test_get_missing_task_is_explicit(self):
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaises(TaskNotFoundError):
-                get_task("yeonje-13452", root=directory)
+                get_task("alpha-13452", root=directory)
 
     def test_same_task_can_be_put_again_without_changing_bytes(self):
-        task = make_task("yeonje-13452")
+        task = make_task("alpha-13452")
 
         with tempfile.TemporaryDirectory() as directory:
             put_task(task, root=directory)
-            path = Path(directory) / "state" / "tasks" / "yeonje-13452.json"
+            path = Path(directory) / "state" / "tasks" / "alpha-13452.json"
             first_bytes = path.read_bytes()
 
             put_task(task, root=directory)
@@ -135,8 +135,8 @@ class TaskStoreTest(unittest.TestCase):
             self.assertEqual(path.read_bytes(), first_bytes)
 
     def test_different_content_for_existing_task_is_rejected(self):
-        task = make_task("yeonje-13452", title="첫 업무")
-        changed = make_task("yeonje-13452", title="변경된 업무")
+        task = make_task("alpha-13452", title="첫 업무")
+        changed = make_task("alpha-13452", title="변경된 업무")
 
         with tempfile.TemporaryDirectory() as directory:
             put_task(task, root=directory)
@@ -144,10 +144,10 @@ class TaskStoreTest(unittest.TestCase):
             with self.assertRaises(TaskConflictError):
                 put_task(changed, root=directory)
 
-            self.assertEqual(get_task("yeonje-13452", root=directory), task)
+            self.assertEqual(get_task("alpha-13452", root=directory), task)
 
     def test_list_tasks_returns_tasks_in_task_id_order(self):
-        tasks = [make_task("yeonje-2"), make_task("yeonje-1")]
+        tasks = [make_task("alpha-2"), make_task("alpha-1")]
 
         with tempfile.TemporaryDirectory() as directory:
             for task in tasks:
@@ -159,11 +159,11 @@ class TaskStoreTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             task_dir = Path(directory) / "state" / "tasks"
             task_dir.mkdir(parents=True)
-            path = task_dir / "yeonje-13452.json"
+            path = task_dir / "alpha-13452.json"
             path.write_text("{not-json", encoding="utf-8")
 
             with self.assertRaises(CorruptTaskError):
-                get_task("yeonje-13452", root=directory)
+                get_task("alpha-13452", root=directory)
             with self.assertRaises(CorruptTaskError):
                 list_tasks(root=directory)
 

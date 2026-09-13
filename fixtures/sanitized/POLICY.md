@@ -6,7 +6,7 @@ Sanitized fixtures preserve the board HTML structure needed by parsers while rem
 
 - HTML element hierarchy, table/list structure, form field names, attachment link shape, and date/title/body locations.
 - Publicly safe placeholder text that keeps parser-relevant labels and spacing.
-- Deterministic scenario labels such as `yeonje-ready`, `bsbukgu-manual`, and `dongnae-developable`.
+- Deterministic scenario labels such as `alpha-ready`, `beta-manual`, and `egov-developable`.
 
 ## Remove or replace
 

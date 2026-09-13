@@ -1,118 +1,133 @@
 {
   "files": {
-    "developable/dongnae-9001/ACTION.md": "1fc91d94d61888bc4b5ad9e943004db4d94136bac1fc70256081805f3a18d8b3",
-    "developable/dongnae-9001/WORKLOG.md": "7d2832e98dad86d2b1d872f87efefe21c1691f01080f14be0dd696433bee6a07",
-    "developable/dongnae-9001/classification.json": "c18730f79e4ad65216a861801efa6d171b2438286cb4fb4116d269ce87e971dd",
-    "developable/dongnae-9001/source.json": "a5f8702dc13b061f70689378e48fed3b299a15c0b5850979c50528bf5368dbe3",
-    "developable/raw/dongnae-9001/page.html": "ab5e5a6de5d4d32c28cbe155a9eaafe050db1cf05385e19f9243ee3fddd0e209",
-    "developable/result.json": "52c9f3e7147c1e096a557644d01507f421b83673468bd34d030127403cf639f7",
-    "developable/state/events.jsonl": "2a621d5ac617f7ae65b7d1307c081fcd271e35f86113e851e5e4e6828534c025",
-    "developable/state/tasks/dongnae-9001.json": "a5f8702dc13b061f70689378e48fed3b299a15c0b5850979c50528bf5368dbe3",
-    "manual/bsbukgu-2048/ACTION.md": "a2a7ec2a7774d67560f3f9017d49377911227350b4e5b65dbb57924c08a52558",
-    "manual/bsbukgu-2048/WORKLOG.md": "f7b8c0a6fda5465a12a202093723b934e67cc6437b838e0bdff1ff47171fe964",
-    "manual/bsbukgu-2048/classification.json": "9eec6c4806f4d3eb43e5434c1ccf310e73a3b90598dcc16735338c8bba23c7bb",
-    "manual/bsbukgu-2048/source.json": "2a91bedc3978e497e2db74ec9ef1f7c343886e99a333228824704727be634b8a",
-    "manual/raw/bsbukgu-2048/page.html": "9346222d8721608f3003c5f9f8d43c387e26f813ba8805a8d7f415f9280f718b",
-    "manual/result.json": "684cb6629c12e7a2edd2b3ce1110b4524d0d0452a9a946fbbfd81773fcc2bf2b",
-    "manual/state/events.jsonl": "73981f493500c87a4b16013a632be7d1017b7fea002e8c64b8e5b55e5d01cc44",
-    "manual/state/tasks/bsbukgu-2048.json": "2a91bedc3978e497e2db74ec9ef1f7c343886e99a333228824704727be634b8a",
-    "ready/raw/yeonje-13452/page.html": "b2d2e8eae533d4173a5056ccd08e44f6b818e3cad0b1b7334292c40eb787361a",
-    "ready/result.json": "c02cfa38b43060e90fa8892856fa2d73cd357498b5aa45b5efe1e66c05754bcb",
-    "ready/state/events.jsonl": "709e38cf3c858c8715b9a1d1e3614a744f199b49ff77a92e4b289901433e4b70",
-    "ready/state/tasks/yeonje-13452.json": "2836fd5e365be4fa532dc69d1c673498dfa3680b76598882ad34829f43889fd3",
-    "ready/yeonje-13452/ACTION.md": "b26f4bbdc69eb1c684029deb895d3d0a8eac7a11163bca719297239957baccca",
-    "ready/yeonje-13452/WORKLOG.md": "50c0eb648e107fca22344e1f836269cef36b81244fe631be14bf4188b9878261",
-    "ready/yeonje-13452/classification.json": "9952d939f6ca5c9cad0a19c74dd722942a7e7b87c8380e52bcb98cbbf37fa422",
-    "ready/yeonje-13452/source.json": "2836fd5e365be4fa532dc69d1c673498dfa3680b76598882ad34829f43889fd3"
+    "developable/egov-9001/ACTION.md": "1fc91d94d61888bc4b5ad9e943004db4d94136bac1fc70256081805f3a18d8b3",
+    "developable/egov-9001/WORKLOG.md": "136ddf50eb5423bdbbd2b45a2cf3aea8c80c033009f8eb88afacb9d76df1b8f5",
+    "developable/egov-9001/classification.json": "5ca5d97951f59a4142cacb24c5e347b08739e3f0669dfc0bdb2600865dfbee99",
+    "developable/egov-9001/source.json": "5ef8f1a42925e2f5b6e404b00209c6aec847844a450736ebf83114c1845426bb",
+    "developable/raw/egov-9001/page.html": "ab5e5a6de5d4d32c28cbe155a9eaafe050db1cf05385e19f9243ee3fddd0e209",
+    "developable/result.json": "2ff53abc5a64b11459687b4c87166d133ed6cfb29851a0c8c46ab52062ae40c5",
+    "developable/state/events.jsonl": "323ef6f72957154d67c9e239f1ff74c54866fc43a10830e5308204c467b4ebb2",
+    "developable/state/tasks/egov-9001.json": "5ef8f1a42925e2f5b6e404b00209c6aec847844a450736ebf83114c1845426bb",
+    "manual/beta-2048/ACTION.md": "30a09c6133c48a7ff98f7739c756f29b7e81815c84555f6f91b23fb56ef8f033",
+    "manual/beta-2048/WORKLOG.md": "8747e5cb10139cda508da9c9f57b2315cdb57a356dc3aeec206ed97d5f4a9e0a",
+    "manual/beta-2048/classification.json": "aadfa118fb7b0e062ca4b0d92a46dde17264d9373f4264b6b2f4ef390c437fd4",
+    "manual/beta-2048/source.json": "8ef0bcfaca59b71d5339a7082cbf83419709a2e1f0b9ce5b74a77416526f6dc0",
+    "manual/raw/beta-2048/page.html": "7ac627197eb0f51aec63dc53536d1e3272095ba51d029670200e0492b76d5e2d",
+    "manual/result.json": "df83015451828c48ed00c318b36526034b6568f035fd0ae9aeff74765182f50c",
+    "manual/state/events.jsonl": "ab37e75716c88fa297e8d3a112e3bb6282dd6811f7b4e81bb8601d84b5d72c36",
+    "manual/state/tasks/beta-2048.json": "8ef0bcfaca59b71d5339a7082cbf83419709a2e1f0b9ce5b74a77416526f6dc0",
+    "ready/alpha-13452/ACTION.md": "7f7babf5165967c6a6ee63c18e7ac3cf2aa54b6ad3bb95450fe964991ebc9912",
+    "ready/alpha-13452/WORKLOG.md": "054417a8e436903b20a40efdfaa0154328b9211b0845941e4fa58b286b5b4322",
+    "ready/alpha-13452/classification.json": "5c00381f956b501d8be5e80252b0e53383289ec98b7f9f8c8e0bb1f9f94a24ac",
+    "ready/alpha-13452/source.json": "5eac985ce9f91295bc6471c0466ddff3321907e0d699cda90a98c5444b1f87e2",
+    "ready/raw/alpha-13452/page.html": "a3fe87eb38f750f42263ee82723eae1c739005f9d191f3fa4d7f88eb5cb98570",
+    "ready/result.json": "b6d287ffc2d509621251d90c4696bed5a34dd957877e52ba7047963c20cec621",
+    "ready/state/events.jsonl": "f0f87432c0c4dfdd51d6b40f064a078bf41474b7979f4139d1495fb90f7b2592",
+    "ready/state/tasks/alpha-13452.json": "5eac985ce9f91295bc6471c0466ddff3321907e0d699cda90a98c5444b1f87e2"
   },
   "scenarios": [
     {
-      "assessment": {
-        "automation_level": "ready",
-        "confidence": 0.9,
-        "evidence": [
-          "eval:heat-shelter-ready 조건과 일치",
-          "responsibility=operations",
-          "task_type=data_refresh",
-          "automation_level=ready",
-          "risk=local_artifact_only"
-        ],
-        "recipe": "restarea-hwpx-to-xls",
-        "risk": "local_artifact_only"
-      },
+      "assessment": null,
       "classification": {
+        "collaboration": [],
         "confidence": 0.9,
         "evidence": [
-          "rule:heat-shelter-refresh 조건과 일치"
+          "rule:heat-shelter-refresh 조건과 일치",
+          "rule:heat-shelter-input-check 조건과 일치"
         ],
-        "responsibility": "operations",
+        "next_action": "담당 소유권과 요청 범위를 확인하세요.",
+        "ownership": "정보 부족",
+        "pattern_match": {
+          "rule_ids": [
+            "heat-shelter-refresh",
+            "heat-shelter-input-check"
+          ]
+        },
+        "primary_role": "development",
+        "responsibility": "development",
+        "responsibility_scope": "규칙이 식별한 업무 영역",
+        "risk_flags": [],
         "size": "recurring",
-        "task_type": "data_refresh"
+        "task_type": "data_refresh",
+        "unmatched_aspects": [
+          "담당 소유권"
+        ]
       },
-      "fixture": "yeonje-ready.html",
+      "fixture": "alpha-ready.html",
       "name": "ready",
       "proposal_source": "rule engine",
-      "route": "execute_recipe",
+      "route": "classification_only",
       "state": "review_required",
       "status": "review_required",
-      "task_id": "yeonje-13452",
-      "work_package": "yeonje-13452"
+      "task_id": "alpha-13452",
+      "work_package": "alpha-13452"
     },
     {
-      "assessment": {
-        "automation_level": "manual",
-        "confidence": 0.64,
-        "evidence": [
-          "대상 페이지를 확정할 근거가 본문에 없음",
-          "등록된 Recipe로 대응되는 변환이 아님"
-        ],
-        "risk": "remote_write"
-      },
+      "assessment": null,
       "classification": {
-        "confidence": 0.72,
+        "collaboration": [],
+        "confidence": 0.85,
         "evidence": [
-          "본문이 기존 페이지 문구 수정을 요청함"
+          "rule:popup-registration 조건과 일치"
         ],
-        "responsibility": "content",
+        "next_action": "담당 소유권과 요청 범위를 확인하세요.",
+        "ownership": "정보 부족",
+        "pattern_match": {
+          "rule_ids": [
+            "popup-registration"
+          ]
+        },
+        "primary_role": "design",
+        "responsibility": "design",
+        "responsibility_scope": "규칙이 식별한 업무 영역",
+        "risk_flags": [],
         "size": "simple",
-        "task_type": "content_edit"
+        "task_type": "image_popup",
+        "unmatched_aspects": [
+          "담당 소유권"
+        ]
       },
-      "fixture": "bsbukgu-manual.html",
+      "fixture": "beta-manual.html",
       "name": "manual",
       "proposal_source": "hermes (recorded)",
-      "route": "needs_hermes",
+      "route": "classification_only",
       "state": "review_required",
       "status": "review_required",
-      "task_id": "bsbukgu-2048",
-      "work_package": "bsbukgu-2048"
+      "task_id": "beta-2048",
+      "work_package": "beta-2048"
     },
     {
-      "assessment": {
-        "automation_level": "developable",
-        "confidence": 0.6,
-        "evidence": [
-          "반복 가능한 절차이나 현재 Recipe가 없음",
-          "구현 범위를 사람 검토 후 확정해야 함"
-        ],
-        "risk": "code_diff"
-      },
+      "assessment": null,
       "classification": {
+        "collaboration": [],
         "confidence": 0.68,
         "evidence": [
           "신규 기능 추가 요청으로 읽히는 본문"
         ],
+        "next_action": "담당 소유권과 구현 범위를 확인하세요.",
+        "ownership": "정보 부족",
+        "pattern_match": {},
+        "primary_role": "development",
         "responsibility": "development",
+        "responsibility_scope": "신규 기능 요청 분석",
+        "risk_flags": [
+          "구현 범위 미확정"
+        ],
         "size": "small_dev",
-        "task_type": "feature_dev"
+        "task_type": "feature_dev",
+        "unmatched_aspects": [
+          "담당 소유권",
+          "구현 범위"
+        ]
       },
-      "fixture": "dongnae-developable.html",
+      "fixture": "egov-developable.html",
       "name": "developable",
       "proposal_source": "hermes (recorded)",
-      "route": "needs_hermes",
+      "route": "classification_only",
       "state": "review_required",
       "status": "review_required",
-      "task_id": "dongnae-9001",
-      "work_package": "dongnae-9001"
+      "task_id": "egov-9001",
+      "work_package": "egov-9001"
     }
   ]
 }

@@ -40,7 +40,7 @@ class FixtureSafetyTest(unittest.TestCase):
         self.assertEqual(findings, ["internal_url"])
 
     def test_flags_real_source_identifiers_in_query_strings(self):
-        findings = scan_fixture_text("./board.php?bo_table=yeonje&amp;wr_id=13457")
+        findings = scan_fixture_text("./board.php?bo_table=alpha&amp;wr_id=13457")
 
         self.assertEqual(findings, ["source_identifier"])
 
@@ -109,9 +109,9 @@ class FixtureSafetyTest(unittest.TestCase):
                 for item in manifest["fixtures"]
             ],
             [
-                ("yeonje-ready.html", "gnuboard", "ready"),
-                ("bsbukgu-manual.html", "gnuboard", "manual"),
-                ("dongnae-developable.html", "dongnae", "developable"),
+                ("alpha-ready.html", "gnuboard", "ready"),
+                ("beta-manual.html", "gnuboard", "manual"),
+                ("egov-developable.html", "egov", "developable"),
             ],
         )
 

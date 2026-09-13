@@ -5,10 +5,10 @@ from automation.models import WorkItem
 
 def work_item(**overrides):
     base = {
-        "task_id": "yeonje-1",
+        "task_id": "alpha-1",
         "source": {
             "type": "board",
-            "id": "yeonje",
+            "id": "alpha",
             "external_id": "1",
             "url": "https://fixture.local/bbs/board.php?wr_id=1",
         },
@@ -17,7 +17,7 @@ def work_item(**overrides):
         "body": "본문",
         "author": "요청부서",
         "attachments": [],
-        "mask_table_ref": "local://masks/yeonje-1.json",
+        "mask_table_ref": "local://masks/alpha-1.json",
     }
     attachments = overrides.pop("attachments", None)
     base.update(overrides)
@@ -260,7 +260,7 @@ class ReplayFixtureCorpusTest(unittest.TestCase):
 
         self.assertEqual(
             {item.task_id for item in corpus},
-            {"yeonje-13452", "bsbukgu-2048", "dongnae-9001"},
+            {"alpha-13452", "beta-2048", "egov-9001"},
         )
 
     def test_real_fixture_corpus_replays_deterministically(self):

@@ -105,10 +105,10 @@ class DispatchExecutionTest(unittest.TestCase):
         from automation.models import AttachmentRef, SourceRef, WorkItem
 
         return WorkItem(
-            task_id="yeonje-13452",
+            task_id="alpha-13452",
             source=SourceRef(
                 type="gnuboard",
-                id="yeonje",
+                id="alpha",
                 external_id="13452",
                 url="https://example.invalid/board/13452",
             ),
@@ -121,10 +121,10 @@ class DispatchExecutionTest(unittest.TestCase):
                     name=source.name,
                     type="hwpx",
                     raw_ref=str(source),
-                    extracted_ref="normalized/yeonje-13452/restarea.json",
+                    extracted_ref="normalized/alpha-13452/restarea.json",
                 ),
             ),
-            mask_table_ref="local://masks/yeonje-13452.json",
+            mask_table_ref="local://masks/alpha-13452.json",
         )
 
     @staticmethod

@@ -7,7 +7,7 @@ from automation.identity import execution_key
 
 
 RECIPE_ID = "restarea-hwpx-to-xls"
-TASK_ID = "yeonje-13452"
+TASK_ID = "alpha-13452"
 INPUT_HASH = "a" * 64
 
 
@@ -137,7 +137,7 @@ class ExecutionAttemptTest(unittest.TestCase):
     def request(self, **kwargs):
         from automation.execution import ExecutionRequest
 
-        return ExecutionRequest("yeonje-13452", "restarea-hwpx-to-xls", "a" * 64, **kwargs)
+        return ExecutionRequest("alpha-13452", "restarea-hwpx-to-xls", "a" * 64, **kwargs)
 
     def test_an_attempt_defaults_to_one(self):
         self.assertEqual(self.request().attempt, 1)
@@ -176,10 +176,10 @@ class ExecutionAttemptTest(unittest.TestCase):
 
         with self.assertRaises(Exception):
             ExecutionRequest.create(
-                "yeonje-13452", "restarea-hwpx-to-xls", "a" * 64, existing_execution_keys=(key,)
+                "alpha-13452", "restarea-hwpx-to-xls", "a" * 64, existing_execution_keys=(key,)
             )
         retry = ExecutionRequest.create(
-            "yeonje-13452",
+            "alpha-13452",
             "restarea-hwpx-to-xls",
             "a" * 64,
             existing_execution_keys=(key,),

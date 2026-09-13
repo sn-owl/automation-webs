@@ -16,19 +16,19 @@ from automation.task_store import put_task
 
 ROOT = Path(__file__).parents[1]
 FIXTURE_WORK_ITEM = {
-    "task_id": "yeonje-13452",
+    "task_id": "alpha-13452",
     "source": {
         "type": "board",
-        "id": "yeonje",
+        "id": "alpha",
         "external_id": "13452",
-        "url": "https://example.invalid/bbs/board.php?bo_table=yeonje",
+        "url": "https://example.invalid/bbs/board.php?bo_table=alpha",
     },
     "received_at": "2026-08-27T10:20:00+09:00",
     "title": "무더위쉼터 현황 현행화",
     "body": "PRIVATE_BODY_MARKER 위치: SANITIZED_TARGET",
     "author": "DEPARTMENT_001",
     "attachments": [],
-    "mask_table_ref": "local://masks/yeonje-13452.json",
+    "mask_table_ref": "local://masks/alpha-13452.json",
 }
 
 
@@ -36,9 +36,9 @@ def _seed(root: Path) -> None:
     put_task(WorkItem.from_dict(FIXTURE_WORK_ITEM), root=root)
     EventLog(root / "state" / "events.jsonl").append(
         {
-            "event_id": "yeonje-13452:assessed",
+            "event_id": "alpha-13452:assessed",
             "type": "assessment",
-            "task_id": "yeonje-13452",
+            "task_id": "alpha-13452",
             "state": "review_required",
             "assessment": {
                 "automation_level": "ready",
@@ -78,7 +78,7 @@ class DashboardReadTest(unittest.TestCase):
         self.assertEqual(list(model), ["tasks", "status_counts"])
         self.assertEqual(len(model["tasks"]), 1)
         detail = model["tasks"][0]
-        self.assertEqual(detail["task_id"], "yeonje-13452")
+        self.assertEqual(detail["task_id"], "alpha-13452")
         self.assertEqual(detail["state"], "review_required")
         self.assertEqual(detail["assessment"]["automation_level"], "ready")
         self.assertEqual(detail["assessment"]["risk"], "local_artifact_only")
@@ -94,7 +94,7 @@ class DashboardReadTest(unittest.TestCase):
         events = [
             {
                 "event_id": "popup-classified",
-                "task_id": "yeonje-13452",
+                "task_id": "alpha-13452",
                 "stage": "classification",
                 "state": "classified",
                 "classification": {
@@ -140,29 +140,29 @@ class DashboardReadTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
             downloads = root / "downloads"
-            bundle = downloads / "yeonje-13452--title"
+            bundle = downloads / "alpha-13452--title"
             (bundle / "attachments").mkdir(parents=True)
             (bundle / "page.html").write_text("PRIVATE_PAGE_BODY", encoding="utf-8")
             (bundle / "attachments" / "request.hwpx").write_bytes(b"hwpx")
             (bundle / "manifest.json").write_text(
                 json.dumps(
                     {
-                        "capture_id": "yeonje-13452",
+                        "capture_id": "alpha-13452",
                         "page": {"path": "page.html"},
                         "attachments": [{"path": "attachments/request.hwpx"}],
                     }
                 ),
                 encoding="utf-8",
             )
-            (bundle / "_READY").write_text("yeonje-13452\n", encoding="utf-8")
-            inbox = root / "inbox" / "yeonje-13452"
+            (bundle / "_READY").write_text("alpha-13452\n", encoding="utf-8")
+            inbox = root / "inbox" / "alpha-13452"
             (inbox / "attachments").mkdir(parents=True)
             (inbox / "work_item.json").write_text("{}", encoding="utf-8")
             _seed(root)
             EventLog(root / "state" / "events.jsonl").append(
                 {
-                    "event_id": "yeonje-13452:hermes",
-                    "task_id": "yeonje-13452",
+                    "event_id": "alpha-13452:hermes",
+                    "task_id": "alpha-13452",
                     "stage": "hermes",
                     "state": "blocked",
                 }
@@ -172,7 +172,7 @@ class DashboardReadTest(unittest.TestCase):
             execution.write_text(
                 json.dumps(
                     {
-                        "task_id": "yeonje-13452",
+                        "task_id": "alpha-13452",
                         "recipe_id": "restarea-hwpx-to-xls",
                         "state": "failed",
                     }
@@ -275,14 +275,14 @@ class DashboardDecisionRoutingTest(unittest.TestCase):
 
         with patch("dashboard.execute_task", return_value={"state": "succeeded"}) as execute:
             code = dashboard.submit_execution(
-                "yeonje-13452",
+                "alpha-13452",
                 "restarea-hwpx-to-xls",
                 root=Path("runtime"),
             )
 
         self.assertEqual(code, 0)
         execute.assert_called_once_with(
-            "yeonje-13452",
+            "alpha-13452",
             "restarea-hwpx-to-xls",
             root=Path("runtime"),
         )
@@ -402,7 +402,7 @@ class DashboardDecisionRoutingTest(unittest.TestCase):
             _seed(root)
             with redirect_stdout(io.StringIO()):
                 code = dashboard.submit_decision(
-                    "yeonje-13452",
+                    "alpha-13452",
                     "approve",
                     actor="operator",
                     reason="승인",
@@ -419,7 +419,7 @@ class DashboardDecisionRoutingTest(unittest.TestCase):
         decisions = [event for event in events if event.get("type") == "decision"]
         self.assertEqual(len(decisions), 1)
         self.assertEqual(decisions[0]["decision"]["action"], "approve")
-        self.assertEqual(decisions[0]["decision"]["task_id"], "yeonje-13452")
+        self.assertEqual(decisions[0]["decision"]["task_id"], "alpha-13452")
         self.assertEqual(decisions[0]["decision"]["actor"], "operator")
 
     def test_stale_task_version_is_rejected_by_the_core_contract(self):
@@ -430,7 +430,7 @@ class DashboardDecisionRoutingTest(unittest.TestCase):
             _seed(root)
             with redirect_stdout(io.StringIO()):
                 code = dashboard.submit_decision(
-                    "yeonje-13452",
+                    "alpha-13452",
                     "approve",
                     actor="operator",
                     reason="승인",

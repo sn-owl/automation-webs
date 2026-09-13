@@ -1,9 +1,0 @@
-{
-  "confidence": 0.72,
-  "evidence": [
-    "본문이 기존 페이지 문구 수정을 요청함"
-  ],
-  "responsibility": "content",
-  "size": "simple",
-  "task_type": "content_edit"
-}

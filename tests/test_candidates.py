@@ -40,7 +40,7 @@ def work_item(task_id: str, title: str, *, scope: str = SCOPE) -> WorkItem:
             "scope": scope,
             "source": {
                 "type": "board",
-                "id": "bsbukgu",
+                "id": "beta",
                 "external_id": task_id.rsplit("-", 1)[-1],
                 "url": "https://fixture.local/task",
             },
@@ -52,7 +52,7 @@ def work_item(task_id: str, title: str, *, scope: str = SCOPE) -> WorkItem:
             "mask_table_ref": f"local://masks/{task_id}.json",
             "contract_version": 2,
             "connector_id": "c1",
-            "capture_id": f"bsbukgu-{task_id}-abc",
+            "capture_id": f"beta-{task_id}-abc",
             "revision": 1,
             "completeness": "complete",
             "provenance": {"policy_version": "1"},
@@ -92,30 +92,30 @@ class CandidateLoopTest(unittest.TestCase):
         # Three items the correction is about -- a single confirmation is no
         # longer enough to seed a pattern -- plus wider corpus for replay.
         for task_id, title in [
-            ("bsbukgu-9906", "재수정 요청 _ N잡 지원센터 플랫폼 관련"),
-            ("bsbukgu-9907", "재수정 요청 _ 통계 화면"),
-            ("bsbukgu-9908", "재수정 요청 _ 신청서 항목"),
-            ("bsbukgu-1", "대표 팝업존 추가"),
-            ("bsbukgu-4", "행사 팝업존 교체"),
-            ("bsbukgu-5", "공지 팝업존 삭제"),
-            ("bsbukgu-2", "주요뉴스 이동"),
-            ("bsbukgu-3", "무관한 요청"),
+            ("beta-9906", "재수정 요청 _ N잡 지원센터 플랫폼 관련"),
+            ("beta-9907", "재수정 요청 _ 통계 화면"),
+            ("beta-9908", "재수정 요청 _ 신청서 항목"),
+            ("beta-1", "대표 팝업존 추가"),
+            ("beta-4", "행사 팝업존 교체"),
+            ("beta-5", "공지 팝업존 삭제"),
+            ("beta-2", "주요뉴스 이동"),
+            ("beta-3", "무관한 요청"),
         ]:
             put_task(work_item(task_id, title), root=self.root)
 
     # -- helpers -------------------------------------------------------
 
-    def record(self, task_id="bsbukgu-9906", details=None):
+    def record(self, task_id="beta-9906", details=None):
         if details is None:
             details = {"classification": CORRECTION}
         EventLog(self.root / "state" / "events.jsonl").append(decision(task_id, details=details))
 
     def confirm_all(self, details=None):
-        for task_id in ("bsbukgu-9906", "bsbukgu-9907", "bsbukgu-9908"):
+        for task_id in ("beta-9906", "beta-9907", "beta-9908"):
             self.record(task_id, details=details)
 
     def confirm_popups(self):
-        for task_id in ("bsbukgu-1", "bsbukgu-4", "bsbukgu-5"):
+        for task_id in ("beta-1", "beta-4", "beta-5"):
             self.record(task_id)
 
     def propose(self, *keywords):
@@ -145,7 +145,7 @@ class CandidateLoopTest(unittest.TestCase):
         pattern = self.propose("재수정")
 
         cited = [line.split("@")[0] for line in pattern.evidence if "@revision-" in line]
-        self.assertEqual(cited, ["bsbukgu-9906", "bsbukgu-9907", "bsbukgu-9908"])
+        self.assertEqual(cited, ["beta-9906", "beta-9907", "beta-9908"])
 
     def test_the_same_confirmations_propose_the_same_pattern_id(self):
         first = self.propose("재수정")
@@ -154,8 +154,8 @@ class CandidateLoopTest(unittest.TestCase):
         self.assertEqual(first.pattern_id, second.pattern_id)
 
     def test_fewer_than_three_confirmations_are_refused(self):
-        self.record("bsbukgu-9906")
-        self.record("bsbukgu-9907")
+        self.record("beta-9906")
+        self.record("beta-9907")
 
         with self.assertRaises(InsufficientConfirmationsError):
             candidates.propose(SCOPE, ["재수정"], root=self.root)
@@ -255,7 +255,7 @@ class CandidateLoopTest(unittest.TestCase):
         return candidates.promote(SCOPE, pattern.pattern_id, root=self.root)
 
     def test_promotion_activates_the_pattern_and_widens_coverage(self):
-        item = work_item("bsbukgu-9906", "재수정 요청 _ N잡")
+        item = work_item("beta-9906", "재수정 요청 _ N잡")
         self.assertIsNone(classify_with_rules(item, root=self.root))
 
         pattern = self.promoted()
@@ -275,7 +275,7 @@ class CandidateLoopTest(unittest.TestCase):
     def test_an_active_pattern_does_not_leak_into_another_scope(self):
         self.promoted()
 
-        other = work_item("bsbukgu-9906", "재수정 요청 _ N잡", scope=OTHER_SCOPE)
+        other = work_item("beta-9906", "재수정 요청 _ N잡", scope=OTHER_SCOPE)
         self.assertIsNone(classify_with_rules(other, root=self.root))
 
     def test_promotion_without_an_approve_decision_is_refused(self):

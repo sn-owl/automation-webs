@@ -77,9 +77,9 @@ RECORDED_PROPOSALS: dict[str, str] = {
 }
 
 SCENARIOS: tuple[tuple[str, str, str | None], ...] = (
-    ("ready", "yeonje-ready.html", None),
-    ("manual", "bsbukgu-manual.html", "manual"),
-    ("developable", "dongnae-developable.html", "developable"),
+    ("ready", "alpha-ready.html", None),
+    ("manual", "beta-manual.html", "manual"),
+    ("developable", "egov-developable.html", "developable"),
 )
 
 

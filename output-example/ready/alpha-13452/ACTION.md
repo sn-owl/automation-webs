@@ -22,7 +22,7 @@
 
 ## Classification
 
-- Responsibility: operations
+- Responsibility: development
 - Task type: data_refresh
 - Size: recurring
 - Confidence: 0.9

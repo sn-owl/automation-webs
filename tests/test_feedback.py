@@ -8,7 +8,7 @@ from automation.task_store import put_task
 from tests.test_candidates import CORRECTION, OTHER_SCOPE, SCOPE, work_item
 
 
-CONFIRMED = ("bsbukgu-9906", "bsbukgu-9907", "bsbukgu-9908")
+CONFIRMED = ("beta-9906", "beta-9907", "beta-9908")
 
 
 class FeedbackContractTest(unittest.TestCase):
@@ -17,12 +17,12 @@ class FeedbackContractTest(unittest.TestCase):
         self.addCleanup(self._tmp.cleanup)
         self.root = Path(self._tmp.name)
         for task_id, title in [
-            ("bsbukgu-9906", "재수정 요청 _ N잡 지원센터 플랫폼 관련"),
-            ("bsbukgu-9907", "재수정 요청 _ 통계 화면"),
-            ("bsbukgu-9908", "재수정 요청 _ 신청서 항목"),
-            ("bsbukgu-1", "대표 팝업존 추가"),
-            ("bsbukgu-2", "주요뉴스 이동"),
-            ("bsbukgu-3", "무관한 요청"),
+            ("beta-9906", "재수정 요청 _ N잡 지원센터 플랫폼 관련"),
+            ("beta-9907", "재수정 요청 _ 통계 화면"),
+            ("beta-9908", "재수정 요청 _ 신청서 항목"),
+            ("beta-1", "대표 팝업존 추가"),
+            ("beta-2", "주요뉴스 이동"),
+            ("beta-3", "무관한 요청"),
         ]:
             put_task(work_item(task_id, title), root=self.root)
 
@@ -52,7 +52,7 @@ class FeedbackContractTest(unittest.TestCase):
         self.assertTrue(replay["recommendation"]["recommend"])
 
     def test_feedback_records_the_scope_and_current_revision_binding(self):
-        payload = self.correct("bsbukgu-9906")["feedback"]
+        payload = self.correct("beta-9906")["feedback"]
 
         self.assertEqual(payload["scope"], SCOPE)
         self.assertEqual(payload["task_revision"], 1)
@@ -60,14 +60,14 @@ class FeedbackContractTest(unittest.TestCase):
 
     def test_feedback_for_another_scope_is_refused(self):
         with self.assertRaisesRegex(ValueError, "scope"):
-            self.correct("bsbukgu-9906", scope=OTHER_SCOPE)
+            self.correct("beta-9906", scope=OTHER_SCOPE)
 
     def test_feedback_for_a_stale_task_revision_is_refused(self):
         with self.assertRaisesRegex(ValueError, "revision"):
-            self.correct("bsbukgu-9906", task_revision=2)
+            self.correct("beta-9906", task_revision=2)
 
     def test_list_feedback_can_be_narrowed_to_one_scope(self):
-        self.correct("bsbukgu-9906")
+        self.correct("beta-9906")
 
         self.assertEqual(len(list_feedback(scope=SCOPE, root=self.root)), 1)
         self.assertEqual(list_feedback(scope=OTHER_SCOPE, root=self.root), [])
@@ -75,7 +75,7 @@ class FeedbackContractTest(unittest.TestCase):
     def test_execution_feedback_requires_linked_execution(self):
         with self.assertRaises(ValueError):
             record_feedback(
-                "bsbukgu-9906",
+                "beta-9906",
                 "execution_defect",
                 scope=SCOPE,
                 task_revision=1,

@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Callable
 
-from automation.adapters.dongnae import parse_dongnae_html
+from automation.adapters.egov import parse_egov_html
 from automation.adapters.gnuboard import parse_gnuboard_html
 from automation.models import WorkItem
 
@@ -28,18 +28,18 @@ def _gnuboard(html: str, source: Mapping[str, str]) -> WorkItem:
     return parse_gnuboard_html(html, **kwargs)
 
 
-def _dongnae(html: str, source: Mapping[str, str]) -> WorkItem:
+def _egov(html: str, source: Mapping[str, str]) -> WorkItem:
     kwargs = {"source_url": source["url"]}
     if "scope" in source or "connector_id" in source:
         kwargs.update(
             scope=source.get("scope"),
             connector_id=source.get("connector_id"),
         )
-    return parse_dongnae_html(html, **kwargs)
+    return parse_egov_html(html, **kwargs)
 
 ADAPTERS: dict[str, Adapter] = {
     "gnuboard": _gnuboard,
-    "dongnae": _dongnae,
+    "egov": _egov,
 }
 
 
