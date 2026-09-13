@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "file": "yeonje-ready.html",
+      "source_type": "gnuboard",
+      "scenario": "ready",
+      "sha256": "b2d2e8eae533d4173a5056ccd08e44f6b818e3cad0b1b7334292c40eb787361a"
+    },
+    {
+      "file": "bsbukgu-manual.html",
+      "source_type": "gnuboard",
+      "scenario": "manual",
+      "sha256": "9346222d8721608f3003c5f9f8d43c387e26f813ba8805a8d7f415f9280f718b"
+    },
+    {
+      "file": "dongnae-developable.html",
+      "source_type": "dongnae",
+      "scenario": "developable",
+      "sha256": "ab5e5a6de5d4d32c28cbe155a9eaafe050db1cf05385e19f9243ee3fddd0e209"
+    }
+  ]
+}

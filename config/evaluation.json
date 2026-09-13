@@ -1,0 +1,53 @@
+{
+  "evaluation_order": ["responsibility", "task_type", "automation_level", "risk"],
+  "min_classification_confidence": 0.6,
+  "rules": [
+    {
+      "id": "heat-shelter-ready",
+      "when": {
+        "responsibility_in": ["development"],
+        "task_type_in": ["data_refresh"],
+        "size_in": ["recurring"]
+      },
+      "then": {
+        "automation_level": "ready",
+        "risk": "local_artifact_only",
+        "confidence": 0.9,
+        "recipe": "restarea-hwpx-to-xls"
+      }
+    },
+    {
+      "id": "popup-image-assisted",
+      "when": {
+        "responsibility_in": ["design"],
+        "task_type_in": ["image_popup"]
+      },
+      "then": {
+        "automation_level": "assisted",
+        "risk": "remote_write",
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": "content-edit-assisted",
+      "when": {
+        "responsibility_in": ["design"],
+        "task_type_in": ["content_edit"]
+      },
+      "then": {
+        "automation_level": "assisted",
+        "risk": "remote_write",
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": "unclear-manual",
+      "when": { "size_in": ["unclear"] },
+      "then": {
+        "automation_level": "manual",
+        "risk": "read_only",
+        "confidence": 0.7
+      }
+    }
+  ]
+}

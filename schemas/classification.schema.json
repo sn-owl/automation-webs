@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upmuzadong.local/schemas/classification.schema.json",
+  "title": "Classification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "responsibility",
+    "task_type",
+    "size",
+    "ownership",
+    "primary_role",
+    "responsibility_scope",
+    "collaboration",
+    "risk_flags",
+    "confidence",
+    "evidence",
+    "next_action",
+    "pattern_match",
+    "unmatched_aspects"
+  ],
+  "properties": {
+    "responsibility": {"type": "string", "minLength": 1},
+    "task_type": {"type": "string", "minLength": 1},
+    "size": {"type": "string", "minLength": 1},
+    "ownership": {
+      "type": "string",
+      "enum": ["내 업무", "다른 담당자", "정보 부족"]
+    },
+    "primary_role": {"type": "string", "minLength": 1},
+    "responsibility_scope": {"type": "string", "minLength": 1},
+    "collaboration": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "risk_flags": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "next_action": {"type": "string", "minLength": 1},
+    "pattern_match": {"type": "object"},
+    "unmatched_aspects": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    }
+  }
+}

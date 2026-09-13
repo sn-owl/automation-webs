@@ -1,0 +1,90 @@
+{
+  "assessment": {
+    "automation_level": "developable",
+    "confidence": 0.6,
+    "evidence": [
+      "반복 가능한 절차이나 현재 Recipe가 없음",
+      "구현 범위를 사람 검토 후 확정해야 함"
+    ],
+    "risk": "code_diff"
+  },
+  "classification": {
+    "confidence": 0.68,
+    "evidence": [
+      "신규 기능 추가 요청으로 읽히는 본문"
+    ],
+    "responsibility": "development",
+    "size": "small_dev",
+    "task_type": "feature_dev"
+  },
+  "events": [
+    {
+      "event_id": "input:a956d72c3606e7c0:discovered",
+      "stage": "input",
+      "state": "discovered"
+    },
+    {
+      "event_id": "dongnae-9001:stored",
+      "raw": {
+        "path": "raw/dongnae-9001/page.html",
+        "sha256": "ab5e5a6de5d4d32c28cbe155a9eaafe050db1cf05385e19f9243ee3fddd0e209",
+        "size": 4715
+      },
+      "stage": "storage",
+      "state": "stored",
+      "task_id": "dongnae-9001"
+    },
+    {
+      "event_id": "dongnae-9001:files_processed",
+      "stage": "normalize",
+      "state": "files_processed",
+      "task_id": "dongnae-9001"
+    },
+    {
+      "event_id": "dongnae-9001:classified",
+      "stage": "classification",
+      "state": "classified",
+      "task_id": "dongnae-9001"
+    },
+    {
+      "assessment": {
+        "automation_level": "developable",
+        "confidence": 0.6,
+        "evidence": [
+          "반복 가능한 절차이나 현재 Recipe가 없음",
+          "구현 범위를 사람 검토 후 확정해야 함"
+        ],
+        "risk": "code_diff"
+      },
+      "classification": {
+        "confidence": 0.68,
+        "evidence": [
+          "신규 기능 추가 요청으로 읽히는 본문"
+        ],
+        "responsibility": "development",
+        "size": "small_dev",
+        "task_type": "feature_dev"
+      },
+      "event_id": "dongnae-9001:hermes_validated",
+      "stage": "hermes",
+      "state": "assessed",
+      "task_id": "dongnae-9001"
+    },
+    {
+      "event_id": "dongnae-9001:review_required",
+      "stage": "render",
+      "state": "review_required",
+      "task_id": "dongnae-9001"
+    }
+  ],
+  "raw": {
+    "path": "raw/dongnae-9001/page.html",
+    "sha256": "ab5e5a6de5d4d32c28cbe155a9eaafe050db1cf05385e19f9243ee3fddd0e209",
+    "size": 4715
+  },
+  "route": "needs_hermes",
+  "state": "review_required",
+  "status": "review_required",
+  "task_id": "dongnae-9001",
+  "work_package": "dongnae-9001"
+}

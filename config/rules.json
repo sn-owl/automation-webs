@@ -1,0 +1,63 @@
+[
+  {
+    "id": "popup-registration",
+    "when": {
+      "title_or_body_contains_any": ["팝업", "알리미"]
+    },
+    "then": {
+      "responsibility": "design",
+      "task_type": "image_popup",
+      "size": "simple",
+      "confidence": 0.85
+    }
+  },
+  {
+    "id": "site-content-edit",
+    "when": {
+      "title_or_body_contains_any": ["참여해보세요", "주요뉴스", "자료수정", "자료 수정"]
+    },
+    "then": {
+      "responsibility": "design",
+      "task_type": "content_edit",
+      "size": "simple",
+      "confidence": 0.8
+    }
+  },
+  {
+    "id": "server-log-request",
+    "when": {
+      "title_or_body_contains_any": ["요청로그", "접속로그", "아파치", "apache"]
+    },
+    "then": {
+      "responsibility": "development",
+      "task_type": "info_request",
+      "size": "unclear",
+      "confidence": 0.75
+    }
+  },
+  {
+    "id": "heat-shelter-refresh",
+    "when": {
+      "title_or_body_contains_any": ["무더위쉼터", "무더위 쉼터"],
+      "attachment_type_in": ["hwpx", "hwp", "xls", "xlsx"]
+    },
+    "then": {
+      "responsibility": "development",
+      "task_type": "data_refresh",
+      "size": "recurring",
+      "confidence": 0.9
+    }
+  },
+  {
+    "id": "heat-shelter-input-check",
+    "when": {
+      "title_or_body_contains_any": ["무더위쉼터", "무더위 쉼터"]
+    },
+    "then": {
+      "responsibility": "development",
+      "task_type": "data_refresh",
+      "size": "recurring",
+      "confidence": 0.9
+    }
+  }
+]

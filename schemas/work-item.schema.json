@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upmuzadong.local/schemas/work-item.schema.json",
+  "title": "WorkItem",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "source", "received_at", "title", "body", "mask_table_ref"],
+  "properties": {
+    "task_id": {"type": "string", "minLength": 1},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "external_id"],
+      "properties": {
+        "type": {"type": "string", "minLength": 1},
+        "id": {"type": "string", "minLength": 1},
+        "external_id": {"type": "string", "minLength": 1},
+        "url": {"type": "string", "minLength": 1}
+      }
+    },
+    "received_at": {"type": "string", "format": "date-time"},
+    "title": {"type": "string", "minLength": 1},
+    "body": {"type": "string", "minLength": 1},
+    "author": {"type": "string", "minLength": 1},
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "type", "raw_ref", "extracted_ref"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "type": {"type": "string", "enum": ["hwpx", "hwp", "pdf", "docx", "xls", "xlsx", "csv", "zip", "jpg", "jpeg", "png", "gif"]},
+          "raw_ref": {"type": "string", "minLength": 1},
+          "extracted_ref": {"type": "string", "minLength": 1}
+        },
+        "patternProperties": {
+          "^sha256$": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "^status$": {"type": "string", "enum": ["complete", "incomplete", "failed"]}
+        }
+      }
+    },
+    "mask_table_ref": {"type": "string", "minLength": 1}
+  },
+  "patternProperties": {
+    "^(contract_version|scope|connector_id|capture_id|revision|revision_digest|content_digest|completeness|provenance|source_completion_observed)$": {}
+  }
+}

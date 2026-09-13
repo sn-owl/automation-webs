@@ -1,0 +1,40 @@
+{
+  "attachments": [
+    {
+      "extracted_ref": "normalized/dongnae/9001/attachments/ATTACHMENT_001.zip.json",
+      "name": "ATTACHMENT_001.zip",
+      "raw_ref": "/fixture/path-002",
+      "type": "zip"
+    },
+    {
+      "extracted_ref": "normalized/dongnae/9001/attachments/ATTACHMENT_002.zip.json",
+      "name": "ATTACHMENT_002.zip",
+      "raw_ref": "/fixture/path-003",
+      "type": "zip"
+    },
+    {
+      "extracted_ref": "normalized/dongnae/9001/attachments/ATTACHMENT_003.jpg.json",
+      "name": "ATTACHMENT_003.jpg",
+      "raw_ref": "/fixture/path-004",
+      "type": "jpg"
+    },
+    {
+      "extracted_ref": "normalized/dongnae/9001/attachments/ATTACHMENT_004.hwpx.json",
+      "name": "ATTACHMENT_004.hwpx",
+      "raw_ref": "/fixture/path-005",
+      "type": "hwpx"
+    }
+  ],
+  "author": "PERSON_001",
+  "body": "작업구분: 수정\n진행구분: 접수\n\n버튼 3개로 변경 후 첨부파일을 등록해 주세요.\n\n시설 사진과 면적 정보를 변경해 주세요.",
+  "mask_table_ref": "local://masks/dongnae-9001.json",
+  "received_at": "2026-08-28T10:46:00+09:00",
+  "source": {
+    "external_id": "9001",
+    "id": "dongnae",
+    "type": "board",
+    "url": "https://fixture.local/dongnae/board/view.sko?nttId=9001"
+  },
+  "task_id": "dongnae-9001",
+  "title": "문화시설 페이지 구조 변경 요청"
+}

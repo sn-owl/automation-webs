@@ -1,0 +1,14 @@
+# Work Log
+
+- task_id: ${task_id}
+- final_status: ${final_status}
+- source: `source.json`
+- classification: `classification.json`
+
+## Records
+
+${records}
+
+## Artifacts
+
+${artifacts}

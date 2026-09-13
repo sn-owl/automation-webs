@@ -1,0 +1,38 @@
+# 실제 업무 문서 — 공무원 실명·연락처·시설 주소가 들어 있어 어떤 저장소에도 올리지 않는다.
+# parser.py --selftest 는 file/ 아래의 로컬 문서에 의존한다.
+file/
+
+# 원본 보관 · 치환표 · 세션 기록 — 전부 로컬 참조
+raw/
+masks/
+.session/
+
+# 런타임 산출물·상태 — 로컬 실행 데이터
+runtime/
+/runtime-t*/
+/runtime-diag*/
+/runtime.zip
+runtime-e2e*/
+
+# 비밀
+.env
+
+# 파이썬
+__pycache__/
+*.pyc
+.pytest_cache/
+/.venv/
+/.venv.venv/
+
+# 에디터·도구
+.vscode/
+.idea/
+.DS_Store
+.worktrees/
+
+# 비식별되지 않은 업무 문서 — scripts/check_public_safety.py 가 같은 부류를 findings로
+# 보고한다. 새 번들이 실수로 추가되지 않도록 막는다.
+*.zip
+*.hwp
+*.hwpx
+*.docx

@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upmuzadong.local/schemas/decision.schema.json",
+  "title": "Human Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "actor",
+    "task_id",
+    "task_version",
+    "action",
+    "reason",
+    "timestamp"
+  ],
+  "properties": {
+    "actor": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "action": {
+      "type": "string",
+      "enum": ["approve", "reject", "modify", "defer"]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "minLength": 1
+    },
+    "details": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "execution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["recipe_id", "input_hash"],
+          "properties": {
+            "recipe_id": {"type": "string", "minLength": 1},
+            "input_hash": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "action": {"const": "modify"}
+        }
+      },
+      "then": {
+        "required": ["details"],
+        "properties": {
+          "details": {
+            "minProperties": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["action", "details"],
+        "properties": {
+          "action": {"const": "reject"},
+          "details": {
+            "required": ["reject_signal"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "details": {
+            "properties": {
+              "reject_signal": {
+                "enum": ["classification_correction", "out_of_scope"]
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "required": ["reject_signal"],
+                  "properties": {
+                    "reject_signal": {"const": "classification_correction"}
+                  }
+                },
+                "then": {"required": ["classification"]}
+              },
+              {
+                "if": {
+                  "required": ["reject_signal"],
+                  "properties": {
+                    "reject_signal": {"const": "out_of_scope"}
+                  }
+                },
+                "then": {"not": {"required": ["classification"]}}
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

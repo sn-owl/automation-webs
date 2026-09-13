@@ -1,0 +1,9 @@
+{
+  "confidence": 0.9,
+  "evidence": [
+    "rule:heat-shelter-refresh 조건과 일치"
+  ],
+  "responsibility": "operations",
+  "size": "recurring",
+  "task_type": "data_refresh"
+}

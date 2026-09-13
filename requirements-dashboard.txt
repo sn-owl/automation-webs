@@ -1,0 +1,2 @@
+# 대시보드(dashboard.py) 전용. Core 파이프라인과 CLI 는 이것 없이 동작한다.
+streamlit>=1.30

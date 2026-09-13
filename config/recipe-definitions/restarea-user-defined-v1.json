@@ -1,0 +1,173 @@
+{
+  "activation": {
+    "activated_at": "2026-09-07T06:55:22+00:00",
+    "actor": "operator",
+    "reason": "통합 시험과 내용 검증 통과 후 등록"
+  },
+  "applicability": {
+    "attachment_type_in": [
+      "hwpx"
+    ],
+    "title_or_body_contains_any": [
+      "무더위쉼터"
+    ]
+  },
+  "approval_scope": "local_artifact_only",
+  "case_reference": "runtime/_sessions/k01-recipe-onboarding-20260907/acceptance-work-item.json",
+  "created_at": "2026-09-07T06:52:04+00:00",
+  "description": "사용자 정의 무더위쉼터 HWPX 표를 고정 XLS 양식으로 변환",
+  "exclusion_conditions": [
+    "missing_hwpx",
+    "multiple_hwpx",
+    "invalid_table"
+  ],
+  "executor": "restarea-converter",
+  "input_type": "hwpx",
+  "last_test": {
+    "artifact_dir": "runtime\\_sessions\\recipe-test-0907T065449-f0c430\\artifacts\\restarea-user-defined-v1",
+    "input_check": {
+      "evidence": [
+        "hwpx_attachments=1",
+        "local_file=true",
+        "required_headers=true",
+        "rows=61"
+      ],
+      "reasons": [],
+      "recipe_id": "restarea-hwpx-to-xls",
+      "state": "satisfied"
+    },
+    "result": {
+      "artifacts": [
+        {
+          "path": "C:\\Users\\USER\\Desktop\\BOT\\upmuzadong\\runtime\\_sessions\\recipe-test-0907T065449-f0c430\\artifacts\\restarea-user-defined-v1\\f4622a6e6639a63f9939e2eb9f59440fd5535e5db81bad20a0a2cb5392343360.xls",
+          "sha256": "693e4fd33ffc29c94d14c36356e7724414f60261614ce6fc27b4398542f80f87"
+        }
+      ],
+      "duplicate": false,
+      "execution_key": "f4622a6e6639a63f9939e2eb9f59440fd5535e5db81bad20a0a2cb5392343360",
+      "input_sha256": "06e52dc35f32e69614836c803a67039b118b43a30cc4bc4b86fa5cc1a5b1b30e",
+      "recipe_id": "restarea-user-defined-v1",
+      "status": "succeeded",
+      "task_id": "recipe-k06-restarea-20260907"
+    },
+    "session_id": "recipe-test-0907T065449-f0c430",
+    "status": "passed",
+    "task_id": "recipe-k06-restarea-20260907",
+    "tested_at": "2026-09-07T06:54:54+00:00",
+    "verification": {
+      "artifact_sha256": "693e4fd33ffc29c94d14c36356e7724414f60261614ce6fc27b4398542f80f87",
+      "checks": [
+        {
+          "actual": true,
+          "expected": true,
+          "name": "artifact_exists",
+          "status": "passed"
+        },
+        {
+          "actual": "8-column header",
+          "expected": "8-column restarea header",
+          "name": "header_mapping",
+          "status": "passed"
+        },
+        {
+          "actual": 61,
+          "expected": 61,
+          "name": "row_count",
+          "status": "passed"
+        },
+        {
+          "actual": "all rows matched",
+          "expected": "all source rows",
+          "name": "cell_values",
+          "status": "passed"
+        }
+      ],
+      "handoff": {
+        "next_action": "관리자 페이지에 사람이 XLS를 업로드하고 반영 결과를 확인하세요.",
+        "required": true,
+        "status": "pending"
+      },
+      "input_sha256": "06e52dc35f32e69614836c803a67039b118b43a30cc4bc4b86fa5cc1a5b1b30e",
+      "status": "passed",
+      "used_columns": 8,
+      "used_rows": 70,
+      "verification_version": "restarea-xls-v1"
+    }
+  },
+  "output_type": "xls",
+  "recipe_id": "restarea-user-defined-v1",
+  "required_conditions": [
+    "single_hwpx_attachment",
+    "local_file",
+    "single_required_table"
+  ],
+  "review": {
+    "actor": "operator",
+    "reason": "입력 조건과 8열 결과 검증을 확인",
+    "reviewed_at": "2026-09-07T06:55:16+00:00"
+  },
+  "status": "active",
+  "steps": [
+    {
+      "operation": "select_attachment",
+      "parameters": {
+        "count": 1,
+        "type": "hwpx"
+      }
+    },
+    {
+      "operation": "parse_table",
+      "parameters": {
+        "required_headers": [
+          "연번",
+          "해당동",
+          "시설명",
+          "주소",
+          "운영요일",
+          "운영시간",
+          "대표전화"
+        ]
+      }
+    },
+    {
+      "operation": "map_columns",
+      "parameters": {
+        "output_columns": [
+          "연번",
+          "시설명",
+          "주소",
+          "대표전화",
+          "해당동",
+          "운영시간",
+          "운영요일",
+          "해당동"
+        ]
+      }
+    },
+    {
+      "operation": "write_template",
+      "parameters": {
+        "output_type": "xls"
+      }
+    },
+    {
+      "operation": "verify_output",
+      "parameters": {
+        "checks": [
+          "header_mapping",
+          "row_count",
+          "cell_values"
+        ]
+      }
+    }
+  ],
+  "success_checks": [
+    "header_mapping",
+    "row_count",
+    "cell_values"
+  ],
+  "task_name": "무더위쉼터 현황 갱신",
+  "template": "restarea-converter/restarea-template.xls",
+  "updated_at": "2026-09-07T06:55:22+00:00",
+  "version": 1
+}

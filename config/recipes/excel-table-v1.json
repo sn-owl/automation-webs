@@ -1,0 +1,22 @@
+{
+  "recipe_id": "excel-table-v1",
+  "description": "허용된 표 입력을 선언형으로 정리해 XLSX로 생성",
+  "executor": "excel-table",
+  "input_type": "xlsx",
+  "output_type": "xlsx",
+  "scope": "legacy",
+  "version": 1,
+  "steps": [
+    {"operation": "select_attachment", "parameters": {"type": "xlsx", "count": 1}},
+    {"operation": "parse_table", "parameters": {}},
+    {"operation": "write_workbook", "parameters": {"output_type": "xlsx"}},
+    {"operation": "verify_output", "parameters": {"checks": ["artifact_exists", "sha256"]}}
+  ],
+  "approval_scope": "local_artifact_only",
+  "applicability": {"attachment_type_in": ["xlsx"]},
+  "recognition": {"attachment_type": "xlsx", "requires_single_attachment": true},
+  "execution": {"operations": ["select_attachment", "parse_table", "write_workbook", "verify_output"]},
+  "verification": {"checks": ["artifact_exists", "sha256"]},
+  "error_policy": {"on_missing_input": "blocked", "on_parse_error": "blocked"},
+  "ai_policy": {"model_projection": "attachment_free"}
+}

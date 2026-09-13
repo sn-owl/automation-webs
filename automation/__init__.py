@@ -1,0 +1,1 @@
+"""Work automation core package."""

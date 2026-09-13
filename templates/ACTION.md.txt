@@ -1,0 +1,18 @@
+# Action Required
+
+## Task
+
+${title}
+
+## Request
+
+${body}
+
+## Classification
+
+- Responsibility: ${responsibility}
+- Task type: ${task_type}
+- Size: ${size}
+- Confidence: ${confidence}
+
+Human review is required before any external action.

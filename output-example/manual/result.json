@@ -1,0 +1,90 @@
+{
+  "assessment": {
+    "automation_level": "manual",
+    "confidence": 0.64,
+    "evidence": [
+      "대상 페이지를 확정할 근거가 본문에 없음",
+      "등록된 Recipe로 대응되는 변환이 아님"
+    ],
+    "risk": "remote_write"
+  },
+  "classification": {
+    "confidence": 0.72,
+    "evidence": [
+      "본문이 기존 페이지 문구 수정을 요청함"
+    ],
+    "responsibility": "content",
+    "size": "simple",
+    "task_type": "content_edit"
+  },
+  "events": [
+    {
+      "event_id": "input:d23398a6ca36b907:discovered",
+      "stage": "input",
+      "state": "discovered"
+    },
+    {
+      "event_id": "bsbukgu-2048:stored",
+      "raw": {
+        "path": "raw/bsbukgu-2048/page.html",
+        "sha256": "9346222d8721608f3003c5f9f8d43c387e26f813ba8805a8d7f415f9280f718b",
+        "size": 4580
+      },
+      "stage": "storage",
+      "state": "stored",
+      "task_id": "bsbukgu-2048"
+    },
+    {
+      "event_id": "bsbukgu-2048:files_processed",
+      "stage": "normalize",
+      "state": "files_processed",
+      "task_id": "bsbukgu-2048"
+    },
+    {
+      "event_id": "bsbukgu-2048:classified",
+      "stage": "classification",
+      "state": "classified",
+      "task_id": "bsbukgu-2048"
+    },
+    {
+      "assessment": {
+        "automation_level": "manual",
+        "confidence": 0.64,
+        "evidence": [
+          "대상 페이지를 확정할 근거가 본문에 없음",
+          "등록된 Recipe로 대응되는 변환이 아님"
+        ],
+        "risk": "remote_write"
+      },
+      "classification": {
+        "confidence": 0.72,
+        "evidence": [
+          "본문이 기존 페이지 문구 수정을 요청함"
+        ],
+        "responsibility": "content",
+        "size": "simple",
+        "task_type": "content_edit"
+      },
+      "event_id": "bsbukgu-2048:hermes_validated",
+      "stage": "hermes",
+      "state": "assessed",
+      "task_id": "bsbukgu-2048"
+    },
+    {
+      "event_id": "bsbukgu-2048:review_required",
+      "stage": "render",
+      "state": "review_required",
+      "task_id": "bsbukgu-2048"
+    }
+  ],
+  "raw": {
+    "path": "raw/bsbukgu-2048/page.html",
+    "sha256": "9346222d8721608f3003c5f9f8d43c387e26f813ba8805a8d7f415f9280f718b",
+    "size": 4580
+  },
+  "route": "needs_hermes",
+  "state": "review_required",
+  "status": "review_required",
+  "task_id": "bsbukgu-2048",
+  "work_package": "bsbukgu-2048"
+}

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upmuzadong.local/schemas/assessment.schema.json",
+  "title": "Assessment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "automation_level",
+    "risk",
+    "confidence",
+    "evidence"
+  ],
+  "properties": {
+    "automation_level": {
+      "type": "string",
+      "enum": ["manual", "assisted", "developable", "ready"]
+    },
+    "risk": {
+      "type": "string",
+      "enum": [
+        "read_only",
+        "local_artifact_only",
+        "remote_write",
+        "code_diff",
+        "commit_push"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "recipe": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "if": {
+    "properties": {
+      "automation_level": { "const": "ready" }
+    }
+  },
+  "then": {
+    "required": ["recipe"]
+  }
+}

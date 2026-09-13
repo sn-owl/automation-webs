@@ -1,0 +1,39 @@
+{
+  "recipe_id": "restarea-user-defined-v1",
+  "description": "사용자 정의 무더위쉼터 HWPX 표를 고정 XLS 양식으로 변환",
+  "executor": "restarea-converter",
+  "input_type": "hwpx",
+  "output_type": "xls",
+  "scope": "legacy",
+  "template": "restarea-converter/restarea-template.xls",
+  "version": 1,
+  "steps": [
+    {"operation": "select_attachment", "parameters": {"type": "hwpx", "count": 1}},
+    {"operation": "parse_table", "parameters": {"required_headers": ["연번", "해당동", "시설명", "주소", "운영요일", "운영시간", "대표전화"]}},
+    {"operation": "map_columns", "parameters": {"output_columns": ["연번", "시설명", "주소", "대표전화", "해당동", "운영시간", "운영요일", "해당동"]}},
+    {"operation": "write_template", "parameters": {"output_type": "xls"}},
+    {"operation": "verify_output", "parameters": {"checks": ["header_mapping", "row_count", "cell_values"]}}
+  ],
+  "required_conditions": ["single_hwpx_attachment", "local_file", "single_required_table"],
+  "exclusion_conditions": ["missing_hwpx", "multiple_hwpx", "invalid_table"],
+  "success_checks": ["header_mapping", "row_count", "cell_values"],
+  "approval_scope": "local_artifact_only",
+  "applicability": {
+    "title_or_body_contains_any": ["무더위쉼터"],
+    "attachment_type_in": ["hwpx"]
+  },
+  "verification": {
+    "checks": ["header_mapping", "row_count", "cell_values"]
+  },
+  "error_policy": {
+    "on_missing_input": "blocked",
+    "on_parse_error": "blocked",
+    "on_validation_error": "blocked"
+  },
+  "ai_policy": {
+    "enabled": false,
+    "expected_calls": 0,
+    "max_calls": 0,
+    "model_projection": "attachment_free"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "read_only": "auto",
+  "local_artifact_only": "required",
+  "remote_write": "required",
+  "code_diff": "required",
+  "commit_push": "required"
+}

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>게시판 모니터</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #222537;
+    --border: #2a2d3a;
+    --accent: #e53e3e;
+    --accent-dim: #742a2a;
+    --ok: #38a169;
+    --text: #e2e8f0;
+    --text-dim: #718096;
+    --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --r: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 400px; background: var(--bg); color: var(--text); font-family: 'Pretendard','Noto Sans KR',sans-serif; font-size: 13px; }
+
+  /* 헤더 */
+  .hdr { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--border); }
+  .hdr-title { font-size:13px; font-weight:700; display:flex; align-items:center; gap:7px; }
+  .pulse { width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.25} }
+  .scan-time { font-size:11px;color:var(--text-dim);font-family:var(--mono); }
+
+  /* 탭 */
+  .tabs { display:flex; border-bottom:1px solid var(--border); background:var(--surface); }
+  .tab { flex:1;padding:9px 4px;font-size:11px;font-weight:600;color:var(--text-dim);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;letter-spacing:.03em;transition:color .15s,border-color .15s; }
+  .tab.active { color:var(--text);border-bottom-color:var(--accent); }
+  .panel { display:none; }
+  .panel.active { display:block; }
+
+  /* 로그(대시보드) */
+  #panel-logs { padding:0; }
+  .logs-hdr { display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface); }
+  .logs-list { max-height:350px;overflow-y:auto;padding:10px 14px; }
+  .logs-list::-webkit-scrollbar { width:4px; }
+  .logs-list::-webkit-scrollbar-thumb { background:var(--border);border-radius:2px; }
+  
+  .log-item { background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:8px;position:relative; }
+  .log-item.success { border-left:3px solid var(--ok); }
+  .log-item.fail { border-left:3px solid var(--accent); }
+  .log-item.retrying { border-left:3px solid #d69e2e; }
+  
+  .log-meta { display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);margin-bottom:4px;font-family:var(--mono); }
+  .log-status { font-weight:700;text-transform:uppercase;font-size:9px; }
+  .log-item.success .log-status { color:var(--ok); }
+  .log-item.fail .log-status { color:var(--accent); }
+  .log-item.retrying .log-status { color:#d69e2e; }
+  
+  .log-body { font-size:11px;line-height:1.4;word-break:break-all; }
+  .log-error { margin-top:5px;font-size:10px;color:#fc8181;background:#2d1515;padding:4px 6px;border-radius:3px; }
+  .log-actions { margin-top:8px;display:flex;justify-content:flex-end; }
+  .btn-resend { font-size:10px;padding:3px 8px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:3px;cursor:pointer; }
+  .btn-resend:hover { background:var(--border); }
+
+  /* 현황 */
+  #panel-status { padding:12px 14px; }
+  .board-card { background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;margin-bottom:8px; }
+  .bc-hdr { display:flex;align-items:center;justify-content:space-between; }
+  .bc-name { font-size:12px;font-weight:600; }
+  .badge { font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px; }
+  .badge-red { background:var(--accent-dim);color:#fc8181; }
+  .badge-green { background:#1a3a2a;color:#68d391; }
+  .bc-meta { font-size:10px;color:var(--text-dim);font-family:var(--mono);margin-top:4px; }
+  .post-list { margin-top:8px;border-top:1px solid var(--border);padding-top:8px; }
+  .post-row { display:flex;align-items:center;gap:6px;padding:3px 6px;font-size:11px;color:#a0aec0;border-bottom:1px solid #1e2130;transition:all .1s; }
+  .post-row:last-child { border-bottom:none; }
+  .post-row:hover { background:var(--surface2); border-radius:4px; }
+  .post-row.muted { background:#2d2a15 !important; border:1px solid #d69e2e44; border-radius:4px; }
+  .post-row.muted .post-title { color:#d69e2e; text-decoration:line-through; opacity:0.8; }
+  .post-row.blocked { background:#2a1620 !important; border:1px solid #e53e3e33; border-radius:4px; }
+  .post-row.blocked .post-title { color:#fc8181; text-decoration:line-through; opacity:0.55; }
+  .post-dot { width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0; }
+  .post-row.muted .post-dot { background:#d69e2e; }
+  .post-row.blocked .post-dot { background:#742a2a; }
+  .post-title { flex:1;line-height:1.4;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+  .post-title:hover { color:var(--text); }
+  .post-collected { font-size:10px;flex-shrink:0;opacity:.85; }
+  .btn-mute, .btn-block { background:none;border:none;color:var(--text-dim);font-size:10px;cursor:pointer;padding:2px 4px;border-radius:3px;flex-shrink:0; }
+  .btn-mute:hover { background:var(--surface2);color:var(--text); }
+  .btn-block:hover { background:var(--surface2);color:var(--accent); }
+  .post-row.muted .btn-mute { color:#d69e2e; }
+  .post-row.blocked .btn-block { color:#fc8181; }
+  .empty-state { text-align:center;color:var(--text-dim);font-size:12px;padding:24px 0;line-height:1.7; }
+
+  /* 버튼 공통 */
+  .btn { border:none;border-radius:var(--r);cursor:pointer;font-size:12px;font-weight:600;transition:opacity .15s; }
+  .btn:hover { opacity:.85; }
+  .btn:disabled { opacity:.4;cursor:not-allowed; }
+  .btn-red { background:var(--accent);color:#fff;padding:8px 14px; }
+  .btn-sub { background:var(--surface2);color:var(--text-dim);border:1px solid var(--border);padding:6px 10px; }
+  .btn-ok { background:transparent;color:var(--ok);border:1px solid var(--ok);padding:7px; }
+  .btn-full { width:100%;margin-top:6px;padding:8px; }
+
+  /* 게시판 관리 */
+  #panel-boards { padding:0; }
+  .boards-toolbar { display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:var(--surface); }
+  .boards-toolbar-label { font-size:11px;color:var(--text-dim);font-weight:600;letter-spacing:.04em;text-transform:uppercase; }
+  .board-list-area { padding:10px 14px;max-height:230px;overflow-y:auto; }
+  .board-list-area::-webkit-scrollbar { width:4px; }
+  .board-list-area::-webkit-scrollbar-thumb { background:var(--border);border-radius:2px; }
+
+  .bi { display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:6px; }
+  .bi:hover { border-color:#4a5568; }
+  .bi-info { flex:1;min-width:0; }
+  .bi-name { font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+  .bi-url { font-size:10px;color:var(--text-dim);font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+  .bi-detail { margin-top:4px;display:flex;flex-wrap:wrap;gap:3px; }
+  .bi-tag { font-size:9px;font-family:var(--mono);background:var(--bg);border:1px solid var(--border);color:#718096;padding:1px 5px;border-radius:2px;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+  .bi-tag.kw { color:#d69e2e;border-color:#5a4010; }
+  .bi-actions { display:flex;gap:4px;flex-shrink:0; }
+
+  /* 토글 */
+  .toggle { position:relative;width:30px;height:16px;display:inline-block;cursor:pointer;flex-shrink:0; }
+  .toggle input { display:none; }
+  .t-track { position:absolute;inset:0;background:var(--border);border-radius:8px;transition:background .2s; }
+  .toggle input:checked + .t-track { background:var(--ok); }
+  .t-thumb { position:absolute;width:12px;height:12px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .2s; }
+  .toggle input:checked ~ .t-thumb { left:16px; }
+
+  .icon-btn { width:26px;height:26px;background:none;border:1px solid var(--border);border-radius:4px;cursor:pointer;color:var(--text-dim);display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .15s; }
+  .icon-btn:hover { border-color:var(--text-dim);color:var(--text); }
+  .icon-btn.danger:hover { border-color:var(--accent);color:var(--accent); }
+
+  /* 자동감지 */
+  .btn-detect { width:100%;padding:7px;background:var(--surface2);color:#63b3ed;border:1px solid #2c4a6e;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer;margin-bottom:10px;transition:all .15s; }
+  .btn-detect:hover { background:#1a2a3a;border-color:#63b3ed; }
+  .btn-detect:disabled { opacity:.4;cursor:not-allowed; }
+
+  #detectResult { display:none;margin-bottom:10px; }
+  .detect-label { font-size:10px;color:var(--text-dim);letter-spacing:.04em;text-transform:uppercase;margin-bottom:5px; }
+  .detect-error { font-size:11px;color:#fc8181;background:#2d1515;border:1px solid var(--accent-dim);border-radius:4px;padding:8px 10px;line-height:1.5; }
+
+  .detect-card { background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:8px 10px;margin-bottom:5px;cursor:pointer;transition:border-color .15s; }
+  .detect-card:hover { border-color:#4a5568; }
+  .detect-card.selected { border-color:#63b3ed;background:#0d1f2d; }
+  .dc-header { display:flex;align-items:center;gap:6px;margin-bottom:5px; }
+  .dc-rank { font-size:11px;font-weight:700;color:#63b3ed; }
+  .dc-score { font-size:10px;color:var(--ok);background:#1a3a2a;padding:1px 5px;border-radius:2px; }
+  .dc-rows { font-size:10px;color:var(--text-dim);margin-left:auto; }
+  .dc-sel { font-size:10px;color:var(--text-dim);margin-bottom:3px;line-height:1.4; }
+  .dc-sel code { color:#a0c4ff;font-family:var(--mono);font-size:10px; }
+  .dc-preview { display:flex;flex-wrap:wrap;gap:3px;margin-top:5px; }
+  .preview-tag { font-size:10px;background:var(--surface2);color:#a0aec0;padding:1px 5px;border-radius:2px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+
+  .pattern-chips { display:flex;flex-wrap:wrap;gap:4px; }
+  .pattern-chip { font-size:11px;font-family:var(--mono);background:var(--surface2);border:1px solid var(--border);color:#d69e2e;padding:2px 8px;border-radius:3px;cursor:pointer;transition:all .15s; }
+  .pattern-chip:hover { border-color:#d69e2e; }
+  .pattern-chip.chip-selected { background:#2d2010;border-color:#d69e2e; }
+
+  /* 폼 */
+  .board-form { padding:12px 14px;border-top:1px solid var(--border);background:var(--surface); display:none; }
+  .form-hdr { display:flex;align-items:center;justify-content:space-between;margin-bottom:10px; }
+  .form-hdr-title { font-size:11px;font-weight:700;color:var(--text-dim);letter-spacing:.04em;text-transform:uppercase; }
+  .frow { margin-bottom:9px; }
+  .frow label { display:block;font-size:10px;color:var(--text-dim);margin-bottom:4px;letter-spacing:.03em;text-transform:uppercase; }
+  input[type=text], textarea { width:100%;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:6px 9px;color:var(--text);font-size:11px;font-family:var(--mono);outline:none;transition:border-color .15s; }
+  input:focus, textarea:focus { border-color:var(--accent); }
+  textarea { resize:vertical;min-height:52px;line-height:1.5; }
+  .fhint { font-size:10px;color:var(--text-dim);margin-top:3px;line-height:1.5; }
+  .form-actions { display:flex;gap:6px;margin-top:10px; }
+
+  /* 설정 */
+  #panel-settings { padding:14px; }
+  .sg { margin-bottom:13px; }
+  .sg label { display:block;font-size:10px;color:var(--text-dim);margin-bottom:5px;letter-spacing:.04em;text-transform:uppercase; }
+  .sg input { width:100%;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:7px 10px;color:var(--text);font-size:12px;font-family:var(--mono);outline:none;transition:border-color .15s; }
+  .sg input:focus { border-color:var(--accent); }
+  .sg-hint { font-size:10px;color:var(--text-dim);margin-top:3px;line-height:1.5; }
+  hr { border:none;border-top:1px solid var(--border);margin:13px 0; }
+  .toast { text-align:center;font-size:11px;color:var(--ok);margin-top:8px;opacity:0;transition:opacity .3s; }
+  .toast.show { opacity:1; }
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-title"><div class="pulse"></div>게시판 모니터</div>
+  <div class="scan-time" id="scanTime">—</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-tab="status">현황</button>
+  <button class="tab" data-tab="boards">게시판 관리</button>
+  <button class="tab" data-tab="logs">로그</button>
+  <button class="tab" data-tab="settings">설정</button>
+</div>
+
+<!-- 현황 -->
+<div class="panel active" id="panel-status">
+  <div id="statusBoardList"><div class="empty-state">스캔 데이터 없음</div></div>
+  <div style="padding:0 14px 12px">
+    <button class="btn btn-red btn-full" id="btnScan">🔍 지금 스캔</button>
+  </div>
+</div>
+
+<!-- 로그 -->
+<div class="panel" id="panel-logs">
+  <div class="logs-hdr">
+    <span class="boards-toolbar-label">알림 전송 이력</span>
+    <button class="btn btn-sub" id="btnClearLogs" style="padding:4px 8px;font-size:10px">전체 삭제</button>
+  </div>
+  <div class="logs-list" id="logsList">
+    <div class="empty-state">전송 이력 없음</div>
+  </div>
+</div>
+
+<!-- 게시판 관리 -->
+<div class="panel" id="panel-boards">
+  <div class="boards-toolbar">
+    <span class="boards-toolbar-label">등록된 게시판</span>
+    <button class="btn btn-red" id="btnNew" style="padding:5px 10px;font-size:11px">+ 추가</button>
+  </div>
+  <div class="board-list-area" id="boardListArea">
+    <div class="empty-state">등록된 게시판 없음<br>+ 추가 버튼으로 시작하세요</div>
+  </div>
+  <div class="board-form" id="boardForm">
+    <div class="form-hdr">
+      <span class="form-hdr-title" id="formTitle">게시판 추가</span>
+      <button class="icon-btn" id="btnFormClose">✕</button>
+    </div>
+    <div class="frow">
+      <label>이름</label>
+      <input type="text" id="fName" placeholder="연제구 유지보수">
+    </div>
+    <div class="frow">
+      <label>목록 URL</label>
+      <input type="text" id="fUrl" placeholder="https://...">
+    </div>
+    <button class="btn-detect" id="btnAutoDetect">🔍 자동 감지 — URL로 selector 추론</button>
+    <div id="detectResult"></div>
+    <div class="frow">
+      <label>행 Selector <span style="color:#718096;font-weight:400;text-transform:none">(게시글 1줄 = 1행)</span></label>
+      <input type="text" id="fRowSel" placeholder="table.board-list tbody tr">
+      <div class="fhint">
+        게시글 목록의 <strong>각 행(row)</strong> 전체를 가리키는 CSS selector.<br>
+        예) 테이블형: <code>table.bbs_list tbody tr</code><br>
+        예) 리스트형: <code>ul.boardList &gt; li</code><br>
+        F12 → 게시글 행 우클릭 → Copy → Copy selector
+      </div>
+    </div>
+    <div class="frow">
+      <label>제목 Selector <span style="color:#718096;font-weight:400;text-transform:none">(행 기준 상대경로)</span></label>
+      <input type="text" id="fTitleSel" placeholder="td.title a">
+      <div class="fhint">
+        위 행(row) 안에서 <strong>제목 텍스트와 링크가 있는 &lt;a&gt;</strong>를 가리키는 selector.<br>
+        예) <code>td.title a</code> &nbsp;|&nbsp; <code>.nttSj a</code> &nbsp;|&nbsp; <code>td:nth-child(2) a</code>
+      </div>
+    </div>
+    <div class="frow">
+      <label>상태값 Selector <span style="color:#718096;font-weight:400;text-transform:none">(선택 — 컬럼 방식일 때)</span></label>
+      <input type="text" id="fStatusSel" placeholder="td:nth-child(4)">
+      <div class="fhint">
+        '답글' 대신 특정 컬럼의 텍스트로 완료를 판단할 때 사용.<br>
+        예) 4번째 칸이 '처리완료'라면: <code>td:nth-child(4)</code>
+      </div>
+    </div>
+    <div class="frow">
+      <label>완료 키워드 (한 줄에 하나)</label>
+      <textarea id="fPatterns" placeholder="완료&#10;처리완료"></textarea>
+      <div class="fhint">
+        답변글 제목에 포함된 완료 표시 키워드.<br>
+        예) <code>완료</code> → "답변글 (완료)Re: …", "답변글 Re: (완료) …" 모두 감지<br>
+        여러 키워드가 있으면 한 줄에 하나씩 입력.
+      </div>
+    </div>
+    <div class="frow" style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+      <input type="checkbox" id="fAllowHttpError" style="width:auto;accent-color:var(--accent)">
+      <label for="fAllowHttpError" style="margin:0;text-transform:none;font-size:11px;color:var(--text);cursor:pointer">HTTP 에러 무시 (500 등) — 응답 본문으로 파싱 시도</label>
+    </div>
+    <div class="fhint" style="margin-bottom:9px">사이트가 항상 500을 반환하지만 HTML 본문은 정상인 경우 체크</div>
+    <div class="form-actions">
+      <button class="btn btn-red" id="btnFormSave" style="flex:1">저장</button>
+      <button class="btn btn-sub" id="btnFormCancel">취소</button>
+    </div>
+  </div>
+</div>
+
+<!-- 설정 -->
+<div class="panel" id="panel-settings">
+  <div class="sg" style="display:flex;align-items:center;justify-content:space-between;background:var(--surface2);padding:10px;border-radius:6px;margin-bottom:15px">
+    <div>
+      <div style="font-size:12px;font-weight:700;color:var(--text)">텔레그램 알림 활성화</div>
+      <div style="font-size:10px;color:var(--text-dim)">꺼두면 브라우저 알림만 표시됩니다.</div>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="telegramEnabled" checked>
+      <div class="t-track"></div>
+      <div class="t-thumb"></div>
+    </label>
+  </div>
+  <div class="sg">
+    <label>텔레그램 Bot Token</label>
+    <input type="text" id="telegramToken" placeholder="1234567890:ABCDEF...">
+    <div class="sg-hint">BotFather에서 발급받은 토큰</div>
+  </div>
+  <div class="sg">
+    <label>텔레그램 Chat ID</label>
+    <input type="text" id="telegramChatId" placeholder="-100xxxxxxxxxx">
+    <div class="sg-hint">개인: 숫자 ID &nbsp;|&nbsp; 그룹: -100으로 시작</div>
+  </div>
+  <hr>
+  <div class="sg">
+    <label>스캔 주기 (분)</label>
+    <input type="number" id="scanInterval" min="1" max="60" value="1">
+  </div>
+  <div style="display:flex;gap:8px">
+    <button class="btn btn-sub" id="btnTestTelegram" style="flex:1">🔔 테스트 전송</button>
+    <button class="btn btn-ok" id="btnSave" style="flex:2">저장</button>
+  </div>
+  <div class="toast" id="savedToast">✓ 저장됨</div>
+</div>
+
+<script type="module" src="popup.js"></script>
+</body>
+</html>

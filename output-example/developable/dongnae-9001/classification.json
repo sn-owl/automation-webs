@@ -1,0 +1,9 @@
+{
+  "confidence": 0.68,
+  "evidence": [
+    "신규 기능 추가 요청으로 읽히는 본문"
+  ],
+  "responsibility": "development",
+  "size": "small_dev",
+  "task_type": "feature_dev"
+}

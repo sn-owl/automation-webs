@@ -1,0 +1,98 @@
+{
+  "assessment": {
+    "automation_level": "ready",
+    "confidence": 0.9,
+    "evidence": [
+      "eval:heat-shelter-ready 조건과 일치",
+      "responsibility=operations",
+      "task_type=data_refresh",
+      "automation_level=ready",
+      "risk=local_artifact_only"
+    ],
+    "recipe": "restarea-hwpx-to-xls",
+    "risk": "local_artifact_only"
+  },
+  "classification": {
+    "confidence": 0.9,
+    "evidence": [
+      "rule:heat-shelter-refresh 조건과 일치"
+    ],
+    "responsibility": "operations",
+    "size": "recurring",
+    "task_type": "data_refresh"
+  },
+  "events": [
+    {
+      "event_id": "input:a3c1d7df947a439c:discovered",
+      "stage": "input",
+      "state": "discovered"
+    },
+    {
+      "event_id": "yeonje-13452:stored",
+      "raw": {
+        "path": "raw/yeonje-13452/page.html",
+        "sha256": "b2d2e8eae533d4173a5056ccd08e44f6b818e3cad0b1b7334292c40eb787361a",
+        "size": 4698
+      },
+      "stage": "storage",
+      "state": "stored",
+      "task_id": "yeonje-13452"
+    },
+    {
+      "event_id": "yeonje-13452:files_processed",
+      "stage": "normalize",
+      "state": "files_processed",
+      "task_id": "yeonje-13452"
+    },
+    {
+      "classification": {
+        "confidence": 0.9,
+        "evidence": [
+          "rule:heat-shelter-refresh 조건과 일치"
+        ],
+        "responsibility": "operations",
+        "size": "recurring",
+        "task_type": "data_refresh"
+      },
+      "event_id": "yeonje-13452:classified",
+      "stage": "classification",
+      "state": "classified",
+      "task_id": "yeonje-13452"
+    },
+    {
+      "assessment": {
+        "automation_level": "ready",
+        "confidence": 0.9,
+        "evidence": [
+          "eval:heat-shelter-ready 조건과 일치",
+          "responsibility=operations",
+          "task_type=data_refresh",
+          "automation_level=ready",
+          "risk=local_artifact_only"
+        ],
+        "recipe": "restarea-hwpx-to-xls",
+        "risk": "local_artifact_only"
+      },
+      "event_id": "yeonje-13452:assessed",
+      "stage": "evaluation",
+      "state": "assessed",
+      "task_id": "yeonje-13452"
+    },
+    {
+      "event_id": "yeonje-13452:review_required",
+      "stage": "render",
+      "state": "review_required",
+      "task_id": "yeonje-13452"
+    }
+  ],
+  "raw": {
+    "path": "raw/yeonje-13452/page.html",
+    "sha256": "b2d2e8eae533d4173a5056ccd08e44f6b818e3cad0b1b7334292c40eb787361a",
+    "size": 4698
+  },
+  "route": "execute_recipe",
+  "state": "review_required",
+  "status": "review_required",
+  "task_id": "yeonje-13452",
+  "work_package": "yeonje-13452"
+}

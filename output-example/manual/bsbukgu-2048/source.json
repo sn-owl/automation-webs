@@ -1,0 +1,22 @@
+{
+  "attachments": [
+    {
+      "extracted_ref": "normalized/bsbukgu/2048/attachments/SANITIZED_POPUP_REQUEST.hwpx.json",
+      "name": "SANITIZED_POPUP_REQUEST.hwpx",
+      "raw_ref": "https://example.invalid/url-004",
+      "type": "hwpx"
+    }
+  ],
+  "author": "SOURCE_002",
+  "body": "첨부 파일 기준으로 팝업 이미지를 게재해 주세요.",
+  "mask_table_ref": "local://masks/bsbukgu-2048.json",
+  "received_at": "2026-08-27T13:07:00+09:00",
+  "source": {
+    "external_id": "2048",
+    "id": "bsbukgu",
+    "type": "board",
+    "url": "https://fixture.local/bbs/board.php?bo_table=bsbukgu&wr_id=2048"
+  },
+  "task_id": "bsbukgu-2048",
+  "title": "팝업 이미지 게재 요청"
+}

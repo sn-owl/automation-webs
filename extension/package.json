@@ -1,0 +1,5 @@
+{
+  "//": "node 가 .js 를 ESM 으로 읽게 하려는 것뿐. 크롬은 무시한다. (archiver.test.mjs 용)",
+  "type": "module",
+  "private": true
+}
