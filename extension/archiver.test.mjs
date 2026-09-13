@@ -84,7 +84,7 @@ const noName = extractAttachments('<a href="/bbs/download.php?wr_id=1&amp;no=2" 
 assert.equal(noName.length, 1);
 assert.equal(noName[0].name, "attach-2", noName[0].name);
 
-// ── 동래구 어댑터 (eGov *.dongnae) ───────────────────────
+// ── eGov 어댑터 (*.dongnae) ──────────────────────────────
 const dnUrl = "https://www.dongnae.go.kr/board/view.dongnae?boardId=BBS_0000275&startPage=1&dataSid=898320";
 assert.equal(externalId(dnUrl), "898320");
 assert.equal(sourceId(dnUrl), "BBS_0000275");

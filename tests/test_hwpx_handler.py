@@ -10,7 +10,7 @@ from automation.files.registry import process_attachment
 
 
 _HEADER_ROWS = (
-    ("사이트명", "연제구 홈페이지"),
+    ("사이트명", "SITE_001 홈페이지"),
     ("메뉴명", "무더위쉼터"),
     ("위치", "복지/안내"),
     ("내용", "신청 내용"),

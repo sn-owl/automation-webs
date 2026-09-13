@@ -84,7 +84,7 @@ function normalizeTitle(title) {
  * 게시글 목록을 분석해서 미처리 원글 목록을 반환한다.
  */
 export function analyze(posts, completePatterns, board = {}) {
-  // ── 방식 1: 상태값 기반 (동래구 등) ──
+  // ── 방식 1: 상태값 기반 (처리상태 컬럼이 있는 게시판) ──
   // 게시판 설정에 statusSelector가 있는 경우
   if (board.statusSelector) {
     const completedPosts = posts.filter((post) => {
@@ -100,7 +100,7 @@ export function analyze(posts, completePatterns, board = {}) {
     };
   }
 
-  // ── 방식 2: 답글 기반 (연제구 등) ──
+  // ── 방식 2: 답글 기반 (담당자 답글로 완료를 표시하는 게시판) ──
   const replies = [];
   const originals = [];
 

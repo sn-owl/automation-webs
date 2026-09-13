@@ -225,7 +225,7 @@ def selftest():
     # 필드 정확도. 담당자명은 마스킹 대상이라 값을 코드에 박지 않는다
     napse = next(r for n, r in std.items() if "납세자보호관" in n)
     assert re.fullmatch(r"0\d{1,2}-\d{3,4}-\d{4}", napse["fields"]["행정번호"]), napse["fields"]
-    assert napse["target"]["site"] == "연제구 홈페이지", napse["target"]
+    assert napse["target"]["site"].endswith("홈페이지"), napse["target"]
     for r in std.values():
         assert r["fields"].get("담당자명", "").strip(), r["fields"]
 

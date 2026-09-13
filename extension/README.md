@@ -31,7 +31,7 @@
 ```js
 {
   id: "yeonje",
-  name: "연제구 유지보수",
+  name: "유지보수 게시판",
   listUrl: "https://실제URL/board/list.do?boardId=...",
 
   // 크롬 개발자도구 → 게시판 목록 → Inspector에서 확인

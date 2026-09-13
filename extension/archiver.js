@@ -21,7 +21,7 @@ const KEEP = 300; // 아카이브 기록 보관 개수
 // ── 순수 함수 (테스트 대상) ──────────────────────────────
 
 /** 상세 URL 하나로 게시판 유형을 가른다.
- *  그누보드(board.php?bo_table&wr_id) vs 동래구 eGov(*.dongnae?boardId&dataSid). */
+ *  그누보드(board.php?bo_table&wr_id) vs eGov(*.dongnae?boardId&dataSid). */
 function adapterFor(url) {
   return /\.dongnae\b/.test(String(url)) ? "dongnae" : "gnuboard";
 }
@@ -29,7 +29,7 @@ function adapterFor(url) {
 /** 재다운로드 판단(해시 비교)에서 휘발성 요소를 지운다. page.html 원본은 그대로 저장하고
  *  이 정규화본은 delivery ledger 비교에만 쓴다.
  *
- *  동래구 상세는 조회수가 HTML 안에 있어서 fetch 할 때마다 +1 된다 —
+ *  eGov 상세는 조회수가 HTML 안에 있어서 fetch 할 때마다 +1 된다 —
  *  그대로 해시하면 스캔마다 새 Bundle 이 만들어진다.
  *  ponytail: 조회수 셀만 정규식으로 제거. 마크업이 바뀌면 불필요한 재수집이 늘 뿐 오작동은 아님. */
 export function deliveryContent(html, url) {
@@ -41,7 +41,7 @@ export function deliveryContent(html, url) {
 }
 
 /** 상세 URL 에서 글 ID. 목록의 표시번호가 아니라 진짜 ID.
- *  그누보드 wr_id / 동래구 dataSid. */
+ *  그누보드 wr_id / eGov dataSid. */
 export function externalId(url) {
   const u = String(url);
   const m = adapterFor(u) === "dongnae"
@@ -50,7 +50,7 @@ export function externalId(url) {
   return (m || [])[1] ?? null;
 }
 
-/** 상세 URL 에서 Core source id. 그누보드 bo_table / 동래구 boardId. */
+/** 상세 URL 에서 Core source id. 그누보드 bo_table / eGov boardId. */
 export function sourceId(url) {
   try {
     const params = new URL(String(url), "https://invalid.local").searchParams;
@@ -88,7 +88,7 @@ function gnuboardAttachments(html) {
   return out;
 }
 
-/** 동래구: <ul class="attach"> 안 download.dongnae 링크. 같은 fileSid 가
+/** eGov: <ul class="attach"> 안 download.dongnae 링크. 같은 fileSid 가
  *  파일명 앵커와 "다운받기" 앵커로 두 번 나와서 fileSid 로 중복 제거한다.
  *  href 가 상대경로라 baseUrl 로 절대화한다. 파일명은 title 속성에서 뽑는다:
  *  title="원본파일명.hwpx 파일 다운로드" */

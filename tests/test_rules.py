@@ -89,7 +89,7 @@ class RuleClassifierTest(unittest.TestCase):
         for attachments in ([], [("팝업존 게재 신청서.hwpx", "hwpx")]):
             with self.subTest(attachments=attachments):
                 item = work_item(
-                    title="대표 팝업존 추가 ( 부산의 숨은 데이터를 찾아라)",
+                    title="대표 팝업존 추가 ( 공공데이터 찾기 행사)",
                     body="게재 기간과 링크는 첨부 확인 바랍니다.",
                     attachments=attachments,
                 )

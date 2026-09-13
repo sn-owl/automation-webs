@@ -71,7 +71,7 @@ const DETAIL = `
 <img><strong>신청서.hwpx</strong></a></li>
 </ul></section>`;
 
-const board = { id: "b1", name: "연제" };
+const board = { id: "b1", name: "게시판 A" };
 const post = (id) => ({ link: `https://x/bbs/board.php?bo_table=yeonje&wr_id=${id}`, title: `글 ${id}` });
 const fetchHtml = async () => DETAIL;
 
@@ -190,7 +190,7 @@ await archivePosts(
 );
 assert.equal(detailAllowHttpError, true);
 
-// ── 9. 동래구(eGov) 글도 Bundle 로 발행한다 ───────────────
+// ── 9. eGov 게시판 글도 Bundle 로 발행한다 ───────────────
 reset();
 const dnPage = (hit) => `<table class="tb_t2"><tbody class="tb read">
 <tr><td class="subject" colspan="6">[수정] 민원</td></tr>
@@ -200,7 +200,7 @@ const dnPage = (hit) => `<table class="tb_t2"><tbody class="tb read">
 <a href="/board/download.dongnae?boardId=BBS_0000275&dataSid=898320&fileSid=379374" title="신청서.hwpx 파일 다운로드">신청서.hwpx</a>
 <span class="button"><a href="/board/download.dongnae?boardId=BBS_0000275&dataSid=898320&fileSid=379374" title="신청서.hwpx 파일 다운로드">다운받기</a></span>
 </li></ul></td></tr></tbody></table>`;
-const dnBoard = { id: "dn1", name: "동래구" };
+const dnBoard = { id: "dn1", name: "eGov 게시판" };
 const dnPost = { link: "https://www.dongnae.go.kr/board/view.dongnae?boardId=BBS_0000275&startPage=1&dataSid=898320" };
 r = await archivePosts(dnBoard, [dnPost], async () => dnPage(3));
 assert.equal(r.saved.length, 1, JSON.stringify(r));
@@ -218,7 +218,7 @@ assert.equal(dnManifest.source.adapter, "dongnae");
 assert.equal(dnManifest.source.id, "bbs_0000275");
 assert.equal(dnManifest.source.external_id, "898320");
 
-// ── 10. 조회수만 바뀐 동래구 페이지는 다시 안 받는다 ──────
+// ── 10. 조회수만 바뀐 eGov 페이지는 다시 안 받는다 ──────
 downloads = [];
 r = await archivePosts(dnBoard, [dnPost], async () => dnPage(9)); // 조회 3 → 9
 assert.deepEqual(r.saved, [], "조회수만 늘었는데 새 Bundle 을 받았다");
@@ -248,4 +248,4 @@ assert.equal(observationJson.kind, "source_recovered");
 assert.equal(decodeURIComponent(downloads[1].opts.url.split(",", 2)[1]), "yeonje-source_recovered-20260912t120000000z\n");
 assert.equal(downloads[0].opts.filename.split("/").length, 3, "observation bundle must be an inbox-root child");
 
-console.log("OK  완료대기 · Ready-last Bundle · hash 멱등 · 부분실패 격리 · 동래구 어댑터 · 조회수 무시");
+console.log("OK  완료대기 · Ready-last Bundle · hash 멱등 · 부분실패 격리 · eGov 어댑터 · 조회수 무시");
