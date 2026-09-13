@@ -19,7 +19,7 @@ import {
 } from "./archiver.js";
 
 // ── 글 ID (그누보드 wr_id) ───────────────────────────────
-assert.equal(externalId("https://cug.thewebs.kr/bbs/board.php?bo_table=alpha&wr_id=13423"), "13423");
+assert.equal(externalId("https://board.example.kr/bbs/board.php?bo_table=alpha&wr_id=13423"), "13423");
 assert.equal(externalId("board.php?wr_id=13411&page=1"), "13411");
 assert.equal(externalId("board.php?bo_table=alpha"), null);
 

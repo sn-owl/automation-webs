@@ -34,8 +34,8 @@ class FixtureSafetyTest(unittest.TestCase):
             ],
         )
 
-    def test_flags_company_maintenance_url(self):
-        findings = scan_fixture_text('<a href="https://cug.thewebs.kr/bbs/board.php">link</a>')
+    def test_flags_internal_host_url(self):
+        findings = scan_fixture_text('<a href="https://boards.internal.local/bbs/board.php">link</a>')
 
         self.assertEqual(findings, ["internal_url"])
 

@@ -24,49 +24,48 @@
 
 ---
 
-## 게시판 selector 설정 (핵심)
+## 게시판 등록과 selector 설정 (핵심)
 
-`boards.js` 파일 수정:
+게시판 설정은 소스 코드가 아니라 **팝업의 `게시판 관리` 탭**에서 하고,
+`chrome.storage.local` 에 저장됩니다. 설정에 사이트 주소가 들어가므로
+저장소에는 커밋되지 않습니다.
 
-```js
-{
-  id: "alpha",
-  name: "유지보수 게시판",
-  listUrl: "https://실제URL/board/list.do?boardId=...",
+1. 확장프로그램 팝업 → **게시판 관리** 탭 → **추가**
+2. 이름과 목록 URL 입력
+3. **🔍 자동 감지** 버튼으로 selector 추론을 시도
+4. 실패하거나 결과가 어긋나면 아래 세 가지를 직접 채운다
 
-  // 크롬 개발자도구 → 게시판 목록 → Inspector에서 확인
-  rowSelector: "table.board-list tbody tr",  // 각 행
-  titleSelector: "td.title a",               // 제목 텍스트
-  linkSelector: "td.title a",                // 링크
-
-  completePatterns: ["Re:(완료)", "(완료)Re:", "Re: (완료)"],
-  enabled: true,
-}
-```
+| 항목 | 의미 | 예시 |
+|---|---|---|
+| 행 Selector | 게시글 1줄에 해당하는 요소 | `table.board-list tbody tr`, `ul.boardList > li` |
+| 제목 Selector | 행 안에서 제목 텍스트 | `td.title a` |
+| 링크 Selector | 행 안에서 상세 링크 | `td.title a` |
 
 ### selector 확인 방법
 
 1. 게시판 목록 페이지에서 `F12`
-2. Inspector에서 게시글 행(tr 또는 li) 우클릭 → Copy → Copy selector
-3. 제목 a태그도 동일하게 복사
-4. `boards.js`에 붙여넣기
+2. Inspector에서 게시글 행(`tr` 또는 `li`) 우클릭 → Copy → Copy selector
+3. 제목 `a` 태그도 동일하게 복사
+4. 팝업의 해당 입력란에 붙여넣기
 
 ---
 
 ## 완료 패턴 커스터마이징
 
-게시판마다 "완료" 답글 형식이 다를 수 있습니다:
+게시판마다 "완료" 답글 형식이 다릅니다. 팝업의 게시판 설정에서
+완료 패턴을 목록으로 등록합니다.
 
-```js
-completePatterns: [
-  "Re:(완료)",      // Re:(완료) 원글제목
-  "(완료)Re:",      // (완료)Re: 원글제목
-  "Re: (완료)",     // 공백 포함 변형
-  "[완료]Re:",      // 대괄호 형식
-]
+```text
+Re:(완료)      → Re:(완료) 원글제목
+(완료)Re:      → (완료)Re: 원글제목
+Re: (완료)     → 공백 포함 변형
+[완료]Re:      → 대괄호 형식
 ```
 
-→ 실제 답글 제목 prefix를 그대로 추가하면 됩니다.
+→ 실제 답글 제목의 prefix를 그대로 추가하면 됩니다.
+
+처리상태 컬럼으로 완료를 표시하는 게시판은 답글 패턴 대신 그 컬럼 값을 읽습니다.
+두 방식의 판단 로직은 [analyzer.js](analyzer.js)에 있습니다.
 
 ---
 
@@ -92,21 +91,27 @@ completePatterns: [
 
 | 증상 | 원인 | 해결 |
 |---|---|---|
-| 게시글 파싱 0건 | selector 불일치 | boards.js selector 재확인 |
+| 게시글 파싱 0건 | selector 불일치 | 팝업 → 게시판 관리에서 selector 재확인 |
 | 스캔 시 로그인 페이지로 이동 | 세션 만료 | 해당 사이트 브라우저에서 재로그인 |
 | 텔레그램 알림 미수신 | 토큰/Chat ID 오류 | 팝업 설정 탭 재확인 |
-| 완료 글이 미처리로 표시 | 패턴 불일치 | 실제 답글 제목 prefix를 completePatterns에 추가 |
+| 완료 글이 미처리로 표시 | 패턴 불일치 | 실제 답글 제목 prefix를 완료 패턴에 추가 |
 
 ---
 
 ## 파일 구조
 
+```text
+extension/
+├── manifest.json      — 확장프로그램 선언 (Manifest V3)
+├── background.js      — Service Worker (스케줄 · 스캔 · 알림)
+├── analyzer.js        — 완료/미처리 판단 로직 (답글 방식 · 상태값 방식)
+├── archiver.js        — 상세 페이지 수집 → Core 번들 생성
+├── singleflight.js    — 같은 글 중복 수집 방지
+├── escape.js          — 텔레그램 MarkdownV2 이스케이프
+├── offscreen.html/js  — 알림음 재생용 offscreen 문서
+├── popup.html/js      — 팝업 UI (게시판 관리 · 설정 · 알림 이력)
+├── icons/             — 확장프로그램 아이콘
+└── *.test.mjs         — node --test 로 실행하는 테스트
 ```
-board-monitor/
-├── manifest.json    — 확장프로그램 선언
-├── background.js    — Service Worker (스케줄 + 스캔 + 알림)
-├── analyzer.js      — 완료/미처리 판단 로직
-├── boards.js        — 게시판별 URL, selector 설정
-├── popup.html/js    — 팝업 UI
-└── icons/           — 확장프로그램 아이콘
-```
+
+게시판 목록·selector·텔레그램 토큰은 파일이 아니라 `chrome.storage.local` 에 있습니다.

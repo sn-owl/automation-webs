@@ -9,7 +9,7 @@
 import assert from "node:assert/strict";
 import { escMd, escUrl } from "./escape.js";
 
-const URL_ = "https://cug.thewebs.kr/bbs/board.php?bo_table=alpha&wr_id=13423";
+const URL_ = "https://board.example.kr/bbs/board.php?bo_table=alpha&wr_id=13423";
 
 // ── escUrl: URL 을 망가뜨리지 않는다 ─────────────────────
 assert.equal(escUrl(URL_), URL_, "URL 이 변형됐다 — 텔레그램이 거절한다");
@@ -23,7 +23,7 @@ assert.equal(escUrl(undefined), "");
 
 // ── 이게 버그였다: escMd 를 URL 에 쓰면 안 된다 ──────────
 assert.notEqual(escMd(URL_), URL_, "전제가 깨졌다 — escMd 는 URL 을 변형해야 정상");
-assert.ok(escMd(URL_).includes("cug\\.thewebs"), "escMd 가 점을 이스케이프한다");
+assert.ok(escMd(URL_).includes("board\\.example"), "escMd 가 점을 이스케이프한다");
 
 // ── escMd: 본문 텍스트에는 여전히 필요하다 ───────────────
 assert.equal(escMd("무더위쉼터 현황(2026.5.기준)"), "무더위쉼터 현황\\(2026\\.5\\.기준\\)");

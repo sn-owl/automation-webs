@@ -78,7 +78,7 @@ GENERIC Core
 
 ```bash
 git clone <이 저장소 URL>
-cd automation_webs_public
+cd <저장소 폴더>
 
 # 전체 테스트 (표준 라이브러리만 사용)
 python3 -m unittest discover -s tests
@@ -171,6 +171,8 @@ docs/ARCHITECTURE.md   설계 계약 전문
 | `inbox_runner.py` | 수집 번들 감시·처리 루프 |
 | `dashboard.py` | Streamlit 읽기 전용 대시보드 |
 | `start.py` | 대시보드 + 러너 통합 실행 |
+| `normalize.py` | 게시판 HTML 한 건 → WorkItem JSON 변환 |
+| `parser.py` | HWPX 표준 양식 파서 (`--selftest`는 로컬 문서가 있어야 동작) |
 
 ## 테스트
 
@@ -196,6 +198,15 @@ pip install -r requirements-dev.txt       # Pillow — 없으면 해당 테스�
 - 실명·연락처·시설 주소가 있는 원본, 치환표, 자격증명은 `.gitignore`로 차단한다
 - `scripts/check_public_safety.py`가 업무 문서·자격증명 유입을 검사하고, 테스트가 **0 findings**를 강제한다
 - 외부 채널(메신저 알림 등)은 명시적 설정과 승인이 있을 때만 활성화된다
+
+사이트마다 "공개 도메인이지만 실제로는 내부용"인 호스트가 있다. 그 목록을 소스에
+적으면 지우려는 것을 그대로 공개하게 되므로, 환경변수로 받는다.
+
+```bash
+export SANITIZE_PRIVATE_HOSTS="boards.example.kr,intranet.example.kr"
+```
+
+`.local` 이름과 사설 IP 대역(RFC1918)은 설정 없이도 항상 차단한다.
 
 ## 한계
 

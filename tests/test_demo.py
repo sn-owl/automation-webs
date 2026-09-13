@@ -1,5 +1,6 @@
 import io
 import json
+import os
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -113,7 +114,9 @@ class DemoRunnerTest(unittest.TestCase):
             manifest_text = (root / "manifest.json").read_text(encoding="utf-8")
 
         serialized = json.dumps(summary, ensure_ascii=False) + manifest_text
-        for forbidden in ("<html", "<table", "PHPSESSID", "Bearer ", "cug.thewebs.kr"):
+        markers = ["<html", "<table", "PHPSESSID", "Bearer "]
+        markers += [h for h in os.environ.get("SANITIZE_PRIVATE_HOSTS", "").split(",") if h.strip()]
+        for forbidden in markers:
             with self.subTest(marker=forbidden):
                 self.assertNotIn(forbidden, serialized)
 

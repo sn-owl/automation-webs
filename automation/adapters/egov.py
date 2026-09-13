@@ -63,7 +63,7 @@ def parse_egov_html(
         provenance={"adapter": "egov", "source_url": source_url} if extended else None,
         # C1: scope/connector presence is a capture channel, not a source
         # completion signal. Do not claim observation without a parsed marker.
-        # ponytail: egov's 진행구분 could feed a real marker once its
+        # note: egov's 진행구분 could feed a real marker once its
         # completion vocabulary is confirmed (contract decision).
         source_completion_observed=False,
     )

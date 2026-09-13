@@ -33,7 +33,7 @@ function adapterFor(url) {
  *
  *  eGov 상세는 조회수가 HTML 안에 있어서 fetch 할 때마다 +1 된다 —
  *  그대로 해시하면 스캔마다 새 Bundle 이 만들어진다.
- *  ponytail: 조회수 셀만 정규식으로 제거. 마크업이 바뀌면 불필요한 재수집이 늘 뿐 오작동은 아님. */
+ *  note: 조회수 셀만 정규식으로 제거. 마크업이 바뀌면 불필요한 재수집이 늘 뿐 오작동은 아님. */
 export function deliveryContent(html, url) {
   if (adapterFor(url) !== "egov") return html;
   return String(html).replace(

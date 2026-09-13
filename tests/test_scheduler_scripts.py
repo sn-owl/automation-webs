@@ -1,3 +1,4 @@
+import os
 import re
 import unittest
 from pathlib import Path
@@ -9,7 +10,13 @@ INSTALL = ROOT / "scripts" / "install_task.ps1"
 
 # The same classes the fixture policy forbids, applied to operational scripts.
 FORBIDDEN = (
-    ("private_host", re.compile(r"cug\.thewebs\.kr|[A-Za-z0-9-]+\.local\b")),
+    # Site-specific hosts come from SANITIZE_PRIVATE_HOSTS so that naming them
+    # here does not publish what the check exists to keep out. See
+    # scripts/sanitize_fixture.private_hosts().
+    ("private_host", re.compile("|".join(
+        [re.escape(h) for h in os.environ.get("SANITIZE_PRIVATE_HOSTS", "").split(",") if h.strip()]
+        + [r"[A-Za-z0-9-]+\.local\b"]
+    ))),
     (
         "private_ip",
         re.compile(

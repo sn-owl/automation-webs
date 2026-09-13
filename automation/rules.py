@@ -74,7 +74,7 @@ def classify_with_rules(
     side has to merge it here -- otherwise promotion would be inert. Explicit
     ``rules`` (replay, tests) bypass both.
     """
-    # ponytail: re-reads + revalidates config per call; wrap load_rules in
+    # note: re-reads + revalidates config per call; wrap load_rules in
     # functools.lru_cache if a pipeline ever calls this per item in a hot loop.
     effective = load_rules(rules=rules)
     if rules is None and root is not None:

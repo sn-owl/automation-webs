@@ -17,7 +17,7 @@ export function escMd(text) {
  * 인라인 링크 `[문구](URL)` 의 URL 부분용.
  *
  * MarkdownV2 는 `(...)` 안에서 `)` 와 `\` 만 이스케이프를 허용한다.
- * 여기에 escMd 를 쓰면 https://cug\.thewebs\.kr/... 로 망가져서
+ * 여기에 escMd 를 쓰면 https://board\.example\.kr/... 로 망가져서
  * 텔레그램이 "can't parse entities" 로 거절한다. 실제로 그랬다.
  */
 export function escUrl(url) {
